@@ -402,9 +402,9 @@ canvas,video{display:none;}
     <button class="coach-pill" data-coach="ancelotti">🟡 ANCE</button>
   </div>
   <div class="freq-pills">
-    <button class="freq-pill" data-ms="5000">5s</button>
-    <button class="freq-pill active" data-ms="10000">10s</button>
-    <button class="freq-pill" data-ms="15000">15s</button>
+    <button class="freq-pill" data-ms="10000">10s</button>
+    <button class="freq-pill active" data-ms="15000">15s</button>
+    <button class="freq-pill" data-ms="30000">30s</button>
   </div>
   <button id="analyze-btn" class="top-btn">⚡ ANALIZAR</button>
   <button id="demo-btn" class="top-btn">🎮 DEMO</button>
@@ -452,7 +452,7 @@ canvas,video{display:none;}
       <div id="twitch-note">
         ⚠ Twitch tiene ~5-15s de delay.<br>
         Key gratis en aistudio.google.com (cuenta Google)<br>
-        Usa 10-15s de intervalo para mejor análisis.
+        Usa 15-30s de intervalo para mejor análisis y no agotar la cuota.
       </div>
       <div id="idle-msg">
         <div class="ico">🧠</div>
@@ -506,7 +506,7 @@ FORMATO EXACTO (usa números reales del 0 al 100, no rangos):
 Tipos: warning danger info success. Zonas: DEF MID ATK TAC. Máximo 3 alertas.`;
 
 // ── ESTADO MODIFICADO ─────────────────────────────────────────
-let mode='coach',coach='guardiola',ms=10000;
+let mode='coach',coach='guardiola',ms=15000;
 let running=false,scanCount=0,itvId=null,cdId=null,capStream=null;
 let userTeam='', userStyle='';
 
@@ -671,47 +671,38 @@ function captureFrame(){
   return cvs.toDataURL('image/jpeg',0.92).split(',')[1];
 }
 
-// ── API MODIFICADA PARA GUARDAR KEY AUTOMÁTICAMENTE ────────────
+// ── API MODIFICADA PARA EVITAR DOBLE CONSULTA (PROTECCIÓN DE CUOTA) ──
 async function callAI(b64,sys,usr){
-  // Intenta leer la clave del cuadro de texto, si no está escrita ahí, la saca del historial del navegador
   let key=apiKeyIn.value.trim()||localStorage.getItem('fc24_gemini_key')||'';
-  
-  // 💡 TRUCO EXTRA: Si quieres dejar tu clave fija aquí dentro para no escribirla nunca más en pantalla,
-  // puedes quitar las dos barras inclinadas de la línea de abajo y poner tu clave entre las comillas:
-  // key = "AIzaSy...";
-
   if(!key)throw new Error('Sin API Key — ingrésala en el cuadro superior de la app');
   
-  // Si la escribiste en la barra, la guardamos en el navegador para que se cargue sola en el próximo reinicio
   if(apiKeyIn.value.trim())localStorage.setItem('fc24_gemini_key',apiKeyIn.value.trim());
 
-  const MODELS=['gemini-2.5-flash','gemini-2.5-flash-lite'];
-  let lastErr='Sin respuesta';
-  for(const model of MODELS){
-    try{
-      const r=await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`,
-        {
-          method:'POST',
-          headers:{'Content-Type':'application/json'},
-          body:JSON.stringify({
-            system_instruction:{parts:[{text:sys}]},
-            contents:[{parts:[
-              {text:usr},
-              {inline_data:{mime_type:'image/jpeg',data:b64}}
-            ]}],
-            generationConfig:{temperature:0.4,maxOutputTokens:800}
-          })
-        }
-      );
-      const d=await r.json();
-      if(!r.ok){lastErr=d.error?.message||`HTTP ${r.status} (${model})`;continue;}
-      const txt=d.candidates?.[0]?.content?.parts?.[0]?.text||'';
-      if(txt)return txt;
-      lastErr=`Respuesta vacía de ${model}`;
-    }catch(e){lastErr=e.message;}
+  // Eliminado el bucle de reintento. Solo hacemos UNA llamada limpia a gemini-2.5-flash-lite para ahorrar recursos
+  try{
+    const r=await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent?key=${key}`,
+      {
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({
+          system_instruction:{parts:[{text:sys}]},
+          contents:[{parts:[
+            {text:usr},
+            {inline_data:{mime_type:'image/jpeg',data:b64}}
+          ]}],
+          generationConfig:{temperature:0.4,maxOutputTokens:800}
+        })
+      }
+    );
+    const d=await r.json();
+    if(!r.ok) throw new Error(d.error?.message||`HTTP ${r.status}`);
+    const txt=d.candidates?.[0]?.content?.parts?.[0]?.text||'';
+    if(txt) return txt;
+    throw new Error('Respuesta vacía del servidor');
+  }catch(e){
+    throw new Error(e.message);
   }
-  throw new Error(lastErr);
 }
 
 function tryJSON(raw){
@@ -772,12 +763,10 @@ function procesarRitmoYSeccion(data) {
     clearInterval(itvId);
     
     if (actualSeccion === "juego") {
-      // Regresa a los segundos que marque el botón activo del topbar
       const activeBtn = document.querySelector('.freq-pill.active');
-      ms = activeBtn ? parseInt(activeBtn.dataset.ms) : 10000;
+      ms = activeBtn ? parseInt(activeBtn.dataset.ms) : 15000;
       console.log("⚽ Balón en juego: ritmo rápido restaurado.");
     } else if (actualSeccion === "cierre") {
-      // Modo Cierre detectado: Guarda el rival y se detiene automáticamente
       const rivalDetectado = data.proximo_rival || "Rival";
       localStorage.setItem("proximo_rival_guardado", rivalDetectado);
       stopAnalysis();
@@ -789,7 +778,7 @@ function procesarRitmoYSeccion(data) {
       add(cardCierre);
       return;
     } else {
-      // Si es finanzas, calendario o alineacion, baja el ritmo a 60 segundos
+      // Menús: bajamos a 60s
       ms = 60000;
       console.log(`⏱️ Navegando menús (${actualSeccion}): Ritmo lento activado (60s).`);
     }
