@@ -14,6 +14,24 @@
 }
 body{background:var(--bg);color:#fff;font-family:'Barlow Condensed',sans-serif;height:100vh;overflow:hidden;display:flex;flex-direction:column;}
 
+/* ZONA DRAG OVERLAY */
+#drag-overlay{
+  position:fixed;inset:0;background:rgba(0,229,255,0.15);
+  backdrop-filter:blur(4px);z-index:9999;
+  display:none;align-items:center;justify-content:center;
+  border:4px dashed var(--accent);pointer-events:none;
+}
+#drag-overlay.active{display:flex;}
+.drag-msg{
+  background:#0d1018;padding:24px 40px;border-radius:12px;
+  border:1px solid rgba(0,229,255,0.3);text-align:center;
+  box-shadow:0 10px 40px rgba(0,0,0,0.6);
+  animation:pulse 1.5s infinite;
+}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.02)}}
+.drag-msg h3{font-size:20px;color:var(--accent);margin-bottom:6px;letter-spacing:1px;}
+.drag-msg p{font-size:12px;color:rgba(255,255,255,0.5);font-family:'Share Tech Mono',monospace;}
+
 /* ═══ TOPBAR ═══════════════════════════════════════════════ */
 #topbar{
   display:flex;align-items:center;gap:8px;padding:8px 14px;
@@ -57,6 +75,9 @@ body{background:var(--bg);color:#fff;font-family:'Barlow Condensed',sans-serif;h
 #demo-btn:disabled{opacity:.35;cursor:not-allowed;}
 #demo-btn:disabled::after{display:none;}
 
+#upload-btn{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.6);font-size:11px;padding:6px 10px;}
+#upload-btn:hover{border-color:rgba(255,255,255,0.2);color:#fff;}
+
 /* MODE TABS */
 .mode-tabs{display:flex;gap:2px;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:9px;padding:3px;}
 .mode-tab{
@@ -88,7 +109,6 @@ body{background:var(--bg);color:#fff;font-family:'Barlow Condensed',sans-serif;h
 
 /* ═══ MAIN ══════════════════════════════════════════════════ */
 #main{display:flex;flex:1;overflow:hidden;}
-
 #stream-wrap{flex:1;position:relative;background:#000;display:flex;align-items:center;justify-content:center;overflow:hidden;}
 
 /* animated grid bg for placeholder */
@@ -239,9 +259,7 @@ body{background:var(--bg);color:#fff;font-family:'Barlow Condensed',sans-serif;h
 .card-formation .card-label{color:var(--gold);margin-bottom:4px;}
 .card-formation .form-name{font-size:28px;font-weight:800;color:var(--gold);letter-spacing:3px;line-height:1;}
 .card-formation .form-desc{font-size:9px;color:rgba(255,255,255,0.35);font-family:'Share Tech Mono',monospace;margin-top:4px;}
-.form-phase{
-  text-align:right;flex-shrink:0;
-}
+.form-phase{text-align:right;flex-shrink:0;}
 .form-phase .phase-icon{font-size:22px;}
 .form-phase .phase-txt{font-size:8px;color:rgba(255,255,255,0.3);font-family:'Share Tech Mono',monospace;letter-spacing:1px;margin-top:2px;}
 
@@ -384,6 +402,14 @@ canvas,video{display:none;}
 </style>
 </head>
 <body>
+
+<div id="drag-overlay">
+  <div class="drag-msg">
+    <h3>⚡ SOLTAR ARCHIVO SCRIPT</h3>
+    <p>Suelta el archivo .html para actualizar la lógica al instante</p>
+  </div>
+</div>
+
 <canvas id="canvas"></canvas>
 <video id="video" muted playsinline></video>
 
@@ -392,6 +418,10 @@ canvas,video{display:none;}
   <input id="apikey-input" class="top-input" type="password" placeholder="🔑 Gemini API Key (aistudio.google.com)" />
   <input id="channel-input" class="top-input" type="text" placeholder="canal_twitch" maxlength="30" />
   <button id="load-btn" class="top-btn">▶ CARGAR</button>
+  
+  <button id="upload-btn" class="top-btn">📂 SUBIR CODE</button>
+  <input type="file" id="hidden-file-input" accept=".html" style="display:none" />
+
   <div class="mode-tabs">
     <button class="mode-tab active" data-mode="coach">🎽 COACHES</button>
     <button class="mode-tab ai-tab" data-mode="ai">🤖 IA TÁCTICA</button>
@@ -552,6 +582,7 @@ document.querySelectorAll('.coach-pill').forEach(b=>{
     b.classList.add('active');coach=b.dataset.coach;
   });
 });
+
 // ── TEAM SAVE ────────────────────────────────────────────────
 teamSaveBtn.addEventListener('click',()=>{
   userTeam=teamInput.value.trim();
@@ -579,6 +610,46 @@ document.querySelectorAll('.freq-pill').forEach(b=>{
     if(running)resetInterval();
   });
 });
+
+// ── LÓGICA DE ACTUALIZACIÓN (UPLOAD / DRAG & DROP) ────────────
+const fileIn = $('hidden-file-input');
+const uploadBtn = $('upload-btn');
+const dragOverlay = $('drag-overlay');
+
+uploadBtn.addEventListener('click', () => fileIn.click());
+fileIn.addEventListener('change', (e) => {
+  if(e.target.files.length > 0) handleFile(e.target.files[0]);
+});
+
+window.addEventListener('dragenter', (e) => { e.preventDefault(); dragOverlay.classList.add('active'); });
+dragOverlay.addEventListener('dragover', (e) => { e.preventDefault(); });
+dragOverlay.addEventListener('dragleave', () => { dragOverlay.classList.remove('active'); });
+window.addEventListener('drop', (e) => {
+  e.preventDefault();
+  dragOverlay.classList.remove('active');
+  if(e.dataTransfer.files.length > 0) handleFile(e.dataTransfer.files[0]);
+});
+
+function handleFile(file) {
+  if(!file.name.endsWith('.html')) {
+    showError('Archivo inválido', 'Por favor sube solo archivos estructurados en formato .html');
+    return;
+  }
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    try {
+      const rawHtml = e.target.result;
+      // Reemplazar dinámicamente todo el documento actual con el nuevo código cargado
+      document.open();
+      document.write(rawHtml);
+      document.close();
+      console.log("✅ Aplicación actualizada exitosamente desde archivo externo.");
+    } catch(err) {
+      showError('Error al inyectar código', err.message);
+    }
+  };
+  reader.readAsText(file);
+}
 
 // ── ANÁLISIS ─────────────────────────────────────────────────
 analyzeBtn.addEventListener('click',async()=>{
@@ -641,13 +712,13 @@ function captureFrame(){
   return cvs.toDataURL('image/jpeg',0.92).split(',')[1];
 }
 
-// ── API ───────────────────────────────────────────────────────
+// ── API (CON MODELOS 2026 CORRECTOS) ──────────────────────────
 async function callAI(b64,sys,usr){
   const key=apiKeyIn.value.trim()||localStorage.getItem('fc24_gemini_key')||'';
   if(!key)throw new Error('Sin API Key — ingrésala en aistudio.google.com');
   if(apiKeyIn.value.trim())localStorage.setItem('fc24_gemini_key',apiKeyIn.value.trim());
 
-  // Modelos actualizados y gratuitos para el 2026
+  // Modelos actualizados de la serie Gemini 2.5
   const MODELS=[
     'gemini-2.5-flash',
     'gemini-2.5-flash-lite',
@@ -845,6 +916,7 @@ function mkAlerts(arr){
   return w;
 }
 
+// Corregido: mkAdvice acepta parámetro ai correctamente
 function mkAdvice(label,txt,ai){
   const c=mkDiv('card-advice'+(ai?' ai-card':''));
   c.innerHTML=`<div class="card-label">${label}</div><p>"${esc(txt)}"</p>`;
