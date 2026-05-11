@@ -60,6 +60,15 @@ body{background:var(--bg);color:#fff;font-family:'Barlow Condensed',sans-serif;h
 .top-input::placeholder{color:rgba(255,255,255,0.18);}
 #apikey-input{width:190px;}#channel-input{width:135px;}
 
+/* CONTENEDOR MULTI-KEYS */
+.keys-container{display:flex;align-items:center;gap:4px;}
+.keys-select{
+  background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);
+  border-radius:8px;padding:6px 8px;color:#fff;font-family:'Share Tech Mono',monospace;
+  font-size:11px;outline:none;cursor:pointer;max-width:110px;
+}
+.keys-select option{background:var(--surface);color:#fff;}
+
 .top-btn{
   border:none;border-radius:8px;padding:7px 13px;
   font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;
@@ -415,7 +424,15 @@ canvas,video{display:none;}
 
 <div id="topbar">
   <div class="logo">FC24 <em>COACH</em></div>
-  <input id="apikey-input" class="top-input" type="password" placeholder="🔑 Gemini API Key (aistudio.google.com)" />
+  
+  <div class="keys-container">
+    <input id="apikey-input" class="top-input" type="password" placeholder="🔑 Nueva Gemini API Key" />
+    <button id="add-key-btn" class="top-btn" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#fff;padding:6px 9px;font-size:11px;">+ AGREGAR</button>
+    <select id="keys-select" class="keys-select">
+      <option value="">— Sin llaves —</option>
+    </select>
+  </div>
+
   <input id="channel-input" class="top-input" type="text" placeholder="canal_twitch" maxlength="30" />
   <button id="load-btn" class="top-btn">▶ CARGAR</button>
   
@@ -529,10 +546,12 @@ Tipos: warning danger info success. Zonas: DEF MID ATK TAC. Máximo 3 alertas.`;
 let mode='coach',coach='guardiola',ms=10000;
 let running=false,scanCount=0,itvId=null,cdId=null,capStream=null;
 let userTeam='', userStyle='';
+let apiKeys=[]; // Array para almacenar múltiples tokens
 
 // ── REFS ─────────────────────────────────────────────────────
 const $=id=>document.getElementById(id);
-const apiKeyIn=$('apikey-input'),chIn=$('channel-input'),loadBtn=$('load-btn');
+const apiKeyIn=$('apikey-input'),addKeyBtn=$('add-key-btn'),keysSelect=$('keys-select');
+const chIn=$('channel-input'),loadBtn=$('load-btn');
 const tFrame=$('twitch-frame'),placeholder=$('stream-placeholder');
 const analyzeBtn=$('analyze-btn'),demoBtn=$('demo-btn'),liveDot=$('live-dot');
 const panelBody=$('panel-body'),spinner=$('spinner'),analyzingTxt=$('analyzing-txt');
@@ -544,7 +563,65 @@ const coachWrap=$('coach-pills-wrap');
 const teamInput=$('team-input'),styleInput=$('style-input');
 const teamSaveBtn=$('team-save-btn'),teamBadge=$('team-badge');
 
-apiKeyIn.value=localStorage.getItem('fc24_gemini_key')||'';
+// ── GESTIÓN DE MÚLTIPLES LLAVES (RESTAURADO) ─────────────────
+loadKeys();
+
+addKeyBtn.addEventListener('click', addKey);
+apiKeyIn.addEventListener('keydown', e=>{if(e.key==='Enter') addKey();});
+
+function addKey() {
+  const val = apiKeyIn.value.trim();
+  if(!val) return;
+  if(!apiKeys.includes(val)) {
+    apiKeys.push(val);
+    saveKeys();
+    renderKeysSelect();
+    keysSelect.value = val; 
+  }
+  apiKeyIn.value = '';
+}
+
+function saveKeys() {
+  localStorage.setItem('fc24_multi_keys', JSON.stringify(apiKeys));
+}
+
+function loadKeys() {
+  try {
+    const stored = localStorage.getItem('fc24_multi_keys');
+    if(stored) apiKeys = JSON.parse(stored);
+    
+    // Migración por si existía una key única de versiones previas
+    const oldKey = localStorage.getItem('fc24_gemini_key');
+    if(oldKey && !apiKeys.includes(oldKey)) {
+      apiKeys.push(oldKey);
+      saveKeys();
+      localStorage.removeItem('fc24_gemini_key');
+    }
+  } catch(e) {
+    apiKeys = [];
+  }
+  renderKeysSelect();
+}
+
+function renderKeysSelect() {
+  keysSelect.innerHTML = '';
+  if(apiKeys.length === 0) {
+    const opt = document.createElement('option');
+    opt.value = ''; opt.textContent = '— Sin llaves —';
+    keysSelect.appendChild(opt);
+    return;
+  }
+  apiKeys.forEach((k, idx) => {
+    const opt = document.createElement('option');
+    opt.value = k;
+    opt.textContent = `🔑 Llave ${idx + 1} (${k.slice(0,4)}...${k.slice(-4)})`;
+    keysSelect.appendChild(opt);
+  });
+}
+
+function getSelectedKey() {
+  return keysSelect.value || '';
+}
 
 // Cargar equipo guardado
 userTeam=localStorage.getItem('fc24_team')||'';
@@ -583,23 +660,40 @@ document.querySelectorAll('.coach-pill').forEach(b=>{
   });
 });
 
-// ── TEAM SAVE ────────────────────────────────────────────────
-teamSaveBtn.addEventListener('click',()=>{
-  userTeam=teamInput.value.trim();
-  userStyle=styleInput.value.trim();
-  localStorage.setItem('fc24_team',userTeam);
-  localStorage.setItem('fc24_style',userStyle);
+// ── FUNCIÓN DE AGREGAR / GUARDAR EQUIPO ──────────────────────
+teamSaveBtn.addEventListener('click', addTeam);
+
+function addTeam() {
+  const teamVal = teamInput.value.trim();
+  const styleVal = styleInput.value.trim();
+  
+  if(!teamVal) {
+    showError('Campo vacío', 'Debes ingresar al menos el nombre de un equipo para guardar.');
+    return;
+  }
+  
+  userTeam = teamVal;
+  userStyle = styleVal;
+  
+  localStorage.setItem('fc24_team', userTeam);
+  localStorage.setItem('fc24_style', userStyle);
+  
   updateTeamBadge();
+  
   teamSaveBtn.textContent='✅ GUARDADO';
-  setTimeout(()=>teamSaveBtn.textContent='GUARDAR ✓',1500);
-});
+  teamSaveBtn.style.background = 'var(--ok)';
+  setTimeout(()=>{
+    teamSaveBtn.textContent='GUARDAR ✓';
+    teamSaveBtn.style.background = 'linear-gradient(135deg,var(--accent),var(--accent2))';
+  },1500);
+}
 
 function updateTeamBadge(){
   if(userTeam){
     teamBadge.textContent=`🏟 ${userTeam}${userStyle?' · '+userStyle:''}`;
-    teamBadge.classList.add('show');
+    teamBadge.style.display = 'block';
   }else{
-    teamBadge.classList.remove('show');
+    teamBadge.style.display = 'none';
   }
 }
 
@@ -639,7 +733,6 @@ function handleFile(file) {
   reader.onload = (e) => {
     try {
       const rawHtml = e.target.result;
-      // Reemplazar dinámicamente todo el documento actual con el nuevo código cargado
       document.open();
       document.write(rawHtml);
       document.close();
@@ -712,13 +805,11 @@ function captureFrame(){
   return cvs.toDataURL('image/jpeg',0.92).split(',')[1];
 }
 
-// ── API (CON MODELOS 2026 CORRECTOS) ──────────────────────────
+// ── API ───────────────────────────────────────────────────────
 async function callAI(b64,sys,usr){
-  const key=apiKeyIn.value.trim()||localStorage.getItem('fc24_gemini_key')||'';
-  if(!key)throw new Error('Sin API Key — ingrésala en aistudio.google.com');
-  if(apiKeyIn.value.trim())localStorage.setItem('fc24_gemini_key',apiKeyIn.value.trim());
+  const key = getSelectedKey();
+  if(!key) throw new Error('Sin API Key — Agrega al menos una clave válida en la barra superior.');
 
-  // Modelos actualizados de la serie Gemini 2.5
   const MODELS=[
     'gemini-2.5-flash',
     'gemini-2.5-flash-lite',
@@ -797,8 +888,8 @@ const DEMO_IMGS=[
 let demoIdx=0;
 
 demoBtn.addEventListener('click',async()=>{
-  const key=apiKeyIn.value.trim()||localStorage.getItem('fc24_gemini_key')||'';
-  if(!key){showError('API Key requerida','Ingresa tu Gemini API Key (gratis en aistudio.google.com).');return;}
+  const key = getSelectedKey();
+  if(!key){showError('API Key requerida','Selecciona o agrega una Gemini API Key para usar la demo.');return;}
   demoBtn.disabled=true;demoBtn.textContent='⏳...';
   spinner.classList.add('show');analyzingTxt.classList.add('show');
   $('idle-msg')?.remove();$('twitch-note')?.remove();
@@ -916,7 +1007,7 @@ function mkAlerts(arr){
   return w;
 }
 
-// Corregido: mkAdvice acepta parámetro ai correctamente
+// Resto de los constructores...
 function mkAdvice(label,txt,ai){
   const c=mkDiv('card-advice'+(ai?' ai-card':''));
   c.innerHTML=`<div class="card-label">${label}</div><p>"${esc(txt)}"</p>`;
