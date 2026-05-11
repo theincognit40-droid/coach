@@ -315,7 +315,6 @@ body{background:var(--bg);color:#fff;font-family:'Barlow Condensed',sans-serif;h
 }
 #countdown-top{display:flex;justify-content:space-between;margin-bottom:6px;font-size:9px;font-family:'Share Tech Mono',monospace;color:rgba(255,255,255,0.18);}
 #scan-label{color:var(--accent);}
-#countdown-bar{height:2px;background:rgba(255,255,255,0.05);border-radius:2px;overflow:hidden;}
 #countdown-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:2px;width:100%;transition:width 1s linear;}
 
 /* IDLE */
@@ -672,10 +671,18 @@ function captureFrame(){
   return cvs.toDataURL('image/jpeg',0.92).split(',')[1];
 }
 
-// ── API ───────────────────────────────────────────────────────
+// ── API MODIFICADA PARA GUARDAR KEY AUTOMÁTICAMENTE ────────────
 async function callAI(b64,sys,usr){
-  const key=apiKeyIn.value.trim()||localStorage.getItem('fc24_gemini_key')||'';
-  if(!key)throw new Error('Sin API Key — ingrésala en aistudio.google.com');
+  // Intenta leer la clave del cuadro de texto, si no está escrita ahí, la saca del historial del navegador
+  let key=apiKeyIn.value.trim()||localStorage.getItem('fc24_gemini_key')||'';
+  
+  // 💡 TRUCO EXTRA: Si quieres dejar tu clave fija aquí dentro para no escribirla nunca más en pantalla,
+  // puedes quitar las dos barras inclinadas de la línea de abajo y poner tu clave entre las comillas:
+  // key = "AIzaSy...";
+
+  if(!key)throw new Error('Sin API Key — ingrésala en el cuadro superior de la app');
+  
+  // Si la escribiste en la barra, la guardamos en el navegador para que se cargue sola en el próximo reinicio
   if(apiKeyIn.value.trim())localStorage.setItem('fc24_gemini_key',apiKeyIn.value.trim());
 
   const MODELS=['gemini-2.5-flash','gemini-2.5-flash-lite'];
