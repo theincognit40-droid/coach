@@ -40,7 +40,7 @@ body{background:var(--bg);color:#fff;font-family:'Barlow Condensed',sans-serif;h
 }
 .top-input:focus{border-color:var(--accent);box-shadow:0 0 0 2px rgba(0,229,255,0.1);}
 .top-input::placeholder{color:rgba(255,255,255,0.18);}
-#apikey-input{width:190px;}#channel-input{width:135px;}
+#apikey-input{width:220px;}#channel-input{width:135px;}
 
 .top-btn{
   border:none;border-radius:8px;padding:7px 13px;
@@ -88,14 +88,11 @@ body{background:var(--bg);color:#fff;font-family:'Barlow Condensed',sans-serif;h
 
 /* ═══ MAIN ══════════════════════════════════════════════════ */
 #main{display:flex;flex:1;overflow:hidden;}
-
 #stream-wrap{flex:1;position:relative;background:#000;display:flex;align-items:center;justify-content:center;overflow:hidden;}
 
-/* animated grid bg for placeholder */
 #stream-placeholder{
   text-align:center;color:rgba(255,255,255,0.1);
-  position:relative;z-index:1;
-  padding:40px;
+  position:relative;z-index:1;padding:40px;
 }
 #stream-placeholder::before{
   content:'';position:absolute;inset:-100px;
@@ -121,7 +118,6 @@ body{background:var(--bg);color:#fff;font-family:'Barlow Condensed',sans-serif;h
   display:flex;flex-direction:column;overflow:hidden;
   box-shadow:-4px 0 30px rgba(0,0,0,0.3);
 }
-
 #panel-header{
   padding:10px 13px;
   border-bottom:1px solid var(--border);
@@ -151,7 +147,6 @@ body{background:var(--bg);color:#fff;font-family:'Barlow Condensed',sans-serif;h
   font-family:'Share Tech Mono',monospace;letter-spacing:1.5px;
 }
 #ai-badge.show{display:block;}
-
 #demo-banner{
   display:none;padding:6px 12px;font-size:9px;color:var(--gold);
   font-family:'Share Tech Mono',monospace;
@@ -194,8 +189,7 @@ body{background:var(--bg);color:#fff;font-family:'Barlow Condensed',sans-serif;h
 .alert-card.success{background:rgba(105,255,71,0.05);border-color:var(--ok);}
 .alert-zona{
   font-size:7px;font-family:'Share Tech Mono',monospace;font-weight:800;
-  flex-shrink:0;margin-top:2px;letter-spacing:1px;
-  padding:2px 5px;border-radius:3px;
+  flex-shrink:0;margin-top:2px;letter-spacing:1px;padding:2px 5px;border-radius:3px;
 }
 .alert-card.danger  .alert-zona{color:var(--danger);background:rgba(255,61,61,0.12);}
 .alert-card.warning .alert-zona{color:var(--warn);  background:rgba(255,167,38,0.12);}
@@ -205,12 +199,8 @@ body{background:var(--bg);color:#fff;font-family:'Barlow Condensed',sans-serif;h
 
 /* consejo */
 .card-advice{
-  background:rgba(255,255,255,0.02);
-  border:1px solid rgba(255,255,255,0.07);
-  border-left:3px solid var(--accent);
-  border-radius:8px;
-  padding:10px 11px;
-  animation:fadeSlide .25s ease;
+  background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.07);
+  border-left:3px solid var(--accent);border-radius:8px;padding:10px 11px;animation:fadeSlide .25s ease;
 }
 .card-advice.ai-card{border-left-color:var(--gold);}
 .card-advice .card-label{color:var(--accent);}
@@ -219,10 +209,8 @@ body{background:var(--bg);color:#fff;font-family:'Barlow Condensed',sans-serif;h
 
 /* ajuste */
 .card-tactic{
-  background:rgba(105,255,71,0.04);
-  border:1px solid rgba(105,255,71,0.12);
-  border-radius:8px;padding:10px 11px;
-  animation:fadeSlide .25s ease;
+  background:rgba(105,255,71,0.04);border:1px solid rgba(105,255,71,0.12);
+  border-radius:8px;padding:10px 11px;animation:fadeSlide .25s ease;
 }
 .card-tactic .card-label{color:var(--ok);}
 .card-tactic p{font-size:11.5px;color:rgba(255,255,255,0.75);line-height:1.5;font-family:'Share Tech Mono',monospace;}
@@ -230,18 +218,13 @@ body{background:var(--bg);color:#fff;font-family:'Barlow Condensed',sans-serif;h
 /* IA: formación */
 .card-formation{
   background:linear-gradient(135deg,rgba(255,215,0,0.06),rgba(255,167,38,0.03));
-  border:1px solid rgba(255,215,0,0.15);
-  border-radius:8px;padding:10px 11px;
-  animation:fadeSlide .25s ease;
-  display:flex;align-items:center;justify-content:space-between;
+  border:1px solid rgba(255,215,0,0.15);border-radius:8px;padding:10px 11px;
+  animation:fadeSlide .25s ease;display:flex;align-items:center;justify-content:space-between;
 }
-.form-left{}
 .card-formation .card-label{color:var(--gold);margin-bottom:4px;}
 .card-formation .form-name{font-size:28px;font-weight:800;color:var(--gold);letter-spacing:3px;line-height:1;}
 .card-formation .form-desc{font-size:9px;color:rgba(255,255,255,0.35);font-family:'Share Tech Mono',monospace;margin-top:4px;}
-.form-phase{
-  text-align:right;flex-shrink:0;
-}
+.form-phase{text-align:right;flex-shrink:0;}
 .form-phase .phase-icon{font-size:22px;}
 .form-phase .phase-txt{font-size:8px;color:rgba(255,255,255,0.3);font-family:'Share Tech Mono',monospace;letter-spacing:1px;margin-top:2px;}
 
@@ -265,10 +248,8 @@ body{background:var(--bg);color:#fff;font-family:'Barlow Condensed',sans-serif;h
 /* IA: táctica propia */
 .card-ai-tactic{
   background:linear-gradient(135deg,rgba(255,215,0,0.05),rgba(0,0,0,0));
-  border:1px solid rgba(255,215,0,0.12);
-  border-left:3px solid var(--gold);
-  border-radius:8px;padding:10px 11px;
-  animation:fadeSlide .25s ease;
+  border:1px solid rgba(255,215,0,0.12);border-left:3px solid var(--gold);
+  border-radius:8px;padding:10px 11px;animation:fadeSlide .25s ease;
 }
 .card-ai-tactic .card-label{color:var(--gold);}
 .card-ai-tactic p{font-size:12.5px;color:#fff;font-weight:600;line-height:1.55;font-style:italic;}
@@ -276,43 +257,30 @@ body{background:var(--bg);color:#fff;font-family:'Barlow Condensed',sans-serif;h
 /* IA: acción inmediata */
 .card-action{
   background:linear-gradient(135deg,rgba(105,255,71,0.06),rgba(0,0,0,0));
-  border:1px solid rgba(105,255,71,0.15);
-  border-radius:8px;padding:10px 11px;
-  position:relative;overflow:hidden;
-  animation:fadeSlide .25s ease;
+  border:1px solid rgba(105,255,71,0.15);border-radius:8px;padding:10px 11px;
+  position:relative;overflow:hidden;animation:fadeSlide .25s ease;
 }
-.card-action::before{
-  content:'⚡';position:absolute;right:8px;bottom:6px;
-  font-size:28px;opacity:.07;
-}
+.card-action::before{content:'⚡';position:absolute;right:8px;bottom:6px;font-size:28px;opacity:.07;}
 .card-action .card-label{color:var(--ok);}
 .card-action p{font-size:12px;color:rgba(255,255,255,0.8);font-weight:700;line-height:1.45;}
 
 /* ERROR */
 .error-card{
-  background:rgba(255,61,61,0.07);
-  border:1px solid rgba(255,61,61,0.2);
-  border-left:3px solid var(--danger);
-  border-radius:8px;padding:9px 11px;
-  animation:fadeSlide .2s ease;
+  background:rgba(255,61,61,0.07);border:1px solid rgba(255,61,61,0.2);
+  border-left:3px solid var(--danger);border-radius:8px;padding:9px 11px;animation:fadeSlide .2s ease;
 }
 .error-card .error-title{font-size:9px;color:var(--danger);font-family:'Share Tech Mono',monospace;letter-spacing:1px;margin-bottom:4px;}
 .error-card .error-msg{font-size:10.5px;color:rgba(255,255,255,0.6);font-family:'Share Tech Mono',monospace;line-height:1.5;}
 .error-card .error-retry{
   margin-top:7px;font-size:10px;color:var(--danger);font-family:'Barlow Condensed',sans-serif;
-  font-weight:700;letter-spacing:1px;cursor:pointer;opacity:.6;
-  border:none;background:none;transition:opacity .15s;
+  font-weight:700;letter-spacing:1px;cursor:pointer;opacity:.6;border:none;background:none;transition:opacity .15s;
 }
 .error-card .error-retry:hover{opacity:1;}
 
-/* DIVIDER */
 .divider{height:1px;background:var(--border);margin:1px 0;flex-shrink:0;}
 
 /* COUNTDOWN */
-#countdown-wrap{
-  padding:9px 12px;border-top:1px solid var(--border);
-  flex-shrink:0;background:rgba(0,0,0,0.15);
-}
+#countdown-wrap{padding:9px 12px;border-top:1px solid var(--border);flex-shrink:0;background:rgba(0,0,0,0.15);}
 #countdown-top{display:flex;justify-content:space-between;margin-bottom:6px;font-size:9px;font-family:'Share Tech Mono',monospace;color:rgba(255,255,255,0.18);}
 #scan-label{color:var(--accent);}
 #countdown-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:2px;width:100%;transition:width 1s linear;}
@@ -324,59 +292,35 @@ body{background:var(--bg);color:#fff;font-family:'Barlow Condensed',sans-serif;h
 #idle-msg p{font-size:10px;font-family:'Share Tech Mono',monospace;line-height:1.9;letter-spacing:.3px;}
 #twitch-note{
   background:rgba(145,70,255,0.07);border:1px solid rgba(145,70,255,0.18);
-  border-radius:8px;padding:9px 11px;font-size:10px;
-  color:rgba(255,255,255,0.35);font-family:'Share Tech Mono',monospace;line-height:1.7;
+  border-radius:8px;padding:9px 11px;font-size:10px;color:rgba(255,255,255,0.35);font-family:'Share Tech Mono',monospace;line-height:1.7;
 }
 canvas,video{display:none;}
 
 /* ── TEAM SETUP ─────────────────────────────────────────── */
-#team-setup{
-  background:rgba(0,0,0,0.25);
-  border-bottom:1px solid var(--border);
-  padding:10px 12px;
-  flex-shrink:0;
-  display:flex;flex-direction:column;gap:7px;
-}
+#team-setup{background:rgba(0,0,0,0.25);border-bottom:1px solid var(--border);padding:10px 12px;flex-shrink:0;display:flex;flex-direction:column;gap:7px;}
 .setup-row{display:flex;align-items:center;gap:7px;}
-.setup-label{
-  font-size:8px;letter-spacing:1.5px;color:rgba(255,255,255,0.25);
-  font-family:'Share Tech Mono',monospace;width:52px;flex-shrink:0;
-  text-transform:uppercase;
-}
+.setup-label{font-size:8px;letter-spacing:1.5px;color:rgba(255,255,255,0.25);font-family:'Share Tech Mono',monospace;width:52px;flex-shrink:0;text-transform:uppercase;}
 .setup-input{
-  flex:1;background:rgba(255,255,255,0.04);
-  border:1px solid rgba(255,255,255,0.08);
-  border-radius:6px;padding:5px 8px;color:#fff;
-  font-family:'Share Tech Mono',monospace;font-size:11px;outline:none;
-  transition:border-color .15s;
+  flex:1;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);
+  border-radius:6px;padding:5px 8px;color:#fff;font-family:'Share Tech Mono',monospace;font-size:11px;outline:none;transition:border-color .15s;
 }
 .setup-input:focus{border-color:var(--accent);}
 .setup-input::placeholder{color:rgba(255,255,255,0.15);}
 .setup-save{
-  background:linear-gradient(135deg,var(--accent),var(--accent2));
-  border:none;border-radius:6px;padding:5px 11px;
-  font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:800;
-  color:#07090f;cursor:pointer;letter-spacing:.5px;white-space:nowrap;
-  transition:opacity .15s;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;border-radius:6px;padding:5px 11px;
+  font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:800;color:#07090f;cursor:pointer;letter-spacing:.5px;white-space:nowrap;transition:opacity .15s;
 }
 .setup-save:hover{opacity:.85;}
 #team-badge{
-  display:none;
-  background:rgba(0,229,255,0.06);border:1px solid rgba(0,229,255,0.15);
-  border-radius:5px;padding:4px 8px;
-  font-size:9px;font-family:'Share Tech Mono',monospace;
-  color:var(--accent);letter-spacing:.5px;
-  flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;
+  display:none;background:rgba(0,229,255,0.06);border:1px solid rgba(0,229,255,0.15);
+  border-radius:5px;padding:4px 8px;font-size:9px;font-family:'Share Tech Mono',monospace;color:var(--accent);
+  letter-spacing:.5px;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;
 }
 #team-badge.show{display:block;}
 
-/* CARD de recomendación de equipo */
 .card-team{
   background:linear-gradient(135deg,rgba(145,70,255,0.08),rgba(0,229,255,0.04));
-  border:1px solid rgba(145,70,255,0.2);
-  border-left:3px solid #9146FF;
-  border-radius:8px;padding:10px 11px;
-  animation:fadeSlide .25s ease;
+  border:1px solid rgba(145,70,255,0.2);border-left:3px solid #9146FF;border-radius:8px;padding:10px 11px;animation:fadeSlide .25s ease;
 }
 .card-team .card-label{color:#9146FF;}
 .card-team p{font-size:12px;color:rgba(255,255,255,0.8);line-height:1.55;font-weight:600;}
@@ -388,7 +332,7 @@ canvas,video{display:none;}
 
 <div id="topbar">
   <div class="logo">FC24 <em>COACH</em></div>
-  <input id="apikey-input" class="top-input" type="password" placeholder="🔑 Gemini API Key (aistudio.google.com)" />
+  <input id="apikey-input" class="top-input" type="password" placeholder="🔑 Claves separadas por comas (,)" />
   <input id="channel-input" class="top-input" type="text" placeholder="canal_twitch" maxlength="30" />
   <button id="load-btn" class="top-btn">▶ CARGAR</button>
   <div class="mode-tabs">
@@ -451,8 +395,8 @@ canvas,video{display:none;}
     <div id="panel-body">
       <div id="twitch-note">
         ⚠ Twitch tiene ~5-15s de delay.<br>
-        Key gratis en aistudio.google.com (cuenta Google)<br>
-        Usa 15-30s de intervalo para mejor análisis y no agotar la cuota.
+        ¡Agrega varias keys separadas por comas para evitar límites!<br>
+        Usa 15-30s de intervalo para mejor rendimiento.
       </div>
       <div id="idle-msg">
         <div class="ico">🧠</div>
@@ -479,40 +423,32 @@ const COACHES={
   ancelotti:{full:"C. Ancelotti", prompt:"Eres Ancelotti. Analizas con foco en equilibrio táctico, libertad creativa a los mejores y adaptación inteligente al rival."},
 };
 
-// MODIFICADO: Ahora el prompt le exige a la IA que clasifique la sección de la pantalla en la propiedad "seccion" del JSON
 const SYS_COACH=(p)=>`${p}
 Analizas capturas de EA Sports FC 24 en Twitch.
-REGLA DE DETECCIÓN DE PANTALLA: Analiza con qué menú o pantalla se corresponde la captura actual. Clasifícala estrictamente en uno de estos valores para el campo "seccion":
-- "finanzas" (si es el menú de presupuestos, traspasos, salarios o dinero).
-- "calendario" (si es la lista de partidos, próximos encuentros o fechas).
-- "alineacion" (si es la gestión de plantilla, tácticas, posiciones o cambios de jugadores).
-- "cierre" (si en la pantalla aparece o se anuncia explícitamente un 'Próximo partido' indicando el rival, por ejemplo contra el Arsenal, Brighton, etc.).
-- "juego" (si es el partido de fútbol en curso o gameplay normal).
+REGLA DE DETECCIÓN DE PANTALLA: Clasifica la captura en: "finanzas", "calendario", "alineacion", "cierre" o "juego".
 
-Si la sección es finanzas, calendario o alineacion, adapta tus consejos a la gestión de esa interfaz. Si es "cierre", identifica al rival anunciado.
-
-${userTeam?`CONTEXTO DEL JUGADOR: Juega con ${userTeam}${userStyle?', estilo: '+userStyle:''}. Adapta TODOS tus consejos específicamente para este equipo y estilo de juego.`:''}
-REGLA ABSOLUTA: responde ÚNICAMENTE con el objeto JSON. Sin texto antes, sin texto después, sin explicaciones, sin backticks, sin markdown.
+${userTeam?`CONTEXTO DEL JUGADOR: Juega con ${userTeam}${userStyle?', estilo: '+userStyle:''}. Adapta consejos aquí.`:''}
+REGLA ABSOLUTA: responde ÚNICAMENTE con el objeto JSON. Sin texto extra.
 FORMATO EXACTO:
-{"seccion":"juego","proximo_rival":"ninguno","situacion":"lo que ves","alertas":[{"tipo":"warning","zona":"DEF","mensaje":"alerta"}],"consejo_principal":"consejo adaptado al equipo","ajuste":"ajuste específico para este equipo","recomendacion_equipo":"tip específico para ${userTeam||'tu equipo'} en esta situación"}
-Tipos válidos: warning danger info success. Zonas: DEF MID ATK TAC. Máximo 2 alertas.`;
+{"seccion":"juego","proximo_rival":"ninguno","situacion":"lo que ves","alertas":[{"tipo":"warning","zona":"DEF","mensaje":"alerta"}],"consejo_principal":"consejo adaptado","ajuste":"ajuste específico","recomendacion_equipo":"tip exclusivo"}`;
 
-const SYS_AI=()=>`Eres una IA táctica autónoma de EA Sports FC 24. Generas tácticas originales.
-REGLA DE DETECCIÓN DE PANTALLA: Clasifica la pantalla en el campo "seccion" usando: "finanzas", "calendario", "alineacion", "cierre" (si anuncia el próximo rival) o "juego".
-${userTeam?`CONTEXTO DEL JUGADOR: Usa ${userTeam}${userStyle?', estilo declarado: '+userStyle:''}. Genera recomendaciones 100% específicas para las fortalezas y debilidades conocidas de este equipo en FC 24.`:''}
-REGLA ABSOLUTA: responde ÚNICAMENTE con el objeto JSON. Sin texto antes, sin texto después, sin backticks, sin markdown, sin explicaciones.
-FORMATO EXACTO (usa números reales del 0 al 100, no rangos):
-{"seccion":"juego","proximo_rival":"ninguno","situacion":"lo que ves exactamente","formacion_detectada":"4-3-3","fase":"ataque","presion_rival":65,"control_medio":55,"riesgo_defensa":40,"alertas":[{"tipo":"danger","zona":"DEF","mensaje":"alerta"}],"consejo_principal":"análisis adaptado al equipo","tactica_propia":"táctica específica para ${userTeam||'tu equipo'}","ajuste_inmediato":"acción en próximos 30s","recomendacion_equipo":"tip exclusivo para aprovechar las ventajas de ${userTeam||'tu equipo'} aquí"}
-Tipos: warning danger info success. Zonas: DEF MID ATK TAC. Máximo 3 alertas.`;
+const SYS_AI=()=>`Eres una IA táctica autónoma de EA Sports FC 24.
+REGLA DE DETECCIÓN DE PANTALLA: Clasifica en: "finanzas", "calendario", "alineacion", "cierre" o "juego".
+${userTeam?`CONTEXTO: Usa ${userTeam}${userStyle?', estilo: '+userStyle:''}.`:''}
+REGLA ABSOLUTA: responde ÚNICAMENTE con el objeto JSON.
+FORMATO EXACTO:
+{"seccion":"juego","proximo_rival":"ninguno","situacion":"lo que ves","formacion_detectada":"4-3-3","fase":"ataque","presion_rival":65,"control_medio":55,"riesgo_defensa":40,"alertas":[{"tipo":"danger","zona":"DEF","mensaje":"alerta"}],"consejo_principal":"análisis","tactica_propia":"táctica","ajuste_inmediato":"acción 30s","recomendacion_equipo":"tip"}`;
 
-// ── ESTADO MODIFICADO ─────────────────────────────────────────
+// ── ESTADO ───────────────────────────────────────────────────
 let mode='coach',coach='guardiola',ms=15000;
 let running=false,scanCount=0,itvId=null,cdId=null,capStream=null;
 let userTeam='', userStyle='';
-
-// Nuevas variables internas de control dinámico
 let actualSeccion = "juego";
 let historialSesion = [];
+
+// SISTEMA MULTI-CLAVE (POOL)
+let apiKeysArray = [];
+let currentKeyIndex = 0;
 
 // ── REFS ─────────────────────────────────────────────────────
 const $=id=>document.getElementById(id);
@@ -528,21 +464,32 @@ const coachWrap=$('coach-pills-wrap');
 const teamInput=$('team-input'),styleInput=$('style-input');
 const teamSaveBtn=$('team-save-btn'),teamBadge=$('team-badge');
 
+// Cargar llaves previas guardadas
 apiKeyIn.value=localStorage.getItem('fc24_gemini_key')||'';
-
-// Cargar equipo guardado
 userTeam=localStorage.getItem('fc24_team')||'';
 userStyle=localStorage.getItem('fc24_style')||'';
 if(userTeam){teamInput.value=userTeam;styleInput.value=userStyle;updateTeamBadge();}
 
-// Al arrancar, si hay un próximo rival guardado, lo dejamos visible en el panel como saludo
+// Inicializar la lista de llaves a partir del texto ingresado
+function buildKeysList(){
+  const rawText = apiKeyIn.value.trim() || localStorage.getItem('fc24_gemini_key') || '';
+  if(!rawText) {
+    apiKeysArray = [];
+    return;
+  }
+  // Divide por comas y limpia espacios vacíos
+  apiKeysArray = rawText.split(',').map(k => k.trim()).filter(k => k.length > 0);
+  localStorage.setItem('fc24_gemini_key', rawText);
+}
+
 window.addEventListener('load', () => {
+  buildKeysList();
   const rivalGuardado = localStorage.getItem("proximo_rival_guardado");
   if(rivalGuardado && rivalGuardado !== "ninguno") {
     const c = mkDiv('card card-sit');
     c.style.borderLeft = '3px solid var(--gold)';
     c.innerHTML = `<div class="card-label">📋 PLAN DE PARTIDO DISPONIBLE</div>
-                   <p>¡Hola de nuevo, Coach! La sesión anterior guardamos que tu siguiente rival es el <strong>${rivalGuardado}</strong>. Presiona ⚡ ANALIZAR cuando empiece tu stream para armar la estrategia en vivo.</p>`;
+                   <p>¡Hola Coach! Tu siguiente rival es el <strong>${rivalGuardado}</strong>. Pulsa ⚡ ANALIZAR para armar la estrategia.</p>`;
     panelBody.appendChild(c);
   }
 });
@@ -567,8 +514,7 @@ function loadStream(){
   const ch=chIn.value.trim().replace(/[^a-zA-Z0-9_]/g,'');
   if(!ch)return;
   tFrame.src=`https://player.twitch.tv/?channel=${ch}&parent=${location.hostname||'localhost'}&autoplay=true&muted=false`;
-  tFrame.style.display='block';
-  placeholder.style.display='none';
+  tFrame.style.display='block';placeholder.style.display='none';
 }
 
 // ── PILLS ─────────────────────────────────────────────────────
@@ -578,14 +524,12 @@ document.querySelectorAll('.coach-pill').forEach(b=>{
     b.classList.add('active');coach=b.dataset.coach;
   });
 });
+
 // ── TEAM SAVE ────────────────────────────────────────────────
 teamSaveBtn.addEventListener('click',()=>{
-  userTeam=teamInput.value.trim();
-  userStyle=styleInput.value.trim();
-  localStorage.setItem('fc24_team',userTeam);
-  localStorage.setItem('fc24_style',userStyle);
-  updateTeamBadge();
-  teamSaveBtn.textContent='✅ GUARDADO';
+  userTeam=teamInput.value.trim(); userStyle=styleInput.value.trim();
+  localStorage.setItem('fc24_team',userTeam); localStorage.setItem('fc24_style',userStyle);
+  updateTeamBadge(); teamSaveBtn.textContent='✅ GUARDADO';
   setTimeout(()=>teamSaveBtn.textContent='GUARDAR ✓',1500);
 });
 
@@ -593,9 +537,7 @@ function updateTeamBadge(){
   if(userTeam){
     teamBadge.textContent=`🏟 ${userTeam}${userStyle?' · '+userStyle:''}`;
     teamBadge.classList.add('show');
-  }else{
-    teamBadge.classList.remove('show');
-  }
+  }else{teamBadge.classList.remove('show');}
 }
 
 document.querySelectorAll('.freq-pill').forEach(b=>{
@@ -603,8 +545,7 @@ document.querySelectorAll('.freq-pill').forEach(b=>{
     document.querySelectorAll('.freq-pill').forEach(x=>x.classList.remove('active'));
     b.classList.add('active');
     if(actualSeccion === "juego") {
-      ms=parseInt(b.dataset.ms);
-      if(running) resetInterval();
+      ms=parseInt(b.dataset.ms); if(running) resetInterval();
     }
   });
 });
@@ -612,6 +553,11 @@ document.querySelectorAll('.freq-pill').forEach(b=>{
 // ── ANÁLISIS ─────────────────────────────────────────────────
 analyzeBtn.addEventListener('click',async()=>{
   if(running){stopAnalysis();return;}
+  buildKeysList(); // Reconstruye la lista al arrancar
+  if(apiKeysArray.length === 0){
+    showError('Falta API Key','Por favor, introduce al menos una clave en la barra superior.');
+    return;
+  }
   await startAnalysis();
 });
 
@@ -627,8 +573,7 @@ async function startAnalysis(){
     liveDot.classList.add('active');cdWrap.style.display='block';
     $('idle-msg')?.remove();$('twitch-note')?.remove();
     demoBanner.style.display='none';
-    setTimeout(runAnalysis,600);
-    resetInterval();
+    setTimeout(runAnalysis,600); resetInterval();
   }catch(e){
     if(e.name!=='NotAllowedError') showError('No se pudo iniciar la captura de pantalla.',e.message);
   }
@@ -638,16 +583,14 @@ function stopAnalysis(){
   running=false;clearInterval(itvId);clearInterval(cdId);
   if(capStream)capStream.getTracks().forEach(t=>t.stop());
   capStream=null;vid.srcObject=null;
-  analyzeBtn.textContent='⚡ ANALIZAR';analyzeBtn.classList.remove('remove');
-  analyzeBtn.classList.remove('stop');
+  analyzeBtn.textContent='⚡ ANALIZAR';analyzeBtn.classList.remove('stop');
   liveDot.classList.remove('active');cdWrap.style.display='none';
 }
 
 function resetInterval(){clearInterval(itvId);itvId=setInterval(runAnalysis,ms);startCountdown();}
 
 function startCountdown(){
-  clearInterval(cdId);
-  let rem=ms/1000;
+  clearInterval(cdId); let rem=ms/1000;
   nextLabel.textContent=`próximo en ${rem}s`;
   cdFill.style.transition='none';cdFill.style.width='100%';
   requestAnimationFrame(()=>requestAnimationFrame(()=>{
@@ -659,29 +602,26 @@ function startCountdown(){
   },1000);
 }
 
-// ── CAPTURA ───────────────────────────────────────────────────
 function captureFrame(){
   if(!vid.videoWidth)return null;
   const mw=1280,sc=vid.videoWidth>mw?mw/vid.videoWidth:1;
-  cvs.width=Math.round(vid.videoWidth*sc);
-  cvs.height=Math.round(vid.videoHeight*sc);
+  cvs.width=Math.round(vid.videoWidth*sc); cvs.height=Math.round(vid.videoHeight*sc);
   const ctx=cvs.getContext('2d');
   ctx.imageSmoothingEnabled=true;ctx.imageSmoothingQuality='high';
   ctx.drawImage(vid,0,0,cvs.width,cvs.height);
   return cvs.toDataURL('image/jpeg',0.92).split(',')[1];
 }
 
-// ── API MODIFICADA PARA EVITAR DOBLE CONSULTA (PROTECCIÓN DE CUOTA) ──
+// ── MOTOR DE CONSULTAS CON ROTACIÓN AUTOMÁTICA DE CLAVES ──
 async function callAI(b64,sys,usr){
-  let key=apiKeyIn.value.trim()||localStorage.getItem('fc24_gemini_key')||'';
-  if(!key)throw new Error('Sin API Key — ingrésala en el cuadro superior de la app');
-  
-  if(apiKeyIn.value.trim())localStorage.setItem('fc24_gemini_key',apiKeyIn.value.trim());
+  if(apiKeysArray.length === 0) throw new Error('No ingresaste ninguna API Key.');
 
-  // Eliminado el bucle de reintento. Solo hacemos UNA llamada limpia a gemini-2.5-flash-lite para ahorrar recursos
+  // Toma la llave que corresponde al índice actual
+  let activeKey = apiKeysArray[currentKeyIndex];
+
   try{
     const r=await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-lite:generateContent?key=${key}`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${activeKey}`,
       {
         method:'POST',
         headers:{'Content-Type':'application/json'},
@@ -695,106 +635,94 @@ async function callAI(b64,sys,usr){
         })
       }
     );
+    
+    // CONTROL DE CUOTA EXTENDIDO (ERROR 429) -> ROTAR LLAVE AL INSTANTE
+    if(r.status === 429) {
+      currentKeyIndex = (currentKeyIndex + 1) % apiKeysArray.length;
+      console.warn(`⚠️ Clave ${currentKeyIndex + 1} agotada. Cambiando automáticamente a la llave siguiente...`);
+      
+      // Regresa una señal para que se reintente inmediatamente con la nueva llave
+      return "ROTATE_AND_RETRY";
+    }
+
     const d=await r.json();
     if(!r.ok) throw new Error(d.error?.message||`HTTP ${r.status}`);
-    const txt=d.candidates?.[0]?.content?.parts?.[0]?.text||'';
-    if(txt) return txt;
-    throw new Error('Respuesta vacía del servidor');
+    return d.candidates?.[0]?.content?.parts?.[0]?.text||'';
   }catch(e){
     throw new Error(e.message);
   }
 }
 
 function tryJSON(raw){
-  if(!raw)return null;
+  if(!raw || raw === "ROTATE_AND_RETRY") return null;
   let s=raw.replace(/```json|```/g,'').trim();
   try{return JSON.parse(s);}catch{}
   try{
-    const start=s.indexOf('{');
-    const end=s.lastIndexOf('}');
-    if(start!==-1&&end>start){
-      return JSON.parse(s.slice(start,end+1));
-    }
+    const start=s.indexOf('{'); const end=s.lastIndexOf('}');
+    if(start!==-1&&end>start){return JSON.parse(s.slice(start,end+1));}
   }catch{}
   return {
-    seccion:'juego',
-    proximo_rival:'ninguno',
-    situacion:'Analizando...',
-    alertas:[],
-    consejo_principal: s.slice(0,300),
-    ajuste:'',
-    tactica_propia: s.slice(0,300),
-    ajuste_inmediato:''
+    seccion:'juego',proximo_rival:'ninguno',situacion:'Analizando...',alertas:[],
+    consejo_principal: s.slice(0,300),ajuste:'',tactica_propia: s.slice(0,300),ajuste_inmediato:''
   };
 }
 
-// MODIFICADO: Maneja el control dinámico de segundos e historial
 async function runAnalysis(){
   const b64=captureFrame();if(!b64)return;
   spinner.classList.add('show');analyzingTxt.classList.add('show');
   try{
     const sys=mode==='ai'?SYS_AI():SYS_COACH(COACHES[coach].prompt);
-    const raw=await callAI(b64,sys,'Analiza esta captura de FC 24. Responde SOLO con el JSON, nada más.');
+    let raw = await callAI(b64,sys,'Analiza esta captura de FC 24. Responde SOLO con el JSON, nada más.');
+    
+    // Si la llave se cansó, reintentamos inmediatamente UNA vez con la siguiente llave activa
+    if(raw === "ROTATE_AND_RETRY") {
+      console.log("Reintentando análisis con la nueva clave asignada...");
+      raw = await callAI(b64,sys,'Analiza esta captura de FC 24. Responde SOLO con el JSON, nada más.');
+      if(raw === "ROTATE_AND_RETRY") {
+        // Si la segunda también falla, saltamos este turno para no generar bucles infinitos
+        startCountdown();
+        return;
+      }
+    }
+    
     const d=tryJSON(raw);
-    if(!d)throw new Error('La IA no devolvió JSON válido — intenta de nuevo');
+    if(!d)throw new Error('La IA no devolvió JSON válido');
     
     scanCount++;scanLabel.textContent=`${scanCount} análisis`;
-    
-    // 1. Procesar Cambios de Sección Dinámicos
     procesarRitmoYSeccion(d);
-
-    // 2. Pintar en pantalla
     mode==='ai'?renderAI(d) : renderCoach(d);
-    
-    // 3. Guardar en la bitácora del localStorage
     guardarEnHistorial(d);
-
     startCountdown();
   }catch(e){showError('Error en análisis',e.message);}
   finally{spinner.classList.remove('show');analyzingTxt.classList.remove('show');}
 }
 
-// NUEVA FUNCIÓN: Modifica la velocidad del bucle si estás fuera del campo de juego
 function procesarRitmoYSeccion(data) {
   const nuevaSeccion = data.seccion || "juego";
-  
   if (nuevaSeccion !== actualSeccion) {
-    actualSeccion = nuevaSeccion;
-    clearInterval(itvId);
-    
+    actualSeccion = nuevaSeccion; clearInterval(itvId);
     if (actualSeccion === "juego") {
       const activeBtn = document.querySelector('.freq-pill.active');
       ms = activeBtn ? parseInt(activeBtn.dataset.ms) : 15000;
-      console.log("⚽ Balón en juego: ritmo rápido restaurado.");
     } else if (actualSeccion === "cierre") {
       const rivalDetectado = data.proximo_rival || "Rival";
       localStorage.setItem("proximo_rival_guardado", rivalDetectado);
       stopAnalysis();
-      
       const cardCierre = mkDiv('card card-sit');
       cardCierre.style.border = '2px solid var(--gold)';
       cardCierre.innerHTML = `<div class="card-label">💾 MODO MEMORIA GUARDADO</div>
-                              <p>Claudia detectó que vas a terminar. Se guardó tu próximo rival: <strong>${rivalDetectado}</strong>. El análisis se ha pausado con éxito.</p>`;
-      add(cardCierre);
-      return;
+                              <p>Se detectó el cierre. Se guardó tu próximo rival: <strong>${rivalDetectado}</strong>. El análisis se pausó con éxito.</p>`;
+      add(cardCierre); return;
     } else {
-      // Menús: bajamos a 60s
       ms = 60000;
-      console.log(`⏱️ Navegando menús (${actualSeccion}): Ritmo lento activado (60s).`);
     }
-    
-    if (running) {
-      itvId = setInterval(runAnalysis, ms);
-    }
+    if (running) {itvId = setInterval(runAnalysis, ms);}
   }
 }
 
-// NUEVA FUNCIÓN: Almacena todo el registro histórico de la sesión
 function guardarEnHistorial(data) {
   const registro = {
-    hora: ts(),
-    seccion: actualSeccion,
-    situacion: data.situacion || '',
+    hora: ts(), seccion: actualSeccion, situacion: data.situacion || '',
     consejo: data.consejo_principal || data.tactica_propia || ''
   };
   historialSesion.push(registro);
@@ -810,146 +738,89 @@ const DEMO_IMGS=[
 let demoIdx=0;
 
 demoBtn.addEventListener('click',async()=>{
-  const key=apiKeyIn.value.trim()||localStorage.getItem('fc24_gemini_key')||'';
-  if(!key){showError('API Key requerida','Ingresa tu Gemini API Key (gratis en aistudio.google.com).');return;}
+  buildKeysList();
+  if(apiKeysArray.length === 0){showError('API Key requerida','Ingresa al menos una llave en el cuadro superior.');return;}
   demoBtn.disabled=true;demoBtn.textContent='⏳...';
   spinner.classList.add('show');analyzingTxt.classList.add('show');
   $('idle-msg')?.remove();$('twitch-note')?.remove();
-  const sc=demoIdx%DEMO_IMGS.length;
-  demoBanner.style.display='block';
-  demoBanner.textContent=`🎮 DEMO · Escena ${sc+1}/${DEMO_IMGS.length} · ${mode==='ai'?'IA TÁCTICA':'COACH'}`;
+  const sc=demoIdx%DEMO_IMGS.length; demoBanner.style.display='block';
+  demoBanner.textContent=`🎮 DEMO · Escena ${sc+1}/${DEMO_IMGS.length}`;
   try{
-    const res=await fetch(DEMO_IMGS[sc]);
-    if(!res.ok)throw new Error('No se pudo cargar la imagen de demo');
+    const res=await fetch(DEMO_IMGS[sc]); if(!res.ok)throw new Error('No se pudo cargar la imagen de demo');
     const blob=await res.blob();
     const b64=await new Promise((ok,ko)=>{const r=new FileReader();r.onload=()=>ok(r.result.split(',')[1]);r.onerror=()=>ko(new Error('Error leyendo imagen'));r.readAsDataURL(blob);});
     demoIdx++;
     const sys=mode==='ai'?SYS_AI():SYS_COACH(COACHES[coach].prompt);
-    const raw=await callAI(b64,sys,'Fotografía de partido real. Trátala como FC 24 gameplay. Responde SOLO con el JSON, nada más.');
-    const d=tryJSON(raw);
-    scanCount++;scanLabel.textContent=`${scanCount} análisis`;
+    let raw=await callAI(b64,sys,'Fotografía de partido real. Trátala como FC 24 gameplay. Responde SOLO con el JSON, nada más.');
+    if(raw === "ROTATE_AND_RETRY") {
+      raw = await callAI(b64,sys,'Fotografía de partido real. Trátala como FC 24 gameplay. Responde SOLO con el JSON, nada más.');
+    }
+    const d=tryJSON(raw); scanCount++;scanLabel.textContent=`${scanCount} análisis`;
     if(!d){
-      renderCoach({situacion:'Análisis demo completado',alertas:[{tipo:'info',zona:'TAC',mensaje:'Respuesta recibida — conecta tu stream para análisis preciso'}],consejo_principal:raw.slice(0,180),ajuste:''});
+      renderCoach({situacion:'Análisis demo completado',alertas:[],consejo_principal:raw.slice(0,180),ajuste:''});
     }else if(mode==='ai')renderAI(d);else renderCoach(d);
-    demoBanner.textContent=`🎮 DEMO · Escena ${demoIdx}/${DEMO_IMGS.length} · Pulsa DEMO para la siguiente`;
   }catch(e){showError('Error en Demo',e.message);}
   finally{spinner.classList.remove('show');analyzingTxt.classList.remove('show');demoBtn.disabled=false;demoBtn.textContent='🎮 DEMO';}
 });
 
-// ── RENDER COACH ─────────────────────────────────────────────
+// ── RENDERS Y UTILS ──────────────────────────────────────────
 function renderCoach(d){
-  clearCards();
-  const t=ts();
-  add(mkSit(d.situacion,t));
-  const alerts=mkAlerts(d.alertas||[]);
-  if(alerts)add(alerts);
+  clearCards(); const t=ts(); add(mkSit(d.situacion,t));
+  const alerts=mkAlerts(d.alertas||[]); if(alerts)add(alerts);
   add(mkAdvice(`💬 ${COACHES[coach].full.toUpperCase()} (${actualSeccion.toUpperCase()})`,d.consejo_principal||'',false));
   if(d.ajuste)add(mkTactic('🎯 AJUSTE',d.ajuste));
   if(d.recomendacion_equipo&&userTeam){
-    const tc=mkDiv('card-team');
-    tc.innerHTML=`<div class="card-label">🏟 ${esc(userTeam.toUpperCase())}</div><p>${esc(d.recomendacion_equipo)}</p>`;
+    const tc=mkDiv('card-team'); tc.innerHTML=`<div class="card-label">🏟 ${esc(userTeam.toUpperCase())}</div><p>${esc(d.recomendacion_equipo)}</p>`;
     add(tc);
   }
 }
 
-// ── RENDER IA ─────────────────────────────────────────────────
 const PHASE={ataque:{icon:'⚽',txt:'ATAQUE'},defensa:{icon:'🛡',txt:'DEFENSA'},transicion:{icon:'⚡',txt:'TRANSICIÓN'},balon_parado:{icon:'🔵',txt:'BALÓN PARADO'}};
 
 function renderAI(d){
-  clearCards();
-  const t=ts();
-  add(mkSit(d.situacion,t,true));
-
+  clearCards(); const t=ts(); add(mkSit(d.situacion,t,true));
   const ph=PHASE[d.fase]||{icon:'⚽',txt:'—'};
   const form=mkDiv('card-formation');
-  form.innerHTML=`
-    <div class="form-left">
-      <div class="card-label">🔎 FORMACIÓN DETECTADA (${actualSeccion.toUpperCase()})</div>
-      <div class="form-name">${esc(d.formacion_detectada||'—')}</div>
-    </div>
-    <div class="form-phase">
-      <div class="phase-icon">${ph.icon}</div>
-      <div class="phase-txt">${ph.txt}</div>
-    </div>`;
+  form.innerHTML=`<div class="form-left"><div class="card-label">🔎 FORMACIÓN DETECTADA (${actualSeccion.toUpperCase()})</div><div class="form-name">${esc(d.formacion_detectada||'—')}</div></div><div class="form-phase"><div class="phase-icon">${ph.icon}</div><div class="phase-txt">${ph.txt}</div></div>`;
   add(form);
-
-  const pr=clamp(d.presion_rival,0,100);
-  const ct=clamp(d.control_medio,0,100);
-  const rk=clamp(d.riesgo_defensa,0,100);
+  const pr=clamp(d.presion_rival,0,100); const ct=clamp(d.control_medio,0,100); const rk=clamp(d.riesgo_defensa,0,100);
   const metrics=mkDiv('card-metrics');
-  metrics.innerHTML=`<div class="card-label">📊 MÉTRICAS</div>
-    ${mkMetric('🔴','PRES','danger-fill',pr)}
-    ${mkMetric('🟡','CTRL','warn-fill',ct)}
-    ${mkMetric('🟢','RIESG','ok-fill',100-rk)}`;
+  metrics.innerHTML=`<div class="card-label">📊 MÉTRICAS</div>${mkMetric('🔴','PRES','danger-fill',pr)}${mkMetric('🟡','CTRL','warn-fill',ct)}${mkMetric('🟢','RIESG','ok-fill',100-rk)}`;
   add(metrics);
-
-  const alerts=mkAlerts(d.alertas||[]);
-  if(alerts)add(alerts);
-
+  const alerts=mkAlerts(d.alertas||[]); if(alerts)add(alerts);
   const tac=mkDiv('card-ai-tactic');
   tac.innerHTML=`<div class="card-label">🤖 TÁCTICA IA PROPIA</div><p>${esc(d.tactica_propia||d.consejo_principal||'')}</p>`;
   add(tac);
-
   if(d.ajuste_inmediato){
-    const act=mkDiv('card-action');
-    act.innerHTML=`<div class="card-label">⚡ ACCIÓN INMEDIATA</div><p>${esc(d.ajuste_inmediato)}</p>`;
+    const act=mkDiv('card-action'); act.innerHTML=`<div class="card-label">⚡ ACCIÓN INMEDIATA</div><p>${esc(d.ajuste_inmediato)}</p>`;
     add(act);
   }
   if(d.recomendacion_equipo&&userTeam){
-    const tc=mkDiv('card-team');
-    tc.innerHTML=`<div class="card-label">🏟 ${esc(userTeam.toUpperCase())}</div><p>${esc(d.recomendacion_equipo)}</p>`;
+    const tc=mkDiv('card-team'); tc.innerHTML=`<div class="card-label">🏟 ${esc(userTeam.toUpperCase())}</div><p>${esc(d.recomendacion_equipo)}</p>`;
     add(tc);
   }
 }
 
 function mkMetric(icon,lbl,cls,val){
-  return `<div class="metric-row">
-    <span class="metric-icon">${icon}</span>
-    <span class="metric-lbl">${lbl}</span>
-    <div class="metric-bar"><div class="metric-fill ${cls}" style="width:${val}%"></div></div>
-    <span class="metric-val">${val}%</span>
-  </div>`;
+  return `<div class="metric-row"><span class="metric-icon">${icon}</span><span class="metric-lbl">${lbl}</span><div class="metric-bar"><div class="metric-fill ${cls}" style="width:${val}%"></div></div><span class="metric-val">${val}%</span></div>`;
 }
-
-// ── CONSTRUCTORES DE CARDS ────────────────────────────────────
 function mkSit(txt,t,ai=false){
-  const c=mkDiv('card card-sit');
-  c.innerHTML=`<div class="card-label">${ai?'📡 LECTURA IA':'⚽ SITUACIÓN'} · ${t}</div><p>${esc(txt||'—')}</p>`;
-  return c;
+  const c=mkDiv('card card-sit'); c.innerHTML=`<div class="card-label">${ai?'📡 LECTURA IA':'⚽ SITUACIÓN'} · ${t}</div><p>${esc(txt||'—')}</p>`; return c;
 }
-
 function mkAlerts(arr){
-  if(!arr.length)return null;
-  const w=mkDiv('');w.style.cssText='display:flex;flex-direction:column;gap:4px;';
+  if(!arr.length)return null; const w=mkDiv(''); w.style.cssText='display:flex;flex-direction:column;gap:4px;';
   arr.forEach(a=>{
-    const el=mkDiv(`alert-card ${a.tipo||'info'}`);
-    el.innerHTML=`<span class="alert-zona">${esc(a.zona||'?')}</span><span class="alert-msg">${esc(a.mensaje||'')}</span>`;
-    w.appendChild(el);
+    const el=mkDiv(`alert-card ${a.tipo||'info'}`); el.innerHTML=`<span class="alert-zona">${esc(a.zona||'?')}</span><span class="alert-msg">${esc(a.mensaje||'')}</span>`; w.appendChild(el);
   });
   return w;
 }
-
 function mkAdvice(label,txt,ai){
-  const c=mkDiv('card-advice'+(ai?' ai-card':''));
-  c.innerHTML=`<div class="card-label">${label}</div><p>"${esc(txt)}"</p>`;
-  return c;
+  const c=mkDiv('card-advice'+(ai?' ai-card':'')); c.innerHTML=`<div class="card-label">${label}</div><p>"${esc(txt)}"</p>`; return c;
 }
-
-function mkTemplate(label,txt){
-  const c=mkDiv('card card-tactic');
-  c.innerHTML=`<div class="card-label">${label}</div><p>${esc(txt)}</p>`;
-  return c;
-}
-
 function mkTactic(label,txt){
-  const c=mkDiv('card card-tactic');
-  c.innerHTML=`<div class="card-label">${label}</div><p>${esc(txt)}</p>`;
-  return c;
+  const c=mkDiv('card card-tactic'); c.innerHTML=`<div class="card-label">${label}</div><p>${esc(txt)}</p>`; return c;
 }
-
-// ── UTILS ─────────────────────────────────────────────────────
 function add(el){panelBody.prepend(el);}
-
 function clearCards(){
   panelBody.querySelectorAll('.card,.card-formation,.card-metrics,.card-ai-tactic,.card-action,.card-advice,.alert-card,.error-card,.divider,[data-alerts]').forEach(el=>el.remove());
   Array.from(panelBody.children).forEach(el=>{
@@ -957,14 +828,12 @@ function clearCards(){
     if(el.style.cssText.includes('flex-direction:column'))el.remove();
   });
 }
-
 function showError(title,msg){
   panelBody.querySelector('.error-card')?.remove();
   const c=mkDiv('error-card');
   c.innerHTML=`<div class="error-title">⚠ ${esc(title)}</div><div class="error-msg">${esc(msg)}</div><button class="error-retry" onclick="this.parentElement.remove()">✕ CERRAR</button>`;
   panelBody.prepend(c);
 }
-
 function mkDiv(cls){const el=document.createElement('div');if(cls)el.className=cls;return el;}
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
 function ts(){return new Date().toLocaleTimeString('es',{hour:'2-digit',minute:'2-digit',second:'2-digit'});}
