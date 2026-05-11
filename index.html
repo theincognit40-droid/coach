@@ -332,7 +332,7 @@ canvas,video{display:none;}
 
 <div id="topbar">
   <div class="logo">FC24 <em>COACH</em></div>
-  <input id="apikey-input" class="top-input" type="password" placeholder="🔑 Claves separadas por comas (,)" />
+  <input id="apikey-input" class="top-input" type="password" placeholder="🔑 Ingresa tu API Key (o varias con ,)" />
   <input id="channel-input" class="top-input" type="text" placeholder="canal_twitch" maxlength="30" />
   <button id="load-btn" class="top-btn">▶ CARGAR</button>
   <div class="mode-tabs">
@@ -395,7 +395,7 @@ canvas,video{display:none;}
     <div id="panel-body">
       <div id="twitch-note">
         ⚠ Twitch tiene ~5-15s de delay.<br>
-        ¡Agrega varias keys separadas por comas para evitar límites!<br>
+        ¡Puedes agregar una sola clave o varias separadas por comas!<br>
         Usa 15-30s de intervalo para mejor rendimiento.
       </div>
       <div id="idle-msg">
@@ -446,7 +446,7 @@ let userTeam='', userStyle='';
 let actualSeccion = "juego";
 let historialSesion = [];
 
-// SISTEMA MULTI-CLAVE (POOL)
+// SISTEMA MULTI-CLAVE INTELIGENTE (ADAPTABLE)
 let apiKeysArray = [];
 let currentKeyIndex = 0;
 
@@ -464,21 +464,25 @@ const coachWrap=$('coach-pills-wrap');
 const teamInput=$('team-input'),styleInput=$('style-input');
 const teamSaveBtn=$('team-save-btn'),teamBadge=$('team-badge');
 
-// Cargar llaves previas guardadas
+// Cargar datos previos guardados
 apiKeyIn.value=localStorage.getItem('fc24_gemini_key')||'';
 userTeam=localStorage.getItem('fc24_team')||'';
 userStyle=localStorage.getItem('fc24_style')||'';
 if(userTeam){teamInput.value=userTeam;styleInput.value=userStyle;updateTeamBadge();}
 
-// Inicializar la lista de llaves a partir del texto ingresado
+// Inicializar lista de llaves de forma segura (para 1 o más de una)
 function buildKeysList(){
-  const rawText = apiKeyIn.value.trim() || localStorage.getItem('fc24_gemini_key') || '';
+  const rawText = apiKeyIn.value.trim();
   if(!rawText) {
     apiKeysArray = [];
     return;
   }
-  // Divide por comas y limpia espacios vacíos
-  apiKeysArray = rawText.split(',').map(k => k.trim()).filter(k => k.length > 0);
+  // Si contiene comas divide, si no crea un arreglo con el único elemento completo
+  if(rawText.includes(',')){
+    apiKeysArray = rawText.split(',').map(k => k.trim()).filter(k => k.length > 0);
+  } else {
+    apiKeysArray = [rawText];
+  }
   localStorage.setItem('fc24_gemini_key', rawText);
 }
 
@@ -553,9 +557,9 @@ document.querySelectorAll('.freq-pill').forEach(b=>{
 // ── ANÁLISIS ─────────────────────────────────────────────────
 analyzeBtn.addEventListener('click',async()=>{
   if(running){stopAnalysis();return;}
-  buildKeysList(); // Reconstruye la lista al arrancar
+  buildKeysList(); 
   if(apiKeysArray.length === 0){
-    showError('Falta API Key','Por favor, introduce al menos una clave en la barra superior.');
+    showError('Falta API Key','Por favor, introduce tu clave o tus claves separadas por comas arriba.');
     return;
   }
   await startAnalysis();
@@ -612,11 +616,12 @@ function captureFrame(){
   return cvs.toDataURL('image/jpeg',0.92).split(',')[1];
 }
 
-// ── MOTOR DE CONSULTAS CON ROTACIÓN AUTOMÁTICA DE CLAVES ──
+// ── MOTOR DE CONSULTAS CON ROTACIÓN DE CLAVES REPARADO ──
 async function callAI(b64,sys,usr){
-  if(apiKeysArray.length === 0) throw new Error('No ingresaste ninguna API Key.');
+  if(apiKeysArray.length === 0) throw new Error('No hay ninguna clave válida cargada.');
 
-  // Toma la llave que corresponde al índice actual
+  // Si el índice actual se desfasa por algún motivo, vuelve a 0
+  if(currentKeyIndex >= apiKeysArray.length) currentKeyIndex = 0;
   let activeKey = apiKeysArray[currentKeyIndex];
 
   try{
@@ -636,12 +641,10 @@ async function callAI(b64,sys,usr){
       }
     );
     
-    // CONTROL DE CUOTA EXTENDIDO (ERROR 429) -> ROTAR LLAVE AL INSTANTE
-    if(r.status === 429) {
+    // Rotar si hay error de límite (429) y hay más de una clave disponible
+    if(r.status === 429 && apiKeysArray.length > 1) {
       currentKeyIndex = (currentKeyIndex + 1) % apiKeysArray.length;
-      console.warn(`⚠️ Clave ${currentKeyIndex + 1} agotada. Cambiando automáticamente a la llave siguiente...`);
-      
-      // Regresa una señal para que se reintente inmediatamente con la nueva llave
+      console.warn(`⚠️ Clave agotada. Rotando a la posición: ${currentKeyIndex + 1}`);
       return "ROTATE_AND_RETRY";
     }
 
@@ -674,12 +677,10 @@ async function runAnalysis(){
     const sys=mode==='ai'?SYS_AI():SYS_COACH(COACHES[coach].prompt);
     let raw = await callAI(b64,sys,'Analiza esta captura de FC 24. Responde SOLO con el JSON, nada más.');
     
-    // Si la llave se cansó, reintentamos inmediatamente UNA vez con la siguiente llave activa
     if(raw === "ROTATE_AND_RETRY") {
-      console.log("Reintentando análisis con la nueva clave asignada...");
+      console.log("Reintentando análisis inmediato con clave rotada...");
       raw = await callAI(b64,sys,'Analiza esta captura de FC 24. Responde SOLO con el JSON, nada más.');
       if(raw === "ROTATE_AND_RETRY") {
-        // Si la segunda también falla, saltamos este turno para no generar bucles infinitos
         startCountdown();
         return;
       }
