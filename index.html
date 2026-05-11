@@ -40,7 +40,30 @@ body{background:var(--bg);color:#fff;font-family:'Barlow Condensed',sans-serif;h
 }
 .top-input:focus{border-color:var(--accent);box-shadow:0 0 0 2px rgba(0,229,255,0.1);}
 .top-input::placeholder{color:rgba(255,255,255,0.18);}
-#apikey-input{width:220px;}#channel-input{width:135px;}
+#channel-input{width:135px;}
+
+/* CONTENEDOR NUEVO PARA LAS KEYS */
+.keys-manager-container{display:flex;align-items:center;gap:4px;position:relative;}
+#apikey-input{width:170px;}
+.add-key-btn{
+  background:rgba(0,229,255,0.15);border:1px solid rgba(0,229,255,0.3);
+  color:var(--accent);border-radius:6px;width:26px;height:27px;
+  font-size:14px;font-weight:bold;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;
+}
+.add-key-btn:hover{background:var(--accent);color:#07090f;}
+
+/* LISTA VISUAL DE LLAVES */
+#keys-list-badges{display:flex;align-items:center;gap:4px;flex-wrap:wrap;}
+.key-badge{
+  background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);
+  border-radius:6px;padding:4px 8px;font-size:10px;font-family:'Share Tech Mono',monospace;
+  color:rgba(255,255,255,0.6);display:flex;align-items:center;gap:6px;
+}
+.key-badge.active-now{border-color:var(--accent);color:#fff;background:rgba(0,229,255,0.04);}
+.key-badge .remove-key{
+  color:var(--danger);cursor:pointer;font-weight:bold;font-size:10px;border:none;background:transparent;
+}
+.key-badge .remove-key:hover{color:#fff;}
 
 .top-btn{
   border:none;border-radius:8px;padding:7px 13px;
@@ -332,7 +355,13 @@ canvas,video{display:none;}
 
 <div id="topbar">
   <div class="logo">FC24 <em>COACH</em></div>
-  <input id="apikey-input" class="top-input" type="password" placeholder="🔑 Ingresa tu API Key (o varias con ,)" />
+  
+  <div class="keys-manager-container">
+    <input id="apikey-input" class="top-input" type="text" placeholder="🔑 Pega una API Key aquí..." />
+    <button class="add-key-btn" id="add-key-btn" title="Añadir Llave">+</button>
+  </div>
+  <div id="keys-list-badges"></div>
+
   <input id="channel-input" class="top-input" type="text" placeholder="canal_twitch" maxlength="30" />
   <button id="load-btn" class="top-btn">▶ CARGAR</button>
   <div class="mode-tabs">
@@ -383,7 +412,7 @@ canvas,video{display:none;}
         <input id="team-input" class="setup-input" type="text" placeholder="Ej: Real Madrid, 4-3-3, posesión..." maxlength="80"/>
       </div>
       <div class="setup-row">
-        <span class="setup-label">🎮 ESTILO</span>
+        <span class="setup-label">🎮 ESTILE</span>
         <input id="style-input" class="setup-input" type="text" placeholder="Ej: presión alta, tiki-taka, contraataque..." maxlength="80"/>
       </div>
       <div class="setup-row" style="justify-content:space-between;">
@@ -395,7 +424,7 @@ canvas,video{display:none;}
     <div id="panel-body">
       <div id="twitch-note">
         ⚠ Twitch tiene ~5-15s de delay.<br>
-        ¡Puedes agregar una sola clave o varias separadas por comas!<br>
+        ¡Añade tus claves arriba una por una usando el botón (+)!<br>
         Usa 15-30s de intervalo para mejor rendimiento.
       </div>
       <div id="idle-msg">
@@ -446,13 +475,14 @@ let userTeam='', userStyle='';
 let actualSeccion = "juego";
 let historialSesion = [];
 
-// SISTEMA MULTI-CLAVE INTELIGENTE (ADAPTABLE)
+// ARRAY DE LLAVES INTERNO
 let apiKeysArray = [];
 let currentKeyIndex = 0;
 
 // ── REFS ─────────────────────────────────────────────────────
 const $=id=>document.getElementById(id);
-const apiKeyIn=$('apikey-input'),chIn=$('channel-input'),loadBtn=$('load-btn');
+const apiKeyIn=$('apikey-input'),addKeyBtn=$('add-key-btn'),keysBadgesWrap=$('keys-list-badges');
+const chIn=$('channel-input'),loadBtn=$('load-btn');
 const tFrame=$('twitch-frame'),placeholder=$('stream-placeholder');
 const analyzeBtn=$('analyze-btn'),demoBtn=$('demo-btn'),liveDot=$('live-dot');
 const panelBody=$('panel-body'),spinner=$('spinner'),analyzingTxt=$('analyzing-txt');
@@ -465,29 +495,81 @@ const teamInput=$('team-input'),styleInput=$('style-input');
 const teamSaveBtn=$('team-save-btn'),teamBadge=$('team-badge');
 
 // Cargar datos previos guardados
-apiKeyIn.value=localStorage.getItem('fc24_gemini_key')||'';
 userTeam=localStorage.getItem('fc24_team')||'';
 userStyle=localStorage.getItem('fc24_style')||'';
 if(userTeam){teamInput.value=userTeam;styleInput.value=userStyle;updateTeamBadge();}
 
-// Inicializar lista de llaves de forma segura (para 1 o más de una)
-function buildKeysList(){
-  const rawText = apiKeyIn.value.trim();
-  if(!rawText) {
-    apiKeysArray = [];
-    return;
+// Inicializar lista de llaves desde LocalStorage
+try {
+  const savedKeys = localStorage.getItem('fc24_gemini_keys_list');
+  if (savedKeys) {
+    apiKeysArray = JSON.parse(savedKeys);
   }
-  // Si contiene comas divide, si no crea un arreglo con el único elemento completo
-  if(rawText.includes(',')){
-    apiKeysArray = rawText.split(',').map(k => k.trim()).filter(k => k.length > 0);
-  } else {
-    apiKeysArray = [rawText];
-  }
-  localStorage.setItem('fc24_gemini_key', rawText);
+} catch(e) {
+  apiKeysArray = [];
 }
 
+// Renderizar las llaves guardadas en la barra superior
+function renderKeyBadges() {
+  keysBadgesWrap.innerHTML = '';
+  apiKeysArray.forEach((key, index) => {
+    const badge = document.createElement('div');
+    badge.className = 'key-badge';
+    if(running && index === currentKeyIndex) {
+      badge.classList.add('active-now');
+    }
+    
+    // Recortar texto para que no ocupe espacio innecesario
+    const shortText = key.length > 12 ? `${key.slice(0,6)}...${key.slice(-4)}` : 'Key ' + (index + 1);
+    badge.innerHTML = `
+      <span>🔑 ${shortText}</span>
+      <button class="remove-key" data-index="${index}">✕</button>
+    `;
+    keysBadgesWrap.appendChild(badge);
+  });
+  
+  // Guardar en almacenamiento local
+  localStorage.setItem('fc24_gemini_keys_list', JSON.stringify(apiKeysArray));
+}
+
+// Evento para añadir nueva llave
+addKeyBtn.addEventListener('click', () => {
+  const newKey = apiKeyIn.value.trim();
+  if(!newKey) return;
+  
+  // Si pegó múltiples separadas por comas por accidente, limpiarlo también de forma inteligente
+  if(newKey.includes(',')){
+    const split = newKey.split(',').map(k => k.trim()).filter(k => k.length > 0);
+    apiKeysArray.push(...split);
+  } else {
+    apiKeysArray.push(newKey);
+  }
+  
+  apiKeyIn.value = ''; // Limpiar caja de texto
+  renderKeyBadges();
+});
+
+// Soporte para añadir llave presionando Enter
+apiKeyIn.addEventListener('keydown', e => {
+  if(e.key === 'Enter') {
+    addKeyBtn.click();
+  }
+});
+
+// Evento para eliminar una llave
+keysBadgesWrap.addEventListener('click', e => {
+  if(e.target.classList.contains('remove-key')) {
+    const idx = parseInt(e.target.dataset.index);
+    apiKeysArray.splice(idx, 1);
+    if(currentKeyIndex >= apiKeysArray.length) currentKeyIndex = 0;
+    renderKeyBadges();
+  }
+});
+
+// Dibujar las llaves al iniciar la app
+renderKeyBadges();
+
 window.addEventListener('load', () => {
-  buildKeysList();
   const rivalGuardado = localStorage.getItem("proximo_rival_guardado");
   if(rivalGuardado && rivalGuardado !== "ninguno") {
     const c = mkDiv('card card-sit');
@@ -557,9 +639,10 @@ document.querySelectorAll('.freq-pill').forEach(b=>{
 // ── ANÁLISIS ─────────────────────────────────────────────────
 analyzeBtn.addEventListener('click',async()=>{
   if(running){stopAnalysis();return;}
-  buildKeysList(); 
+  
+  // Validar si hay llaves en el pool antes de iniciar
   if(apiKeysArray.length === 0){
-    showError('Falta API Key','Por favor, introduce tu clave o tus claves separadas por comas arriba.');
+    showError('Falta API Key','Por favor, escribe una llave en el recuadro superior y presiona el botón (+) para guardarla.');
     return;
   }
   await startAnalysis();
@@ -577,6 +660,7 @@ async function startAnalysis(){
     liveDot.classList.add('active');cdWrap.style.display='block';
     $('idle-msg')?.remove();$('twitch-note')?.remove();
     demoBanner.style.display='none';
+    renderKeyBadges(); // actualizar visual de llaves activas
     setTimeout(runAnalysis,600); resetInterval();
   }catch(e){
     if(e.name!=='NotAllowedError') showError('No se pudo iniciar la captura de pantalla.',e.message);
@@ -589,6 +673,7 @@ function stopAnalysis(){
   capStream=null;vid.srcObject=null;
   analyzeBtn.textContent='⚡ ANALIZAR';analyzeBtn.classList.remove('stop');
   liveDot.classList.remove('active');cdWrap.style.display='none';
+  renderKeyBadges();
 }
 
 function resetInterval(){clearInterval(itvId);itvId=setInterval(runAnalysis,ms);startCountdown();}
@@ -620,7 +705,6 @@ function captureFrame(){
 async function callAI(b64,sys,usr){
   if(apiKeysArray.length === 0) throw new Error('No hay ninguna clave válida cargada.');
 
-  // Si el índice actual se desfasa por algún motivo, vuelve a 0
   if(currentKeyIndex >= apiKeysArray.length) currentKeyIndex = 0;
   let activeKey = apiKeysArray[currentKeyIndex];
 
@@ -645,6 +729,7 @@ async function callAI(b64,sys,usr){
     if(r.status === 429 && apiKeysArray.length > 1) {
       currentKeyIndex = (currentKeyIndex + 1) % apiKeysArray.length;
       console.warn(`⚠️ Clave agotada. Rotando a la posición: ${currentKeyIndex + 1}`);
+      renderKeyBadges();
       return "ROTATE_AND_RETRY";
     }
 
@@ -739,8 +824,7 @@ const DEMO_IMGS=[
 let demoIdx=0;
 
 demoBtn.addEventListener('click',async()=>{
-  buildKeysList();
-  if(apiKeysArray.length === 0){showError('API Key requerida','Ingresa al menos una llave en el cuadro superior.');return;}
+  if(apiKeysArray.length === 0){showError('API Key requerida','Ingresa al menos una llave en el cuadro superior y presiona (+).');return;}
   demoBtn.disabled=true;demoBtn.textContent='⏳...';
   spinner.classList.add('show');analyzingTxt.classList.add('show');
   $('idle-msg')?.remove();$('twitch-note')?.remove();
