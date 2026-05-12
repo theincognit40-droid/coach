@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>FC24 Coach + Chat Premium (HD Vision Fixed)</title>
+<title>FC24 Coach + Chat Premium (Quota & HD Vision Fixed)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Lato:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
@@ -691,6 +691,7 @@ async function sendChatMessage() {
       role: msg.role, parts: msg.parts.map(p => p.text ? { text: p.text } : p)
     }));
 
+    // Forzar el modelo a gemini-2.5-flash
     const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${key}`, {
         method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -699,7 +700,14 @@ async function sendChatMessage() {
           generationConfig: { temperature: 0.6, maxOutputTokens: 250 }
         })
     });
-    const d = await res.json(); if(!res.ok) throw new Error(d.error?.message || 'Error');
+    
+    const d = await res.json(); 
+    if(!res.ok) {
+      if (d.error?.message?.includes("Quota exceeded") || d.error?.message?.includes("quota")) {
+        throw new Error("L&iacute;mite de cuota excedido. Por favor, espera unos segundos.");
+      }
+      throw new Error(d.error?.message || 'Error');
+    }
     const replyText = d.candidates?.[0]?.content?.parts?.[0]?.text || 'No tengo comentarios.';
     
     appendChatBubble(coachLabel, replyText, 'coach', mode === 'ai');
@@ -778,6 +786,7 @@ function captureFrame(){
 
 async function callAI(b64,sys,usr){
   const key = getSelectedKey(); if(!key) throw new Error('Sin API Key v&aacute;lida.');
+  // Eliminado modelo antiguo v1.5 para evitar caídas y usar solo la serie 2.5
   const MODELS=['gemini-2.5-flash','gemini-2.5-flash-lite'];
   let lastErr='Sin respuesta';
   for(const model of MODELS){
@@ -790,26 +799,31 @@ async function callAI(b64,sys,usr){
           generationConfig:{temperature:0.2,maxOutputTokens:800} 
         })
       });
-      const d=await r.json(); if(!r.ok){lastErr=d.error?.message||`HTTP ${r.status}`;continue;}
+      const d=await r.json(); 
+      if(!r.ok){
+        // Pasar el error directamente si es de cuota
+        if(d.error?.message?.includes("Quota exceeded") || r.status === 429) {
+          return "__QUOTA_LIMIT_EXCEEDED__";
+        }
+        lastErr=d.error?.message||`HTTP ${r.status}`;
+        continue;
+      }
       return d.candidates?.[0]?.content?.parts?.[0]?.text||'';
     }catch(e){lastErr=e.message;}
   }
   throw new Error(lastErr);
 }
 
-// ═══ EXTRACTOR SÚPER SEGURO DE BLUQUES JSON ═══
+// ═══ EXTRACTOR SÚPER SEGURO DE BLOQUES JSON ═══
 function tryJSON(raw){
   if(!raw) return null;
   let s = raw.trim();
   
-  // Intento de parseo directo
   try { return JSON.parse(s); } catch(e) {}
   
-  // Limpieza manual si viene envuelto en markdown de código
   s = s.replace(/```json/gi, '').replace(/```/g, '').trim();
   try { return JSON.parse(s); } catch(e) {}
   
-  // Extracción profunda buscando el primer '{' y el último '}'
   try {
     const start = s.indexOf('{');
     const end = s.lastIndexOf('}');
@@ -827,7 +841,17 @@ async function runAnalysis(){
   try{
     const sys=mode==='ai'?SYS_AI():SYS_COACH(COACHES[coach].prompt);
     const raw=await callAI(b64,sys,'Gameplay. Responde SOLO con el JSON.');
-    const d=tryJSON(raw); if(!d)throw new Error('JSON inv&aacute;lido');
+    
+    // Captura inteligente del error de cuota antes de evaluar el JSON
+    if (raw === "__QUOTA_LIMIT_EXCEEDED__" || raw.includes("Quota exceeded") || raw.includes("quota")) {
+      showError('L&iacute;mite de API Key', 'Has alcanzado la cuota de la versi&oacute;n gratuita. Espera unos 30 segundos.');
+      startCountdown(); // Mantener el bucle vivo para reintentar cuando se enfríe
+      return;
+    }
+
+    const d=tryJSON(raw); 
+    if(!d) throw new Error('Estructura de datos inv&aacute;lida recibida.');
+    
     scanCount++;scanLabel.textContent=`${scanCount} an&aacute;lisis`;
     mode==='ai'?renderAI(d):renderCoach(d);
     startCountdown();
@@ -855,6 +879,12 @@ demoBtn.addEventListener('click',async()=>{
     demoIdx++;
     const sys=mode==='ai'?SYS_AI():SYS_COACH(COACHES[coach].prompt);
     const raw=await callAI(b64,sys,'Gameplay. Responde SOLO con el JSON.');
+    
+    if (raw === "__QUOTA_LIMIT_EXCEEDED__" || raw.includes("Quota exceeded")) {
+      showError('L&iacute;mite de API Key', 'L&iacute;mite alcanzado en Demo. Reintenta en 30s.');
+      return;
+    }
+    
     const d=tryJSON(raw); scanCount++; scanLabel.textContent=`${scanCount} an&aacute;lisis`;
     if(mode==='ai'&&d)renderAI(d);else if(d)renderCoach(d);
   }catch(e){showError('Error Demo',e.message);}
