@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>FC24 Coach + Chat Premium</title>
+<title>FC24 Coach + Chat Premium (HD Vision)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Lato:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
@@ -193,7 +193,7 @@ h1, h2, h3, .panel-title, .logo, .card-label, .chat-author, .top-btn, .coach-pil
 ::-webkit-scrollbar-track{background:transparent;}
 ::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:2px;}
 
-/* ═══ CARDS CON TEXTO GRANDE Y PREMIUM ═══════════════════════ */
+/* ═══ CARDS CON TEXTO GRANDE ═══════════════════════ */
 @keyframes fadeSlide{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 .card{border-radius:10px;padding:12px 14px;animation:fadeSlide .25s ease;}
 .card-label{
@@ -330,7 +330,7 @@ h1, h2, h3, .panel-title, .logo, .card-label, .chat-author, .top-btn, .coach-pil
 #idle-msg h3{font-size:15px;color:rgba(255,255,255,0.4);margin-bottom:6px;}
 #idle-msg p{font-size:12px;line-height:1.8;}
 
-/* ═══ GESTOR DE CHAT EN VIVO PREMIUM ══════════════════════ */
+/* CHAT LIVE PANEL */
 #chat-section{
   border-top:1px solid var(--border);
   background:rgba(13,16,24,0.99);
@@ -352,7 +352,7 @@ h1, h2, h3, .panel-title, .logo, .card-label, .chat-author, .top-btn, .coach-pil
 .chat-msg-row.coach .chat-bubble{background:rgba(255,255,255,0.03);border:1px solid var(--border);color:rgba(255,255,255,0.9);border-bottom-left-radius:2px;}
 .chat-msg-row.coach .chat-author{color:var(--accent);font-size:10px;margin-bottom:3px;letter-spacing:0.5px;text-transform:uppercase;}
 .chat-msg-row.coach.ai-style .chat-author{color:var(--gold);}
-.chat-bubble{padding:8px 12px;border-radius:9px;max-width:85%;word-break:break-word;font-size:14px; /* Letra de chat grande */}
+.chat-bubble{padding:8px 12px;border-radius:9px;max-width:85%;word-break:break-word;font-size:14px;}
 
 #chat-input-row{display:flex;padding:6px;background:rgba(0,0,0,0.25);border-top:1px solid var(--border);gap:6px;}
 #chat-input{
@@ -381,7 +381,7 @@ canvas,video{display:none;}
 <div id="drag-overlay">
   <div class="drag-msg">
     <h3>⚡ SOLTAR ARCHIVO SCRIPT</h3>
-    <p>Suelta el archivo .html para actualizar la lógica al instante</p>
+    <p>Suelta el archivo .html para actualizar la l&oacute;gica al instante</p>
   </div>
 </div>
 
@@ -406,7 +406,7 @@ canvas,video{display:none;}
 
   <div class="mode-tabs">
     <button class="mode-tab active" data-mode="coach">🎽 COACHES</button>
-    <button class="mode-tab ai-tab" data-mode="ai">🤖 IA TÁCTICA</button>
+    <button class="mode-tab ai-tab" data-mode="ai">🤖 IA T&Aacute;CTICA</button>
   </div>
   <div id="coach-pills-wrap">
     <button class="coach-pill active" data-coach="guardiola">🔵 GUARDI</button>
@@ -430,14 +430,14 @@ canvas,video{display:none;}
       <div class="big">📺</div>
       <h2>FC24 COACH EN VIVO</h2>
       <p>Ingresa tu canal de Twitch arriba y presiona CARGAR<br>Luego pulsa ⚡ ANALIZAR y comparte tu pantalla</p>
-      <div class="hint">¿Primera vez? Prueba 🎮 DEMO para ver la IA en acción</div>
+      <div class="hint">¿Primera vez? Prueba 🎮 DEMO para ver la IA en acci&oacute;n</div>
     </div>
     <iframe id="twitch-frame" allowfullscreen></iframe>
   </div>
 
   <div id="coach-panel">
     <div id="panel-header">
-      <div class="panel-title" id="panel-title-txt">ANÁLISIS TÁCTICO</div>
+      <div class="panel-title" id="panel-title-txt">AN&Aacute;LISIS T&Aacute;CTICO</div>
       <div id="ai-badge">🤖 IA PROPIA</div>
       <div id="spin-wrap">
         <div class="spinner" id="spinner"></div>
@@ -453,7 +453,7 @@ canvas,video{display:none;}
       </div>
       <div class="setup-row">
         <span class="setup-label">🎮 ESTILO</span>
-        <input id="style-input" class="setup-input" type="text" placeholder="Ej: presión alta, tiki-taka..." maxlength="80"/>
+        <input id="style-input" class="setup-input" type="text" placeholder="Ej: presi&oacute;n alta, tiki-taka..." maxlength="80"/>
       </div>
       <div class="setup-row" style="justify-content:space-between; margin-top:2px;">
         <div id="team-badge"></div>
@@ -463,12 +463,12 @@ canvas,video{display:none;}
 
     <div id="panel-body">
       <div id="twitch-note">
-        ⚠ Twitch tiene ~5-15s de delay.<br>Usa 10-15s de intervalo para mejor análisis.
+        ⚠ Twitch tiene ~5-15s de delay.<br>Usa 10-15s de intervalo para mejor an&aacute;lisis.
       </div>
       <div id="idle-msg">
         <div class="ico">🧠</div>
         <h3>LISTO PARA ANALIZAR</h3>
-        <p>Carga tu stream y activa el análisis para recibir consejos tácticos en vivo</p>
+        <p>Carga tu stream y activa el an&aacute;lisis para recibir consejos t&aacute;cticos en vivo</p>
       </div>
     </div>
 
@@ -480,18 +480,18 @@ canvas,video{display:none;}
       <div id="chat-box">
         <div class="chat-msg-row coach">
           <span class="chat-author">SISTEMA</span>
-          <div class="chat-bubble" style="font-family:'Share Tech Mono',monospace; font-size:12px;">Pregúntame lo que quieras sobre tu partido o tu estrategia...</div>
+          <div class="chat-bubble" style="font-family:'Share Tech Mono',monospace; font-size:12px;">Preg&uacute;ntame lo que quieras sobre tu partido o tu estrategia...</div>
         </div>
       </div>
       <div id="chat-input-row">
-        <input type="text" id="chat-input" placeholder="Escribe al coach aquí..." autocomplete="off"/>
+        <input type="text" id="chat-input" placeholder="Escribe al coach aqu&iacute;..." autocomplete="off"/>
         <button id="chat-send-btn">ENVIAR</button>
       </div>
     </div>
 
     <div id="countdown-wrap" style="display:none">
       <div id="countdown-top">
-        <span id="scan-label">0 análisis</span>
+        <span id="scan-label">0 an&aacute;lisis</span>
         <span id="next-label">esperando...</span>
       </div>
       <div id="countdown-bar"><div id="countdown-fill"></div></div>
@@ -500,37 +500,34 @@ canvas,video{display:none;}
 </div>
 
 <script>
-// ── CONFIG COACHES Y PROMPTS COMPLETOS ────────────────────────
 const COACHES={
-  guardiola:{full:"Pep Guardiola",prompt:"Eres Pep Guardiola. Analizas con foco en triángulos de pase, superioridad posicional, construcción desde portero, presión coordinada y falso 9."},
-  klopp:    {full:"Jürgen Klopp", prompt:"Eres Jürgen Klopp. Analizas con foco en gegenpressing, transiciones explosivas en 5s, profundidad por bandas e intensidad máxima."},
-  mourinho: {full:"José Mourinho",prompt:"Eres Mourinho. Analizas con foco en bloque bajo compacto, líneas juntas, contragolpe directo al espacio y gestión fría del marcador."},
-  ancelotti:{full:"C. Ancelotti", prompt:"Eres Ancelotti. Analizas con foco en equilibrio táctico, libertad creativa a los mejores y adaptación inteligente al rival."},
+  guardiola:{full:"Pep Guardiola",prompt:"Eres Pep Guardiola. Analizas con foco en tri&aacute;ngulos de pase, superioridad posicional, construcci&oacute;n desde portero, presi&oacute;n coordinada y falso 9."},
+  klopp:    {full:"J&uuml;rgen Klopp", prompt:"Eres J&uuml;rgen Klopp. Analizas con foco en gegenpressing, transiciones explosivas en 5s, profundidad por bandas e intensidad m&aacute;xima."},
+  mourinho: {full:"Jos&eacute; Mourinho",prompt:"Eres Mourinho. Analizas con foco en bloque bajo compacto, l&iacute;neas juntas, contragolpe directo al espacio y gesti&oacute;n fr&iacute;a del marcador."},
+  ancelotti:{full:"C. Ancelotti", prompt:"Eres Ancelotti. Analizas con foco en equilibrio t&aacute;ctico, libertad creativa a los mejores y adaptaci&oacute;n inteligente al rival."},
 };
 
 const SYS_COACH=(p)=>`${p}
 Analizas capturas de EA Sports FC 24 en Twitch.
-${userTeam?`CONTEXTO DEL JUGADOR: Juega con ${userTeam}${userStyle?', estilo: '+userStyle:''}. Adapta TODOS tus consejos específicamente para este equipo y estilo de juego.`:''}
-REGLA ABSOLUTA: responde ÚNICAMENTE con el objeto JSON. Sin texto antes, sin texto después, sin explicaciones, sin backticks, sin markdown.
+${userTeam?`CONTEXTO DEL JUGADOR: Juega con ${userTeam}${userStyle?', estilo: '+userStyle:''}. Adapta TODOS tus consejos espec&iacute;ficamente para este equipo y estilo de juego.`:''}
+REGLA ABSOLUTA: responde &Uacute;NICAMENTE con el objeto JSON. Sin texto antes, sin texto despues, sin explicaciones, sin backticks, sin markdown.
 FORMATO EXACTO:
-{"situacion":"lo que ves","alertas":[{"tipo":"warning","zona":"DEF","mensaje":"alerta"}],"consejo_principal":"consejo adaptado al equipo","ajuste":"ajuste específico para este equipo","recomendacion_equipo":"tip específico para ${userTeam||'tu equipo'} en esta situación"}
-Tipos válidos: warning danger info success. Zonas: DEF MID ATK TAC. Máximo 2 alertas.`;
+{"situacion":"lo que ves","alertas":[{"tipo":"warning","zona":"DEF","mensaje":"alerta"}],"consejo_principal":"consejo adaptado al equipo","ajuste":"ajuste espec&iacute;fico para este equipo","recomendacion_equipo":"tip espec&iacute;fico para ${userTeam||'tu equipo'} en esta situaci&oacute;n"}
+Tipos v&aacute;lidos: warning danger info success. Zonas: DEF MID ATK TAC. M&aacute;ximo 2 alertas.`;
 
-const SYS_AI=()=>`Eres una IA táctica autónoma de EA Sports FC 24. Generas tácticas originales.
-${userTeam?`CONTEXTO DEL JUGADOR: Usa ${userTeam}${userStyle?', estilo declarado: '+userStyle:''}. Genera recomendaciones 100% específicas para las fortalezas y debilidades conocidas de este equipo en FC 24.`:''}
-REGLA ABSOLUTA: responde ÚNICAMENTE con el objeto JSON. Sin texto antes, sin texto después, sin backticks, sin markdown, sin explicaciones.
-FORMATO EXACTO (usa números reales del 0 al 100, no rangos):
-{"situacion":"lo que ves exactamente","formacion_detectada":"4-3-3","fase":"ataque","presion_rival":65,"control_medio":55,"riesgo_defensa":40,"alertas":[{"tipo":"danger","zona":"DEF","mensaje":"alerta"}],"consejo_principal":"análisis adaptado al equipo","tactica_propia":"táctica específica para ${userTeam||'tu equipo'}","ajuste_inmediato":"acción en próximos 30s","recomendacion_equipo":"tip exclusivo para aprovechar las ventajas de ${userTeam||'tu equipo'} aquí"}
-Tipos: warning danger info success. Zonas: DEF MID ATK TAC. Máximo 3 alertas.`;
+const SYS_AI=()=>`Eres una IA t&aacute;ctica aut&oacute;noma de EA Sports FC 24. Generas t&aacute;cticas originales.
+${userTeam?`CONTEXTO DEL JUGADOR: Usa ${userTeam}${userStyle?', estilo declarado: '+userStyle:''}. Genera recomendaciones 100% espec&iacute;ficas para las fortalezas y debilidades conocidas de este equipo en FC 24.`:''}
+REGLA ABSOLUTA: responde &Uacute;NICAMENTE con el objeto JSON. Sin texto antes, sin texto despues, sin backticks, sin markdown, sin explicaciones.
+FORMATO EXACTO (usa n&uacute;meros reales del 0 al 100, no rangos):
+{"situacion":"lo que ves exactamente","formacion_detectada":"4-3-3","fase":"ataque","presion_rival":65,"control_medio":55,"riesgo_defensa":40,"alertas":[{"tipo":"danger","zona":"DEF","mensaje":"alerta"}],"consejo_principal":"an&aacute;lisis adaptado al equipo","tactica_propia":"t&aacute;ctica espec&iacute;fica para ${userTeam||'tu equipo'}","ajuste_inmediato":"acci&oacute;n en pr&oacute;ximos 30s","recomendacion_equipo":"tip exclusivo para aprovechar las ventajas de ${userTeam||'tu equipo'} aqu&iacute;"}
+Tipos: warning danger info success. Zonas: DEF MID ATK TAC. M&aacute;ximo 3 alertas.`;
 
-// ── VARIABLES DE ESTADO ──────────────────────────────────────
 let mode='coach',coach='guardiola',ms=10000;
 let running=false,scanCount=0,itvId=null,cdId=null,capStream=null;
 let userTeam='', userStyle='';
 let apiKeys=[]; 
 let chatHistory=[]; 
 
-// ── SELECTORES ELEMENTOS UI ──────────────────────────────────
 const $=id=>document.getElementById(id);
 const apiKeyIn=$('apikey-input'),addKeyBtn=$('add-key-btn'),keysSelect=$('keys-select');
 const chIn=$('channel-input'),loadBtn=$('load-btn');
@@ -548,7 +545,6 @@ const teamSaveBtn=$('team-save-btn'),teamBadge=$('team-badge');
 const chatSection=$('chat-section'),chatHeader=$('chat-header'),chatToggleBtn=$('chat-toggle-btn');
 const chatBox=$('chat-box'),chatInput=$('chat-input'),chatSendBtn=$('chat-send-btn');
 
-// ── MULTI-KEYS LOCALSTORAGE ─────────────────────────────────
 loadKeys();
 addKeyBtn.addEventListener('click', addKey);
 apiKeyIn.addEventListener('keydown', e=>{if(e.key==='Enter') addKey();});
@@ -557,10 +553,7 @@ function addKey() {
   const val = apiKeyIn.value.trim();
   if(!val) return;
   if(!apiKeys.includes(val)) {
-    apiKeys.push(val);
-    saveKeys();
-    renderKeysSelect();
-    keysSelect.value = val; 
+    apiKeys.push(val); saveKeys(); renderKeysSelect(); keysSelect.value = val; 
   }
   apiKeyIn.value = '';
 }
@@ -569,10 +562,6 @@ function loadKeys() {
   try {
     const stored = localStorage.getItem('fc24_multi_keys');
     if(stored) apiKeys = JSON.parse(stored);
-    const oldKey = localStorage.getItem('fc24_gemini_key');
-    if(oldKey && !apiKeys.includes(oldKey)) {
-      apiKeys.push(oldKey); saveKeys(); localStorage.removeItem('fc24_gemini_key');
-    }
   } catch(e) { apiKeys = []; }
   renderKeysSelect();
 }
@@ -590,35 +579,31 @@ function renderKeysSelect() {
 }
 function getSelectedKey() { return keysSelect.value || ''; }
 
-// Cargar Datos del Equipo Guardados
 userTeam=localStorage.getItem('fc24_team')||'';
 userStyle=localStorage.getItem('fc24_style')||'';
 if(userTeam){teamInput.value=userTeam;styleInput.value=userStyle;updateTeamBadge();}
 
-// ── MANEJO MODO TABS ─────────────────────────────────────────
 document.querySelectorAll('.mode-tab').forEach(btn=>{
   btn.addEventListener('click',()=>{
     document.querySelectorAll('.mode-tab').forEach(b=>b.classList.remove('active'));
     btn.classList.add('active'); mode=btn.dataset.mode;
     const ai=mode==='ai';
     coachWrap.style.display=ai?'none':'flex';
-    panelTitle.textContent=ai?'IA TÁCTICA AUTÓNOMA':'ANÁLISIS TÁCTICO';
+    panelTitle.textContent=ai?'IA T&Aacute;CTICA AUT&Oacute;NOMA':'AN&Aacute;LISIS T&Aacute;CTICO';
     panelTitle.classList.toggle('ai-mode',ai);
     aiBadge.classList.toggle('show',ai);
   });
 });
 
-// ── MANEJO EMISIÓN TWITCH ────────────────────────────────────
-loadBtn.addEventListener('click',loadStream);
-chIn.addEventListener('keydown',e=>{if(e.key==='Enter')loadStream();});
 function loadStream(){
   const ch=chIn.value.trim().replace(/[^a-zA-Z0-9_]/g,'');
   if(!ch)return;
   tFrame.src=`https://player.twitch.tv/?channel=${ch}&parent=${location.hostname||'localhost'}&autoplay=true&muted=false`;
   tFrame.style.display='block'; placeholder.style.display='none';
 }
+loadBtn.addEventListener('click',loadStream);
+chIn.addEventListener('keydown',e=>{if(e.key==='Enter')loadStream();});
 
-// ── SELECCIÓN ENTRENADORES ───────────────────────────────────
 document.querySelectorAll('.coach-pill').forEach(b=>{
   b.addEventListener('click',()=>{
     document.querySelectorAll('.coach-pill').forEach(x=>x.classList.remove('active'));
@@ -626,11 +611,10 @@ document.querySelectorAll('.coach-pill').forEach(b=>{
   });
 });
 
-// ── CONFIGURACIÓN DEL EQUIPO ─────────────────────────────────
 teamSaveBtn.addEventListener('click', addTeam);
 function addTeam() {
   const teamVal = teamInput.value.trim(); const styleVal = styleInput.value.trim();
-  if(!teamVal) { showError('Campo vacío', 'Ingresa un equipo.'); return; }
+  if(!teamVal) { showError('Campo vac&iacute;o', 'Ingresa un equipo.'); return; }
   userTeam = teamVal; userStyle = styleVal;
   localStorage.setItem('fc24_team', userTeam); localStorage.setItem('fc24_style', userStyle);
   updateTeamBadge();
@@ -655,7 +639,6 @@ document.querySelectorAll('.freq-pill').forEach(b=>{
   });
 });
 
-// ── UPLOAD Y ARRASTRE DE ARCHIVOS (.HTML) ────────────────────
 const fileIn = $('hidden-file-input'), uploadBtn = $('upload-btn'), dragOverlay = $('drag-overlay');
 uploadBtn.addEventListener('click', () => fileIn.click());
 fileIn.addEventListener('change', (e) => { if(e.target.files.length > 0) handleFile(e.target.files[0]); });
@@ -667,13 +650,12 @@ window.addEventListener('drop', (e) => {
   if(e.dataTransfer.files.length > 0) handleFile(e.dataTransfer.files[0]);
 });
 function handleFile(file) {
-  if(!file.name.endsWith('.html')) { showError('Archivo inválido', 'Usa un archivo .html'); return; }
+  if(!file.name.endsWith('.html')) { showError('Archivo inv&aacute;lido', 'Usa un archivo .html'); return; }
   const reader = new FileReader();
   reader.onload = (e) => { document.open(); document.write(e.target.result); document.close(); };
   reader.readAsText(file);
 }
 
-// ── MOTOR DE CHAT INTERACTIVO CON EL COACH ──────────────────
 chatHeader.addEventListener('click', () => {
   const isCollapsed = chatSection.classList.toggle('collapsed');
   chatToggleBtn.textContent = isCollapsed ? '▲ ABRIR CHAT' : '▼ CERRAR CHAT';
@@ -686,22 +668,22 @@ chatInput.addEventListener('keydown', e => { if(e.key === 'Enter') sendChatMessa
 async function sendChatMessage() {
   const query = chatInput.value.trim(); if(!query) return;
   const key = getSelectedKey();
-  if(!key) { showError('Falta Clave', 'Agrega tu Gemini API Key arriba para chatear con el coach.'); return; }
+  if(!key) { showError('Falta Clave', 'Agrega tu Gemini API Key arriba.'); return; }
 
-  appendChatBubble('TÚ', query, 'user'); chatInput.value = '';
+  appendChatBubble('T&Uacute;', query, 'user'); chatInput.value = '';
 
   let userParts = [{ text: query }];
   const currentB64 = captureFrame();
   if (currentB64) { userParts.push({ inline_data: { mime_type: 'image/jpeg', data: currentB64 } }); }
 
   chatHistory.push({ role: 'user', parts: userParts });
-  const coachLabel = mode === 'ai' ? 'IA TÁCTICA' : COACHES[coach].full.toUpperCase();
+  const coachLabel = mode === 'ai' ? 'IA T&Aacute;CTICA' : COACHES[coach].full.toUpperCase();
   const baseStyle = mode === 'ai' ? SYS_AI() : COACHES[coach].prompt;
   
   const chatSystemInstruction = `Tienes el rol de asistente en vivo para EA Sports FC 24.
   PERSONALIDAD ACTUAL: ${baseStyle}
   CONTEXTO EXTRA: El usuario juega con: "${userTeam || 'No especificado'}" y estilo: "${userStyle || 'No especificado'}".
-  REGLA DE RESPUESTA: Responde de forma directa, corta, en tono de DT real. Máximo 2 o 3 líneas por respuesta. Texto plano directo, no JSON.`;
+  REGLA DE RESPUESTA: Responde de forma directa, corta, en tono de DT real. M&aacute;ximo 2 o 3 l&iacute;neas. Texto plano, no JSON.`;
 
   try {
     chatSendBtn.disabled = true; chatSendBtn.textContent = '...';
@@ -717,8 +699,8 @@ async function sendChatMessage() {
           generationConfig: { temperature: 0.6, maxOutputTokens: 250 }
         })
     });
-    const d = await res.json(); if(!res.ok) throw new Error(d.error?.message || 'Error de conexión');
-    const replyText = d.candidates?.[0]?.content?.parts?.[0]?.text || 'No tengo comentarios en este momento.';
+    const d = await res.json(); if(!res.ok) throw new Error(d.error?.message || 'Error');
+    const replyText = d.candidates?.[0]?.content?.parts?.[0]?.text || 'No tengo comentarios.';
     
     appendChatBubble(coachLabel, replyText, 'coach', mode === 'ai');
     chatHistory.push({ role: 'model', parts: [{ text: replyText }] });
@@ -728,21 +710,27 @@ async function sendChatMessage() {
 
 function appendChatBubble(author, text, type, isAiStyle=false) {
   const row = mkDiv(`chat-msg-row ${type}${isAiStyle ? ' ai-style' : ''}`);
-  if(type === 'coach') { row.innerHTML = `<span class="chat-author">${esc(author)}</span>`; }
+  if(type === 'coach') { row.innerHTML = `<span class="chat-author">${author}</span>`; }
   const bubble = mkDiv('chat-bubble'); bubble.textContent = text;
   row.appendChild(bubble); chatBox.appendChild(row);
   chatBox.scrollTop = chatBox.scrollHeight;
 }
 
-// ── BUCLE DE ANÁLISIS AUTOMÁTICO DE PANTALLA ─────────────────
 analyzeBtn.addEventListener('click',async()=>{
   if(running){stopAnalysis();return;} await startAnalysis();
 });
 
+// ═══ MEJORA DE CALIDAD DE VISIÓN (RESTRICCIONES ULTRA HD) ═══
 async function startAnalysis(){
   try{
     capStream=await navigator.mediaDevices.getDisplayMedia({
-      video:{frameRate:5,width:{ideal:1920},height:{ideal:1080}},audio:false
+      video:{
+        frameRate: { ideal: 15, max: 30 },
+        width:{ ideal: 3840, max: 3840 }, 
+        height:{ ideal: 2160, max: 2160 },
+        resizeMode: 'none'
+      },
+      audio:false
     });
     vid.srcObject=capStream; await vid.play();
     capStream.getVideoTracks()[0].addEventListener('ended',stopAnalysis);
@@ -765,27 +753,33 @@ function stopAnalysis(){
 function resetInterval(){clearInterval(itvId);itvId=setInterval(runAnalysis,ms);startCountdown();}
 
 function startCountdown(){
-  clearInterval(cdId); let rem=ms/1000; nextLabel.textContent=`próximo en ${rem}s`;
+  clearInterval(cdId); let rem=ms/1000; nextLabel.textContent=`pr&oacute;ximo en ${rem}s`;
   cdFill.style.transition='none';cdFill.style.width='100%';
   requestAnimationFrame(()=>requestAnimationFrame(()=>{
     cdFill.style.transition=`width ${ms/1000}s linear`;cdFill.style.width='0%';
   }));
   cdId=setInterval(()=>{
-    rem--;nextLabel.textContent=rem>0?`próximo en ${rem}s`:'analizando...';
+    rem--;nextLabel.textContent=rem>0?`pr&oacute;ximo en ${rem}s`:'analizando...';
     if(rem<=0)clearInterval(cdId);
   },1000);
 }
 
+// ═══ MOTOR DE CAPTURA CRISTALINA (1080p SIN COMPRESIÓN) ═══
 function captureFrame(){
   if(!vid.videoWidth)return null;
-  const mw=1280,sc=vid.videoWidth>mw?mw/vid.videoWidth:1;
-  cvs.width=Math.round(vid.videoWidth*sc); cvs.height=Math.round(vid.videoHeight*sc);
-  const ctx=cvs.getContext('2d'); ctx.drawImage(vid,0,0,cvs.width,cvs.height);
-  return cvs.toDataURL('image/jpeg',0.92).split(',')[1];
+  const targetWidth = 1920; 
+  const scale = vid.videoWidth > targetWidth ? targetWidth / vid.videoWidth : 1;
+  cvs.width = Math.round(vid.videoWidth * scale); 
+  cvs.height = Math.round(vid.videoHeight * scale);
+  const ctx = cvs.getContext('2d'); 
+  ctx.imageSmoothingEnabled = true;
+  ctx.imageSmoothingQuality = 'high';
+  ctx.drawImage(vid, 0, 0, cvs.width, cvs.height);
+  return cvs.toDataURL('image/jpeg', 0.98).split(',')[1]; 
 }
 
 async function callAI(b64,sys,usr){
-  const key = getSelectedKey(); if(!key) throw new Error('Sin API Key válida.');
+  const key = getSelectedKey(); if(!key) throw new Error('Sin API Key v&aacute;lida.');
   const MODELS=['gemini-2.5-flash','gemini-2.5-flash-lite'];
   let lastErr='Sin respuesta';
   for(const model of MODELS){
@@ -795,7 +789,7 @@ async function callAI(b64,sys,usr){
         body:JSON.stringify({
           system_instruction:{parts:[{text:sys}]},
           contents:[{parts:[{text:usr},{inline_data:{mime_type:'image/jpeg',data:b64}}]}],
-          generationConfig:{temperature:0.4,maxOutputTokens:800}
+          generationConfig:{temperature:0.3,maxOutputTokens:800} 
         })
       });
       const d=await r.json(); if(!r.ok){lastErr=d.error?.message||`HTTP ${r.status}`;continue;}
@@ -821,16 +815,15 @@ async function runAnalysis(){
   spinner.classList.add('show');analyzingTxt.classList.add('show');
   try{
     const sys=mode==='ai'?SYS_AI():SYS_COACH(COACHES[coach].prompt);
-    const raw=await callAI(b64,sys,'Analiza esta captura de FC 24. Responde SOLO con el JSON, nada más.');
-    const d=tryJSON(raw); if(!d)throw new Error('JSON inválido');
-    scanCount++;scanLabel.textContent=`${scanCount} análisis`;
+    const raw=await callAI(b64,sys,'Gameplay. Responde SOLO con el JSON.');
+    const d=tryJSON(raw); if(!d)throw new Error('JSON inv&aacute;lido');
+    scanCount++;scanLabel.textContent=`${scanCount} an&aacute;lisis`;
     mode==='ai'?renderAI(d):renderCoach(d);
     startCountdown();
-  }catch(e){showError('Error en análisis',e.message);}
+  }catch(e){showError('Error en an&aacute;lisis',e.message);}
   finally{spinner.classList.remove('show');analyzingTxt.classList.remove('show');}
 }
 
-// ── ASISTENTE MODO DEMO ───────────────────────────────────────
 const DEMO_IMGS=[
   'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/FC_Barcelona_vs_Recreativo_de_Huelva%2C_2006_%2802%29.jpg/1280px-FC_Barcelona_vs_Recreativo_de_Huelva%2C_2006_%2802%29.jpg',
   'https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/2010_FIFA_World_Cup_Final_1.jpg/1280px-2010_FIFA_World_Cup_Final_1.jpg'
@@ -851,55 +844,54 @@ demoBtn.addEventListener('click',async()=>{
     demoIdx++;
     const sys=mode==='ai'?SYS_AI():SYS_COACH(COACHES[coach].prompt);
     const raw=await callAI(b64,sys,'Gameplay. Responde SOLO con el JSON.');
-    const d=tryJSON(raw); scanCount++; scanLabel.textContent=`${scanCount} análisis`;
+    const d=tryJSON(raw); scanCount++; scanLabel.textContent=`${scanCount} an&aacute;lisis`;
     if(mode==='ai'&&d)renderAI(d);else if(d)renderCoach(d);
   }catch(e){showError('Error Demo',e.message);}
   finally{spinner.classList.remove('show');analyzingTxt.classList.remove('show');demoBtn.disabled=false;demoBtn.textContent='🎮 DEMO';}
 });
 
-// ── PINTORES DINÁMICOS DE CARDS (RENDERS) ─────────────────────
 function renderCoach(d){
   clearCards(); const t=ts(); add(mkSit(d.situacion,t));
   const alerts=mkAlerts(d.alertas||[]); if(alerts)add(alerts);
   add(mkAdvice(`💬 ${COACHES[coach].full.toUpperCase()}`,d.consejo_principal||'',false));
   if(d.ajuste)add(mkTactic('🎯 AJUSTE',d.ajuste));
   if(d.recomendacion_equipo&&userTeam){
-    const tc=mkDiv('card-team'); tc.innerHTML=`<div class="card-label">🏟 ${esc(userTeam.toUpperCase())}</div><p>${esc(d.recomendacion_equipo)}</p>`; add(tc);
+    const tc=mkDiv('card-team'); tc.innerHTML=`<div class="card-label">🏟 ${userTeam.toUpperCase()}</div><p>${d.recomendacion_equipo}</p>`; add(tc);
   }
 }
 
-const PHASE={ataque:{icon:'⚽',txt:'ATAQUE'},defensa:{icon:'🛡',txt:'DEFENSA'},transicion:{icon:'⚡',txt:'TRANSICIÓN'}};
+const PHASE={ataque:{icon:'⚽',txt:'ATAQUE'},defensa:{icon:'🛡',txt:'DEFENSA'},transicion:{icon:'⚡',txt:'TRANSICI&Oacute;N'}};
 function renderAI(d){
   clearCards(); const t=ts(); add(mkSit(d.situacion,t,true));
   const ph=PHASE[d.fase]||{icon:'⚽',txt:'—'};
   const form=mkDiv('card-formation');
-  form.innerHTML=`<div class="form-left"><div class="card-label">🔎 DETECTADA</div><div class="form-name">${esc(d.formacion_detectada||'—')}</div></div><div class="form-phase"><div class="phase-icon">${ph.icon}</div><div class="phase-txt">${ph.txt}</div></div>`;
+  form.innerHTML=`<div class="form-left"><div class="card-label">🔎 DETECTADA</div><div class="form-name">${d.formacion_detectada||'—'}</div></div><div class="form-phase"><div class="phase-icon">${ph.icon}</div><div class="phase-txt">${ph.txt}</div></div>`;
   add(form);
   const metrics=mkDiv('card-metrics');
-  metrics.innerHTML=`<div class="card-label">📊 MÉTRICAS</div>${mkMetric('🔴','PRES','danger-fill',clamp(d.presion_rival,0,100))}${mkMetric('🟡','CTRL','warn-fill',clamp(d.control_medio,0,100))}${mkMetric('🟢','RIESG','ok-fill',100-clamp(d.riesgo_defensa,0,100))}`;
+  metrics.innerHTML=`<div class="card-label">📊 M&Eacute;TRICAS</div>${mkMetric('🔴','PRES','danger-fill',clamp(d.presion_rival,0,100))}${mkMetric('🟡','CTRL','warn-fill',clamp(d.control_medio,0,100))}${mkMetric('🟢','RIESG','ok-fill',100-clamp(d.riesgo_defensa,0,100))}`;
   add(metrics);
   const alerts=mkAlerts(d.alertas||[]); if(alerts)add(alerts);
-  const tac=mkDiv('card-ai-tactic'); tac.innerHTML=`<div class="card-label">🤖 TÁCTICA IA PROPIA</div><p>${esc(d.tactica_propia||d.consejo_principal||'')}</p>`; add(tac);
+  const tac=mkDiv('card-ai-tactic'); tac.innerHTML=`<div class="card-label">🤖 T&Aacute;CTICA IA PROPIA</div><p>${d.tactica_propia||d.consejo_principal||''}</p>`; add(tac);
 }
 
 function mkMetric(icon,lbl,cls,val){
   return `<div class="metric-row"><span class="metric-icon">${icon}</span><span class="metric-lbl">${lbl}</span><div class="metric-bar"><div class="metric-fill ${cls}" style="width:${val}%"></div></div><span class="metric-val">${val}%</span></div>`;
 }
 function mkSit(txt,t,ai=false){
-  const c=mkDiv('card card-sit'); c.innerHTML=`<div class="card-label">${ai?'📡 LECTURA IA':'⚽ SITUACIÓN'} · ${t}</div><p>${esc(txt||'—')}</p>`; return c;
+  const c=mkDiv('card card-sit'); c.innerHTML=`<div class="card-label">${ai?'📡 LECTURA IA':'⚽ SITUACI&Oacute;N'} · ${t}</div><p>${txt||'—'}</p>`; return c;
 }
 function mkAlerts(arr){
   if(!arr.length)return null; const w=mkDiv(''); w.style.cssText='display:flex;flex-direction:column;gap:4px;';
   arr.forEach(a=>{
-    const el=mkDiv(`alert-card ${a.tipo||'info'}`); el.innerHTML=`<span class="alert-zona">${esc(a.zona||'?')}</span><span class="alert-msg">${esc(a.mensaje||'')}</span>`; w.appendChild(el);
+    const el=mkDiv(`alert-card ${a.tipo||'info'}`); el.innerHTML=`<span class="alert-zona">${a.zona||'?'}</span><span class="alert-msg">${a.mensaje||''}</span>`; w.appendChild(el);
   });
   return w;
 }
 function mkAdvice(label,txt,ai){
-  const c=mkDiv('card-advice'+(ai?' ai-card':'')); c.innerHTML=`<div class="card-label">${label}</div><p>"${esc(txt)}"</p>`; return c;
+  const c=mkDiv('card-advice'+(ai?' ai-card':'')); c.innerHTML=`<div class="card-label">${label}</div><p>"${txt}"</p>`; return c;
 }
 function mkTactic(label,txt){
-  const c=mkDiv('card card-tactic'); c.innerHTML=`<div class="card-label">${label}</div><p>${esc(txt)}</p>`; return c;
+  const c=mkDiv('card card-tactic'); c.innerHTML=`<div class="card-label">${label}</div><p>${txt}</p>`; return c;
 }
 function add(el){panelBody.prepend(el);}
 function clearCards(){
@@ -907,11 +899,10 @@ function clearCards(){
 }
 function showError(title,msg){
   panelBody.querySelector('.error-card')?.remove();
-  const c=mkDiv('error-card'); c.innerHTML=`<div class="error-title">⚠ ${esc(title)}</div><div class="error-msg">${esc(msg)}</div><button class="error-retry" onclick="this.parentElement.remove()">✕ CERRAR</button>`;
+  const c=mkDiv('error-card'); c.innerHTML=`<div class="error-title">⚠ ${title}</div><div class="error-msg">${msg}</div><button class="error-retry" onclick="this.parentElement.remove()">✕ CERRAR</button>`;
   panelBody.prepend(c);
 }
 function mkDiv(cls){const el=document.createElement('div');if(cls)el.className=cls;return el;}
-function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 function ts(){return new Date().toLocaleTimeString('es',{hour:'2-digit',minute:'2-digit',second:'2-digit'});}
 function clamp(v,mn,mx){return Math.min(mx,Math.max(mn,parseInt(v)||0));}
 </script>
