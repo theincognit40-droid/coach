@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>FC24 Coach + Chat Premium (Quota & HD Vision Fixed)</title>
+<title>FC24 Coach + Chat Premium (Multi-Provider)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Lato:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
@@ -69,15 +69,17 @@ h1, h2, h3, .panel-title, .logo, .card-label, .chat-author, .top-btn, .coach-pil
 }
 .top-input:focus{border-color:var(--accent);box-shadow:0 0 0 2px rgba(0,229,255,0.1);}
 .top-input::placeholder{color:rgba(255,255,255,0.25);}
-#apikey-input{width:160px;}#channel-input{width:120px;}
+#apikey-input{width:140px;}#channel-input{width:110px;}
 
 .keys-container{display:flex;align-items:center;gap:4px;}
-.keys-select{
+.keys-select, .provider-select{
   background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);
   border-radius:8px;padding:7px 10px;color:#fff;font-family:'Share Tech Mono',monospace;
-  font-size:12px;outline:none;cursor:pointer;max-width:120px;
+  font-size:12px;outline:none;cursor:pointer;
 }
-.keys-select option{background:var(--surface);color:#fff;}
+.provider-select{max-width:100px;}
+.keys-select{max-width:160px;}
+.keys-select option, .provider-select option{background:var(--surface);color:#fff;}
 
 .top-btn{
   border:none;border-radius:8px;padding:8px 14px;
@@ -142,12 +144,13 @@ h1, h2, h3, .panel-title, .logo, .card-label, .chat-author, .top-btn, .coach-pil
 #stream-placeholder .hint{margin-top:16px;font-size:11px;color:rgba(0,229,255,0.4);border:1px solid rgba(0,229,255,0.15);border-radius:6px;padding:6px 12px;display:inline-block;}
 #twitch-frame{width:100%;height:100%;border:none;display:none;}
 
-/* ═══ PANEL DERECHO ═════════════════════════════════════════ */
+/* ═══ PANEL DERECHO ═══ */
 #coach-panel{
   width:360px;flex-shrink:0;
   background:var(--surface);
   border-left:1px solid var(--border);
-  display:flex;flex-direction:column;overflow:hidden;
+  display:flex;flex-direction:column;
+  height:100%;overflow:hidden;
   box-shadow:-4px 0 30px rgba(0,0,0,0.4);
 }
 
@@ -188,12 +191,19 @@ h1, h2, h3, .panel-title, .logo, .card-label, .chat-author, .top-btn, .coach-pil
   border-bottom:1px solid rgba(255,215,0,0.1);text-align:center;flex-shrink:0;
 }
 
-#panel-body{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:10px;}
+#panel-body{
+  flex:1;
+  overflow-y:auto;
+  padding:12px;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+}
 ::-webkit-scrollbar{width:4px;}
 ::-webkit-scrollbar-track{background:transparent;}
 ::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:2px;}
 
-/* ═══ CARDS CON TEXTO GRANDE ═══════════════════════ */
+/* CARDS */
 @keyframes fadeSlide{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 .card{border-radius:10px;padding:12px 14px;animation:fadeSlide .25s ease;}
 .card-label{
@@ -202,61 +212,32 @@ h1, h2, h3, .panel-title, .logo, .card-label, .chat-author, .top-btn, .coach-pil
 }
 .card-label::after{content:'';flex:1;height:1px;background:currentColor;opacity:.15;}
 
-/* Situación */
-.card-sit{
-  background:rgba(255,255,255,0.02);
-  border:1px solid var(--border);
-}
+.card-sit{background:rgba(255,255,255,0.02);border:1px solid var(--border);}
 .card-sit p{font-size:15px;color:rgba(255,255,255,0.95);line-height:1.6;font-weight:400;}
 
-/* Alertas */
-.alert-card{
-  display:flex;gap:10px;align-items:flex-start;
-  padding:10px 12px;border-radius:8px;border-left:4px solid;
-  animation:fadeSlide .25s ease;
-}
+.alert-card{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:8px;border-left:4px solid;animation:fadeSlide .25s ease;}
 .alert-card.danger {background:rgba(255,61,61,0.08); border-color:var(--danger);}
 .alert-card.warning{background:rgba(255,167,38,0.08);border-color:var(--warn);}
 .alert-card.info   {background:rgba(0,229,255,0.06); border-color:var(--accent);}
 .alert-card.success{background:rgba(105,255,71,0.06);border-color:var(--ok);}
-.alert-zona{
-  font-size:9px;font-family:'Share Tech Mono',monospace;font-weight:800;
-  flex-shrink:0;margin-top:1px;letter-spacing:0.5px;
-  padding:2px 6px;border-radius:4px;
-}
+.alert-zona{font-size:9px;font-family:'Share Tech Mono',monospace;font-weight:800;flex-shrink:0;margin-top:1px;letter-spacing:0.5px;padding:2px 6px;border-radius:4px;}
 .alert-card.danger  .alert-zona{color:var(--danger);background:rgba(255,61,61,0.15);}
 .alert-card.warning .alert-zona{color:var(--warn);  background:rgba(255,167,38,0.15);}
 .alert-card.info    .alert-zona{color:var(--accent);background:rgba(0,229,255,0.12);}
 .alert-card.success .alert-zona{color:var(--ok);    background:rgba(105,255,71,0.12);}
 .alert-msg{font-size:14px;color:#fff;line-height:1.45;font-weight:600;}
 
-/* Consejos Coach */
-.card-advice{
-  background:rgba(255,255,255,0.01);
-  border:1px solid rgba(255,255,255,0.08);
-  border-left:4px solid var(--accent);
-  border-radius:10px;padding:14px;
-  animation:fadeSlide .25s ease;
-}
+.card-advice{background:rgba(255,255,255,0.01);border:1px solid rgba(255,255,255,0.08);border-left:4px solid var(--accent);border-radius:10px;padding:14px;animation:fadeSlide .25s ease;}
 .card-advice.ai-card{border-left-color:var(--gold);background:rgba(255,215,0,0.02);}
 .card-advice .card-label{color:var(--accent);}
 .card-advice.ai-card .card-label{color:var(--gold);}
 .card-advice p{font-size:16px;color:#fff;font-weight:700;line-height:1.55;font-style:italic;}
 
-/* Ajustes */
-.card-tactic{
-  background:rgba(105,255,71,0.03);
-  border:1px solid rgba(105,255,71,0.1);
-  border-radius:10px;padding:12px 14px;
-}
+.card-tactic{background:rgba(105,255,71,0.03);border:1px solid rgba(105,255,71,0.1);border-radius:10px;padding:12px 14px;}
 .card-tactic .card-label{color:var(--ok);}
 .card-tactic p{font-size:14px;color:rgba(255,255,255,0.85);line-height:1.5;font-weight:400;}
 
-/* Formación IA */
-.card-formation{
-  background:rgba(255,215,0,0.03);border:1px solid rgba(255,215,0,0.12);
-  border-radius:10px;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;
-}
+.card-formation{background:rgba(255,215,0,0.03);border:1px solid rgba(255,215,0,0.12);border-radius:10px;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;}
 .card-formation .card-label{color:var(--gold);margin-bottom:4px;}
 .card-formation .form-name{font-size:30px;font-weight:800;color:var(--gold);letter-spacing:2px;line-height:1;}
 .card-formation .form-desc{font-size:11px;color:rgba(255,255,255,0.4);margin-top:4px;}
@@ -264,13 +245,12 @@ h1, h2, h3, .panel-title, .logo, .card-label, .chat-author, .top-btn, .coach-pil
 .form-phase .phase-icon{font-size:24px;}
 .form-phase .phase-txt{font-size:9px;color:rgba(255,255,255,0.4);letter-spacing:1px;margin-top:2px;}
 
-/* Métricas IA */
 .card-metrics{background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:10px;padding:12px 14px;}
 .card-metrics .card-label{color:rgba(255,255,255,0.3);}
 .metric-row{display:flex;align-items:center;gap:10px;margin-bottom:6px;}
 .metric-row:last-child{margin-bottom:0;}
 .metric-icon{font-size:12px;width:16px;text-align:center;}
-.metric-lbl{font-size:10px;font-family:'Share Tech Mono',monospace;color:rgba(255,255,255,0.4);width:35px;}
+.metric-lbl{font-size:0px;font-family:'Share Tech Mono',monospace;color:rgba(255,255,255,0.4);width:35px;}
 .metric-bar{flex:1;height:6px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden;}
 .metric-fill{height:100%;border-radius:3px;transition:width .5s ease-out;}
 .metric-fill.danger-fill{background:linear-gradient(90deg,var(--danger),#FF7043);}
@@ -278,49 +258,25 @@ h1, h2, h3, .panel-title, .logo, .card-label, .chat-author, .top-btn, .coach-pil
 .metric-fill.ok-fill    {background:linear-gradient(90deg,var(--ok),#00E676);}
 .metric-val{font-size:10px;font-family:'Share Tech Mono',monospace;color:rgba(255,255,255,0.4);width:30px;text-align:right;}
 
-/* Táctica Propia */
-.card-ai-tactic{
-  background:rgba(255,215,0,0.02);border:1px solid rgba(255,215,0,0.1);
-  border-left:4px solid var(--gold);border-radius:10px;padding:12px 14px;
-}
+.card-ai-tactic{background:rgba(255,215,0,0.02);border:1px solid rgba(255,215,0,0.1);border-left:4px solid var(--gold);border-radius:10px;padding:12px 14px;}
 .card-ai-tactic .card-label{color:var(--gold);}
 .card-ai-tactic p{font-size:15px;color:#fff;font-weight:600;line-height:1.55;font-style:italic;}
 
-/* ERROR */
-.error-card{
-  background:rgba(255,61,61,0.06);border:1px solid rgba(255,61,61,0.2);
-  border-left:4px solid var(--danger);border-radius:10px;padding:10px 14px;
-}
+.error-card{background:rgba(255,61,61,0.06);border:1px solid rgba(255,61,61,0.2);border-left:4px solid var(--danger);border-radius:10px;padding:10px 14px;}
 .error-card .error-title{font-size:10px;color:var(--danger);letter-spacing:1px;margin-bottom:4px;}
 .error-card .error-msg{font-size:12px;color:rgba(255,255,255,0.7);line-height:1.5;}
 .error-card .error-retry{margin-top:6px;font-size:12px;color:var(--danger);font-weight:700;cursor:pointer;border:none;background:none;}
 
 /* TEAM SETUP */
-#team-setup{
-  background:rgba(0,0,0,0.2);border-bottom:1px solid var(--border);
-  padding:12px;display:flex;flex-direction:column;gap:8px;flex-shrink:0;
-}
+#team-setup{background:rgba(0,0,0,0.2);border-bottom:1px solid var(--border);padding:12px;display:flex;flex-direction:column;gap:8px;flex-shrink:0;}
 .setup-row{display:flex;align-items:center;gap:8px;}
 .setup-label{font-size:10px;letter-spacing:1px;color:rgba(255,255,255,0.4);width:55px;flex-shrink:0;}
-.setup-input{
-  flex:1;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);
-  border-radius:6px;padding:6px 10px;color:#fff;font-size:13px;outline:none;
-}
-.setup-save{
-  background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;border-radius:6px;
-  padding:6px 14px;font-size:13px;font-weight:800;color:#07090f;cursor:pointer;white-space:nowrap;
-}
-#team-badge{
-  display:none;background:rgba(0,229,255,0.06);border:1px solid rgba(0,229,255,0.15);
-  border-radius:5px;padding:4px 8px;font-size:11px;color:var(--accent);
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;
-}
+.setup-input{flex:1;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:6px 10px;color:#fff;font-size:13px;outline:none;}
+.setup-save{background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;border-radius:6px;padding:6px 14px;font-size:13px;font-weight:800;color:#07090f;cursor:pointer;white-space:nowrap;}
+#team-badge{display:none;background:rgba(0,229,255,0.06);border:1px solid rgba(0,229,255,0.15);border-radius:5px;padding:4px 8px;font-size:11px;color:var(--accent);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;}
 #team-badge.show{display:block;}
 
-.card-team{
-  background:rgba(145,70,255,0.04);border:1px solid rgba(145,70,255,0.15);
-  border-left:4px solid #9146FF;border-radius:10px;padding:12px 14px;
-}
+.card-team{background:rgba(145,70,255,0.04);border:1px solid rgba(145,70,255,0.15);border-left:4px solid #9146FF;border-radius:10px;padding:12px 14px;}
 .card-team .card-label{color:#9146FF;}
 .card-team p{font-size:14px;color:rgba(255,255,255,0.9);line-height:1.55;font-weight:600;}
 
@@ -331,21 +287,11 @@ h1, h2, h3, .panel-title, .logo, .card-label, .chat-author, .top-btn, .coach-pil
 #idle-msg p{font-size:12px;line-height:1.8;}
 
 /* CHAT LIVE PANEL */
-#chat-section{
-  border-top:1px solid var(--border);
-  background:rgba(13,16,24,0.99);
-  display:flex;flex-direction:column;
-  flex-shrink:0;height:240px;transition:height 0.25s ease;
-}
+#chat-section{border-top:1px solid var(--border);background:rgba(13,16,24,0.99);display:flex;flex-direction:column;flex-shrink:0;height:240px;transition:height 0.2s ease;}
 #chat-section.collapsed{height:36px;}
-#chat-header{
-  background:rgba(0,0,0,0.3);padding:8px 14px;
-  display:flex;align-items:center;justify-content:space-between;cursor:pointer;
-  border-bottom:1px solid var(--border);
-}
+#chat-header{background:rgba(0,0,0,0.3);padding:8px 14px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;border-bottom:1px solid var(--border);flex-shrink:0;}
 #chat-toggle-btn{background:none;border:none;color:rgba(255,255,255,0.5);font-size:11px;cursor:pointer;}
 #chat-box{flex:1;overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:8px;}
-
 .chat-msg-row{display:flex;flex-direction:column;font-size:13px;animation:fadeSlide 0.15s ease;line-height:1.45;}
 .chat-msg-row.user{align-items:flex-end;}
 .chat-msg-row.user .chat-bubble{background:rgba(0,229,255,0.12);border:1px solid rgba(0,229,255,0.25);color:#fff;border-bottom-right-radius:2px;}
@@ -353,17 +299,10 @@ h1, h2, h3, .panel-title, .logo, .card-label, .chat-author, .top-btn, .coach-pil
 .chat-msg-row.coach .chat-author{color:var(--accent);font-size:10px;margin-bottom:3px;letter-spacing:0.5px;text-transform:uppercase;}
 .chat-msg-row.coach.ai-style .chat-author{color:var(--gold);}
 .chat-bubble{padding:8px 12px;border-radius:9px;max-width:85%;word-break:break-word;font-size:14px;}
-
-#chat-input-row{display:flex;padding:6px;background:rgba(0,0,0,0.25);border-top:1px solid var(--border);gap:6px;}
-#chat-input{
-  flex:1;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);
-  border-radius:6px;padding:6px 12px;color:#fff;font-size:13px;outline:none;
-}
+#chat-input-row{display:flex;padding:6px;background:rgba(0,0,0,0.25);border-top:1px solid var(--border);gap:6px;flex-shrink:0;}
+#chat-input{flex:1;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:6px 12px;color:#fff;font-size:13px;outline:none;}
 #chat-input:focus{border-color:rgba(0,229,255,0.3);}
-#chat-send-btn{
-  background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);
-  color:#fff;font-size:12px;font-weight:700;padding:0 14px;border-radius:6px;cursor:pointer;
-}
+#chat-send-btn{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#fff;font-size:12px;font-weight:700;padding:0 14px;border-radius:6px;cursor:pointer;}
 #chat-send-btn:hover{background:rgba(0,229,255,0.1);border-color:var(--accent);color:var(--accent);}
 
 /* COUNTDOWN */
@@ -392,11 +331,17 @@ canvas,video{display:none;}
   <div class="logo">FC24 <em>COACH</em></div>
   
   <div class="keys-container">
-    <input id="apikey-input" class="top-input" type="password" placeholder="🔑 Gemini API Key" />
+    <select id="provider-select" class="provider-select">
+      <option value="gemini">Gemini</option>
+      <option value="openrouter">OpenRouter</option>
+      <option value="huggingface">HuggingFace</option>
+    </select>
+    <input id="apikey-input" class="top-input" type="password" placeholder="🔑 API Key" />
     <button id="add-key-btn" class="top-btn" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#fff;padding:6px 10px;">+ AGREGAR</button>
     <select id="keys-select" class="keys-select">
       <option value="">— Sin llaves —</option>
     </select>
+    <button id="del-key-btn" class="top-btn" style="background:rgba(255,61,61,0.1);border:1px solid rgba(255,61,61,0.3);color:var(--danger);padding:6px 10px;font-weight:800;">❌ BORRAR</button>
   </div>
 
   <input id="channel-input" class="top-input" type="text" placeholder="canal_twitch" maxlength="30" />
@@ -529,7 +474,7 @@ let apiKeys=[];
 let chatHistory=[]; 
 
 const $=id=>document.getElementById(id);
-const apiKeyIn=$('apikey-input'),addKeyBtn=$('add-key-btn'),keysSelect=$('keys-select');
+const providerSelect=$('provider-select'),apiKeyIn=$('apikey-input'),addKeyBtn=$('add-key-btn'),keysSelect=$('keys-select'),delKeyBtn=$('del-key-btn');
 const chIn=$('channel-input'),loadBtn=$('load-btn');
 const tFrame=$('twitch-frame'),placeholder=$('stream-placeholder');
 const analyzeBtn=$('analyze-btn'),demoBtn=$('demo-btn'),liveDot=$('live-dot');
@@ -548,36 +493,77 @@ const chatBox=$('chat-box'),chatInput=$('chat-input'),chatSendBtn=$('chat-send-b
 loadKeys();
 addKeyBtn.addEventListener('click', addKey);
 apiKeyIn.addEventListener('keydown', e=>{if(e.key==='Enter') addKey();});
+delKeyBtn.addEventListener('click', deleteSelectedKey);
 
 function addKey() {
   const val = apiKeyIn.value.trim();
+  const prov = providerSelect.value;
   if(!val) return;
-  if(!apiKeys.includes(val)) {
-    apiKeys.push(val); saveKeys(); renderKeysSelect(); keysSelect.value = val; 
+  // Verificar si ya existe esa key para evitar duplicados
+  if(!apiKeys.some(k => k.value === val)) {
+    apiKeys.push({
+      value: val,
+      provider: prov,
+      status: 'activa' // 'activa' = verde, 'en_uso' = azul, 'agotada' = rojo
+    }); 
+    saveKeys(); 
+    renderKeysSelect(); 
+    keysSelect.value = val; 
   }
   apiKeyIn.value = '';
 }
-function saveKeys() { localStorage.setItem('fc24_multi_keys', JSON.stringify(apiKeys)); }
+
+function deleteSelectedKey() {
+  const currentVal = keysSelect.value;
+  if(!currentVal) { showError('Operaci&oacute;n inv&aacute;lida', 'No hay ninguna llave seleccionada para borrar.'); return; }
+  apiKeys = apiKeys.filter(k => k.value !== currentVal);
+  saveKeys();
+  renderKeysSelect();
+}
+
+function saveKeys() { localStorage.setItem('fc24_multi_providers_keys', JSON.stringify(apiKeys)); }
+
 function loadKeys() {
   try {
-    const stored = localStorage.getItem('fc24_multi_keys');
-    if(stored) apiKeys = JSON.parse(stored);
+    const stored = localStorage.getItem('fc24_multi_providers_keys');
+    if(stored) {
+      apiKeys = JSON.parse(stored);
+      // Migración si venía de formato antiguo de texto plano
+      if(apiKeys.length > 0 && typeof apiKeys[0] === 'string') {
+        apiKeys = apiKeys.map(k => ({ value: k, provider: 'gemini', status: 'activa' }));
+      }
+    }
   } catch(e) { apiKeys = []; }
   renderKeysSelect();
 }
+
 function renderKeysSelect() {
   keysSelect.innerHTML = '';
   if(apiKeys.length === 0) {
     const opt = document.createElement('option'); opt.value = ''; opt.textContent = '— Sin llaves —';
     keysSelect.appendChild(opt); return;
   }
-  apiKeys.forEach((k, idx) => {
-    const opt = document.createElement('option'); opt.value = k;
-    opt.textContent = `🔑 Llave ${idx + 1} (${k.slice(0,4)}...${k.slice(-4)})`;
+  apiKeys.forEach((k) => {
+    const opt = document.createElement('option'); opt.value = k.value;
+    let icon = '🟢';
+    if(k.status === 'en_uso') icon = '🔵';
+    if(k.status === 'agotada') icon = '🔴';
+    
+    let pName = k.provider === 'gemini' ? 'Gemini' : k.provider === 'openrouter' ? 'OpenR' : 'HF';
+    opt.textContent = `${icon} [${pName}] ${k.value.slice(0,4)}...${k.value.slice(-4)}`;
     keysSelect.appendChild(opt);
   });
 }
-function getSelectedKey() { return keysSelect.value || ''; }
+
+function getSelectedKeyObj() {
+  const val = keysSelect.value;
+  return apiKeys.find(k => k.value === val) || null;
+}
+
+function setKeyStatus(val, status) {
+  const k = apiKeys.find(x => x.value === val);
+  if(k) { k.status = status; saveKeys(); renderKeysSelect(); keysSelect.value = val; }
+}
 
 userTeam=localStorage.getItem('fc24_team')||'';
 userStyle=localStorage.getItem('fc24_style')||'';
@@ -659,7 +645,9 @@ function handleFile(file) {
 chatHeader.addEventListener('click', () => {
   const isCollapsed = chatSection.classList.toggle('collapsed');
   chatToggleBtn.textContent = isCollapsed ? '▲ ABRIR CHAT' : '▼ CERRAR CHAT';
-  if(!isCollapsed) chatBox.scrollTop = chatBox.scrollHeight;
+  if(!isCollapsed) {
+    setTimeout(() => { chatBox.scrollTop = chatBox.scrollHeight; }, 30);
+  }
 });
 
 chatSendBtn.addEventListener('click', sendChatMessage);
@@ -667,16 +655,11 @@ chatInput.addEventListener('keydown', e => { if(e.key === 'Enter') sendChatMessa
 
 async function sendChatMessage() {
   const query = chatInput.value.trim(); if(!query) return;
-  const key = getSelectedKey();
-  if(!key) { showError('Falta Clave', 'Agrega tu Gemini API Key arriba.'); return; }
+  const kObj = getSelectedKeyObj();
+  if(!kObj) { showError('Falta Clave', 'Agrega o selecciona tu API Key arriba.'); return; }
 
   appendChatBubble('T&Uacute;', query, 'user'); chatInput.value = '';
 
-  let userParts = [{ text: query }];
-  const currentB64 = captureFrame();
-  if (currentB64) { userParts.push({ inline_data: { mime_type: 'image/jpeg', data: currentB64 } }); }
-
-  chatHistory.push({ role: 'user', parts: userParts });
   const coachLabel = mode === 'ai' ? 'IA T&Aacute;CTICA' : COACHES[coach].full.toUpperCase();
   const baseStyle = mode === 'ai' ? SYS_AI() : COACHES[coach].prompt;
   
@@ -687,33 +670,82 @@ async function sendChatMessage() {
 
   try {
     chatSendBtn.disabled = true; chatSendBtn.textContent = '...';
-    let formattedContents = chatHistory.map(msg => ({
-      role: msg.role, parts: msg.parts.map(p => p.text ? { text: p.text } : p)
-    }));
+    setKeyStatus(kObj.value, 'en_uso');
 
-    // Forzar el modelo a gemini-2.5-flash
-    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${key}`, {
-        method: 'POST', headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          system_instruction: { parts: [{ text: chatSystemInstruction }] },
-          contents: formattedContents,
-          generationConfig: { temperature: 0.6, maxOutputTokens: 250 }
-        })
-    });
-    
-    const d = await res.json(); 
-    if(!res.ok) {
-      if (d.error?.message?.includes("Quota exceeded") || d.error?.message?.includes("quota")) {
-        throw new Error("L&iacute;mite de cuota excedido. Por favor, espera unos segundos.");
+    let replyText = '';
+    const currentB64 = captureFrame();
+
+    if (kObj.provider === 'gemini') {
+      let userParts = [{ text: query }];
+      if (currentB64) { userParts.push({ inline_data: { mime_type: 'image/jpeg', data: currentB64 } }); }
+      chatHistory.push({ role: 'user', parts: userParts });
+
+      let formattedContents = chatHistory.map(msg => ({
+        role: msg.role, parts: msg.parts.map(p => p.text ? { text: p.text } : p)
+      }));
+
+      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${kObj.value}`, {
+          method: 'POST', headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            system_instruction: { parts: [{ text: chatSystemInstruction }] },
+            contents: formattedContents,
+            generationConfig: { temperature: 0.6, maxOutputTokens: 250 }
+          })
+      });
+      const d = await res.json();
+      if(!res.ok) {
+        if(res.status === 429 || d.error?.message?.includes("quota")) { setKeyStatus(kObj.value, 'agotada'); throw new Error("Cuota agotada en Gemini."); }
+        throw new Error(d.error?.message || 'Error');
       }
-      throw new Error(d.error?.message || 'Error');
+      replyText = d.candidates?.[0]?.content?.parts?.[0]?.text || '';
+    } 
+    else if (kObj.provider === 'openrouter') {
+      let contentArr = [{ type: 'text', text: query }];
+      if (currentB64) { contentArr.push({ type: 'image_url', image_url: { url: `data:image/jpeg;base64,${currentB64}` } }); }
+      
+      const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${kObj.value}` },
+        body: JSON.stringify({
+          model: 'google/gemini-2.5-flash',
+          messages: [
+            { role: 'system', content: chatSystemInstruction },
+            { role: 'user', content: contentArr }
+          ]
+        })
+      });
+      const d = await res.json();
+      if(!res.ok) {
+        if(res.status === 429 || d.error?.message?.includes("credit")) { setKeyStatus(kObj.value, 'agotada'); throw new Error("Cuota o créditos agotados en OpenRouter."); }
+        throw new Error(d.error?.message || 'Error OpenRouter');
+      }
+      replyText = d.choices?.[0]?.message?.content || '';
+    } 
+    else if (kObj.provider === 'huggingface') {
+      // HF Inference API maneja texto o inputs directos estructurados de manera diferente según el modelo multimodal usado (ej: Llama-3.2-Vision)
+      const res = await fetch('https://api-inference.huggingface.co/models/meta-llama/Llama-3.2-11B-Vision-Instruct/v1/chat/completions', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${kObj.value}` },
+        body: JSON.stringify({
+          messages: [
+            { role: 'user', content: [{ type: 'text', text: `${chatSystemInstruction}\n\nPregunta: ${query}` }] }
+          ],
+          max_tokens: 150
+        })
+      });
+      if(res.status === 429 || res.status === 403) { setKeyStatus(kObj.value, 'agotada'); throw new Error("L&iacute;mite o llave no v&aacute;lida en HuggingFace."); }
+      const d = await res.json();
+      replyText = d.choices?.[0]?.message?.content || 'Sin respuesta.';
     }
-    const replyText = d.candidates?.[0]?.content?.parts?.[0]?.text || 'No tengo comentarios.';
-    
+
     appendChatBubble(coachLabel, replyText, 'coach', mode === 'ai');
     chatHistory.push({ role: 'model', parts: [{ text: replyText }] });
-  } catch (err) { appendChatBubble('SISTEMA (ERROR)', err.message, 'coach'); }
-  finally { chatSendBtn.disabled = false; chatSendBtn.textContent = 'ENVIAR'; }
+    setKeyStatus(kObj.value, 'activa');
+  } catch (err) { 
+    appendChatBubble('SISTEMA (ERROR)', err.message, 'coach'); 
+  } finally { 
+    chatSendBtn.disabled = false; chatSendBtn.textContent = 'ENVIAR'; 
+  }
 }
 
 function appendChatBubble(author, text, type, isAiStyle=false) {
@@ -731,12 +763,7 @@ analyzeBtn.addEventListener('click',async()=>{
 async function startAnalysis(){
   try{
     capStream=await navigator.mediaDevices.getDisplayMedia({
-      video:{
-        frameRate: { ideal: 15, max: 30 },
-        width:{ ideal: 3840, max: 3840 }, 
-        height:{ ideal: 2160, max: 2160 },
-        resizeMode: 'none'
-      },
+      video:{ frameRate: { ideal: 15, max: 30 }, width:{ ideal: 1920 }, height:{ ideal: 1080 } },
       audio:false
     });
     vid.srcObject=capStream; await vid.play();
@@ -755,6 +782,8 @@ function stopAnalysis(){
   capStream=null;vid.srcObject=null;
   analyzeBtn.textContent='⚡ ANALIZAR';analyzeBtn.classList.remove('stop');
   liveDot.classList.remove('active');cdWrap.style.display='none';
+  const kObj = getSelectedKeyObj();
+  if(kObj && kObj.status === 'en_uso') setKeyStatus(kObj.value, 'activa');
 }
 
 function resetInterval(){clearInterval(itvId);itvId=setInterval(runAnalysis,ms);startCountdown();}
@@ -773,90 +802,115 @@ function startCountdown(){
 
 function captureFrame(){
   if(!vid.videoWidth)return null;
-  const targetWidth = 1920; 
-  const scale = vid.videoWidth > targetWidth ? targetWidth / vid.videoWidth : 1;
-  cvs.width = Math.round(vid.videoWidth * scale); 
-  cvs.height = Math.round(vid.videoHeight * scale);
-  const ctx = cvs.getContext('2d'); 
-  ctx.imageSmoothingEnabled = true;
-  ctx.imageSmoothingQuality = 'high';
+  cvs.width = 1280; cvs.height = 720;
+  const ctx = cvs.getContext('2d');
   ctx.drawImage(vid, 0, 0, cvs.width, cvs.height);
-  return cvs.toDataURL('image/jpeg', 0.98).split(',')[1]; 
+  return cvs.toDataURL('image/jpeg', 0.85).split(',')[1]; 
 }
 
-async function callAI(b64,sys,usr){
-  const key = getSelectedKey(); if(!key) throw new Error('Sin API Key v&aacute;lida.');
-  // Eliminado modelo antiguo v1.5 para evitar caídas y usar solo la serie 2.5
-  const MODELS=['gemini-2.5-flash','gemini-2.5-flash-lite'];
-  let lastErr='Sin respuesta';
-  for(const model of MODELS){
-    try{
-      const r=await fetch(`https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${key}`,{
-        method:'POST',headers:{'Content-Type':'application/json'},
-        body:JSON.stringify({
-          system_instruction:{parts:[{text:sys}]},
-          contents:[{parts:[{text:usr},{inline_data:{mime_type:'image/jpeg',data:b64}}]}],
-          generationConfig:{temperature:0.2,maxOutputTokens:800} 
-        })
-      });
-      const d=await r.json(); 
-      if(!r.ok){
-        // Pasar el error directamente si es de cuota
-        if(d.error?.message?.includes("Quota exceeded") || r.status === 429) {
-          return "__QUOTA_LIMIT_EXCEEDED__";
-        }
-        lastErr=d.error?.message||`HTTP ${r.status}`;
-        continue;
-      }
-      return d.candidates?.[0]?.content?.parts?.[0]?.text||'';
-    }catch(e){lastErr=e.message;}
+async function callAIProviders(b64, sys, usr, kObj) {
+  if (kObj.provider === 'gemini') {
+    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${kObj.value}`, {
+      method:'POST', headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        system_instruction:{parts:[{text:sys}]},
+        contents:[{parts:[{text:usr},{inline_data:{mime_type:'image/jpeg',data:b64}}]}],
+        generationConfig:{temperature:0.2,maxOutputTokens:800}
+      })
+    });
+    if (!res.ok) {
+      if (res.status === 429) return "__QUOTA_LIMIT_EXCEEDED__";
+      const errD = await res.json(); throw new Error(errD.error?.message || 'Error Gemini API');
+    }
+    const d = await res.json(); return d.candidates?.[0]?.content?.parts?.[0]?.text || '';
+  } 
+  else if (kObj.provider === 'openrouter') {
+    const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${kObj.value}` },
+      body: JSON.stringify({
+        model: 'google/gemini-2.5-flash',
+        response_format: { type: "json_object" },
+        messages: [
+          { role: 'system', content: sys },
+          { role: 'user', content: [ { type: 'text', text: usr }, { type: 'image_url', image_url: { url: `data:image/jpeg;base64,${b64}` } } ] }
+        ]
+      })
+    });
+    if (!res.ok) {
+      if (res.status === 429) return "__QUOTA_LIMIT_EXCEEDED__";
+      const errD = await res.json(); throw new Error(errD.error?.message || 'Error OpenRouter');
+    }
+    const d = await res.json(); return d.choices?.[0]?.message?.content || '';
+  } 
+  else if (kObj.provider === 'huggingface') {
+    // Usamos el endpoint público para Llama-3.2 Vision en HF
+    const res = await fetch('https://api-inference.huggingface.co/models/meta-llama/Llama-3.2-11B-Vision-Instruct/v1/chat/completions', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${kObj.value}` },
+      body: JSON.stringify({
+        response_format: { type: "json_object" },
+        messages: [
+          { role: 'user', content: [
+              { type: 'text', text: `${sys}\n\n${usr}` },
+              { type: 'image_url', image_url: { url: `data:image/jpeg;base64,${b64}` } }
+            ] 
+          }
+        ],
+        max_tokens: 600
+      })
+    });
+    if (res.status === 429 || res.status === 403) return "__QUOTA_LIMIT_EXCEEDED__";
+    if (!res.ok) throw new Error(`HF retorn&oacute; estado ${res.status}`);
+    const d = await res.json(); return d.choices?.[0]?.message?.content || '';
   }
-  throw new Error(lastErr);
+  throw new Error('Proveedor no soportado.');
 }
 
-// ═══ EXTRACTOR SÚPER SEGURO DE BLOQUES JSON ═══
 function tryJSON(raw){
-  if(!raw) return null;
-  let s = raw.trim();
-  
+  if(!raw) return null; let s = raw.trim();
   try { return JSON.parse(s); } catch(e) {}
-  
   s = s.replace(/```json/gi, '').replace(/```/g, '').trim();
   try { return JSON.parse(s); } catch(e) {}
-  
   try {
-    const start = s.indexOf('{');
-    const end = s.lastIndexOf('}');
-    if(start !== -1 && end > start) {
-      return JSON.parse(s.slice(start, end + 1));
-    }
+    const start = s.indexOf('{'); const end = s.lastIndexOf('}');
+    if(start !== -1 && end > start) return JSON.parse(s.slice(start, end + 1));
   } catch(e) {}
-  
   return null;
 }
 
 async function runAnalysis(){
-  const b64=captureFrame();if(!b64)return;
-  spinner.classList.add('show');analyzingTxt.classList.add('show');
+  const b64=captureFrame(); if(!b64)return;
+  const kObj = getSelectedKeyObj();
+  if(!kObj) { showError('Falta Key', 'Por favor selecciona o agrega una llave v&aacute;lida.'); stopAnalysis(); return; }
+  
+  setKeyStatus(kObj.value, 'en_uso');
+  spinner.classList.add('show'); analyzingTxt.classList.add('show');
+  
   try{
     const sys=mode==='ai'?SYS_AI():SYS_COACH(COACHES[coach].prompt);
-    const raw=await callAI(b64,sys,'Gameplay. Responde SOLO con el JSON.');
+    const raw = await callAIProviders(b64, sys, 'Gameplay. Responde SOLO con el JSON estructurado solicitado.', kObj);
     
-    // Captura inteligente del error de cuota antes de evaluar el JSON
-    if (raw === "__QUOTA_LIMIT_EXCEEDED__" || raw.includes("Quota exceeded") || raw.includes("quota")) {
-      showError('L&iacute;mite de API Key', 'Has alcanzado la cuota de la versi&oacute;n gratuita. Espera unos 30 segundos.');
-      startCountdown(); // Mantener el bucle vivo para reintentar cuando se enfríe
+    if (raw === "__QUOTA_LIMIT_EXCEEDED__") {
+      setKeyStatus(kObj.value, 'agotada');
+      showError('L&iacute;mite de Cuota', `La llave actual de ${kObj.provider.toUpperCase()} se ha agotado (Luz Roja).`);
+      stopAnalysis();
       return;
     }
 
     const d=tryJSON(raw); 
-    if(!d) throw new Error('Estructura de datos inv&aacute;lida recibida.');
+    if(!d) throw new Error('La respuesta de la IA no contiene un formato JSON v&aacute;lido.');
     
-    scanCount++;scanLabel.textContent=`${scanCount} an&aacute;lisis`;
+    setKeyStatus(kObj.value, 'activa'); // Regresa a verde si todo salió bien
+    scanCount++; scanLabel.textContent=`${scanCount} an&aacute;lisis`;
     mode==='ai'?renderAI(d):renderCoach(d);
-    startCountdown();
-  }catch(e){showError('Error en an&aacute;lisis',e.message);}
-  finally{spinner.classList.remove('show');analyzingTxt.classList.remove('show');}
+    resetInterval();
+  }catch(e){
+    showError('Error en an&aacute;lisis', e.message);
+    setKeyStatus(kObj.value, 'activa');
+  } finally{
+    spinner.classList.remove('show'); analyzingTxt.classList.remove('show');
+  }
 }
 
 const DEMO_IMGS=[
@@ -866,8 +920,9 @@ const DEMO_IMGS=[
 let demoIdx=0;
 
 demoBtn.addEventListener('click',async()=>{
-  const key = getSelectedKey(); if(!key){showError('API Key requerida','Agrega una clave.');return;}
+  const kObj = getSelectedKeyObj(); if(!kObj){showError('API Key requerida','Agrega una clave.');return;}
   demoBtn.disabled=true; demoBtn.textContent='⏳...';
+  setKeyStatus(kObj.value, 'en_uso');
   spinner.classList.add('show'); analyzingTxt.classList.add('show');
   $('idle-msg')?.remove(); $('twitch-note')?.remove();
   const sc=demoIdx%DEMO_IMGS.length; demoBanner.style.display='block';
@@ -878,16 +933,18 @@ demoBtn.addEventListener('click',async()=>{
     const b64=await new Promise((ok,ko)=>{const r=new FileReader();r.onload=()=>ok(r.result.split(',')[1]);r.readAsDataURL(blob);});
     demoIdx++;
     const sys=mode==='ai'?SYS_AI():SYS_COACH(COACHES[coach].prompt);
-    const raw=await callAI(b64,sys,'Gameplay. Responde SOLO con el JSON.');
     
-    if (raw === "__QUOTA_LIMIT_EXCEEDED__" || raw.includes("Quota exceeded")) {
-      showError('L&iacute;mite de API Key', 'L&iacute;mite alcanzado en Demo. Reintenta en 30s.');
+    const raw = await callAIProviders(b64, sys, 'Gameplay. Responde SOLO con el JSON.', kObj);
+    if (raw === "__QUOTA_LIMIT_EXCEEDED__") {
+      setKeyStatus(kObj.value, 'agotada');
+      showError('L&iacute;mite alcanzado', 'Llave agotada durante demostraci&oacute;n.');
       return;
     }
     
     const d=tryJSON(raw); scanCount++; scanLabel.textContent=`${scanCount} an&aacute;lisis`;
     if(mode==='ai'&&d)renderAI(d);else if(d)renderCoach(d);
-  }catch(e){showError('Error Demo',e.message);}
+    setKeyStatus(kObj.value, 'activa');
+  }catch(e){showError('Error Demo',e.message); setKeyStatus(kObj.value, 'activa');}
   finally{spinner.classList.remove('show');analyzingTxt.classList.remove('show');demoBtn.disabled=false;demoBtn.textContent='🎮 DEMO';}
 });
 
