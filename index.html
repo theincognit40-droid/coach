@@ -2,1007 +2,1070 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>FC24 Coach + Chat Premium (Multi-Provider)</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Lato:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<title>FC24 — Tactical Intelligence Pro</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
 <style>
 *{margin:0;padding:0;box-sizing:border-box;}
 :root{
-  --accent:#00E5FF; --accent2:#0288D1;
-  --danger:#FF3D3D; --warn:#FFA726; --ok:#69FF47; --gold:#FFD700;
-  --bg:#07090f; --surface:#0d1018; --card:#111620;
-  --border:rgba(255,255,255,0.08);
+  --bg:#04060d;--surface:#080b14;--card:rgba(255,255,255,0.025);
+  --border:rgba(255,255,255,0.07);--border2:rgba(255,255,255,0.04);
+  --accent:#00FFB2;--accent2:#7B61FF;--gold:#FFD54F;
+  --danger:#FF3D5A;--warn:#FFAB00;--ok:#50FA7B;--twitch:#9146FF;
+  --text:rgba(255,255,255,0.88);--muted:rgba(255,255,255,0.28);
+  --glow-a:rgba(0,255,178,0.12);--glow-g:rgba(255,213,79,0.1);
 }
-body{
-  background:var(--bg);color:#fff;
-  font-family:'Lato',sans-serif;
-  height:100vh;overflow:hidden;display:flex;flex-direction:column;
-}
+body{background:var(--bg);color:var(--text);font-family:'Syne',sans-serif;height:100vh;overflow:hidden;display:flex;flex-direction:column;}
 
-h1, h2, h3, .panel-title, .logo, .card-label, .chat-author, .top-btn, .coach-pill, .mode-tab{
-  font-family:'Poppins',sans-serif;
-  font-weight:700;
-}
+/* ── BG AMBIENT ── */
+body::before{content:'';position:fixed;top:-30%;left:-20%;width:60%;height:60%;background:radial-gradient(ellipse,rgba(0,255,178,0.04) 0%,transparent 70%);pointer-events:none;z-index:0;}
+body::after{content:'';position:fixed;bottom:-20%;right:-10%;width:50%;height:50%;background:radial-gradient(ellipse,rgba(123,97,255,0.05) 0%,transparent 70%);pointer-events:none;z-index:0;}
 
-/* ZONA DRAG OVERLAY */
-#drag-overlay{
-  position:fixed;inset:0;background:rgba(0,229,255,0.15);
-  backdrop-filter:blur(4px);z-index:9999;
-  display:none;align-items:center;justify-content:center;
-  border:4px dashed var(--accent);pointer-events:none;
-}
-#drag-overlay.active{display:flex;}
-.drag-msg{
-  background:#0d1018;padding:24px 40px;border-radius:12px;
-  border:1px solid rgba(0,229,255,0.3);text-align:center;
-  box-shadow:0 10px 40px rgba(0,0,0,0.6);
-  animation:pulse 1.5s infinite;
-}
-@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.02)}}
-.drag-msg h3{font-size:20px;color:var(--accent);margin-bottom:6px;letter-spacing:1px;}
-.drag-msg p{font-size:12px;color:rgba(255,255,255,0.5);font-family:'Share Tech Mono',monospace;}
+/* ── DRAG OVERLAY ── */
+#drag-ov{position:fixed;inset:0;background:rgba(0,255,178,0.06);backdrop-filter:blur(8px);z-index:9999;display:none;align-items:center;justify-content:center;border:2px dashed rgba(0,255,178,0.4);pointer-events:none;}
+#drag-ov.on{display:flex;}
+.drag-box{background:rgba(8,11,20,0.95);padding:28px 44px;border-radius:16px;border:1px solid rgba(0,255,178,0.25);text-align:center;animation:pop .4s cubic-bezier(.34,1.56,.64,1);box-shadow:0 0 60px rgba(0,255,178,0.1);}
+@keyframes pop{from{transform:scale(.88);opacity:0}to{transform:scale(1);opacity:1}}
+.drag-box h3{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:3px;color:var(--accent);margin-bottom:6px;}
+.drag-box p{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);}
 
-/* ═══ TOPBAR ═══════════════════════════════════════════════ */
+/* ── TOPBAR ── */
 #topbar{
-  display:flex;align-items:center;gap:10px;padding:10px 16px;
-  background:rgba(7,9,15,0.98);
+  display:flex;align-items:center;gap:8px;padding:0 14px;height:52px;
+  background:rgba(4,6,13,0.92);
   border-bottom:1px solid var(--border);
-  flex-shrink:0;flex-wrap:wrap;z-index:10;
-  backdrop-filter:blur(15px);
-  box-shadow:0 1px 20px rgba(0,0,0,0.4);
+  flex-shrink:0;z-index:20;backdrop-filter:blur(24px);flex-wrap:nowrap;overflow-x:auto;
+  box-shadow:0 1px 0 rgba(0,255,178,0.06),0 4px 20px rgba(0,0,0,0.5);
 }
-.logo{
-  font-size:18px;font-weight:800;letter-spacing:2px;
-  background:linear-gradient(90deg,var(--accent),var(--accent2));
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
-  white-space:nowrap;flex-shrink:0;
-}
-.logo em{font-style:normal;-webkit-text-fill-color:rgba(255,255,255,0.25);font-weight:400;}
+#topbar::-webkit-scrollbar{height:2px;}
+.wordmark{font-family:'Bebas Neue',sans-serif;font-size:21px;letter-spacing:3px;color:var(--accent);white-space:nowrap;flex-shrink:0;text-shadow:0 0 20px rgba(0,255,178,0.3);}
+.wordmark em{color:rgba(255,255,255,0.2);font-style:normal;}
+.vsep{width:1px;height:20px;background:linear-gradient(to bottom,transparent,var(--border),transparent);flex-shrink:0;}
 
-.top-input{
-  background:rgba(255,255,255,0.05);
-  border:1px solid rgba(255,255,255,0.1);
-  border-radius:8px;padding:7px 12px;color:#fff;
-  font-family:'Share Tech Mono',monospace;font-size:12px;outline:none;
-  transition:border-color .15s,box-shadow .15s;
-}
-.top-input:focus{border-color:var(--accent);box-shadow:0 0 0 2px rgba(0,229,255,0.1);}
-.top-input::placeholder{color:rgba(255,255,255,0.25);}
-#apikey-input{width:140px;}#channel-input{width:110px;}
+/* KEY SYSTEM */
+.key-row{display:flex;align-items:center;gap:4px;flex-shrink:0;}
+.key-sel,.prov-sel{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:6px;padding:5px 7px;color:white;font-family:'DM Mono',monospace;font-size:11px;outline:none;cursor:pointer;transition:border-color .15s;}
+.key-sel:hover,.prov-sel:hover{border-color:rgba(255,255,255,0.15);}
+.prov-sel{width:92px;}.key-sel{width:132px;}
+.key-sel option,.prov-sel option{background:#080b14;}
+.key-in{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:6px;padding:5px 9px;color:white;font-family:'DM Mono',monospace;font-size:11px;outline:none;width:122px;transition:border-color .15s,box-shadow .15s;}
+.key-in:focus{border-color:var(--accent);box-shadow:0 0 0 2px rgba(0,255,178,0.08);}
+.key-in::placeholder{color:rgba(255,255,255,0.18);}
 
-.keys-container{display:flex;align-items:center;gap:4px;}
-.keys-select, .provider-select{
-  background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);
-  border-radius:8px;padding:7px 10px;color:#fff;font-family:'Share Tech Mono',monospace;
-  font-size:12px;outline:none;cursor:pointer;
-}
-.provider-select{max-width:100px;}
-.keys-select{max-width:160px;}
-.keys-select option, .provider-select option{background:var(--surface);color:#fff;}
-
-.top-btn{
-  border:none;border-radius:8px;padding:8px 14px;
-  font-size:13px;font-weight:700;
-  letter-spacing:.5px;cursor:pointer;white-space:nowrap;transition:all .15s;
-  position:relative;overflow:hidden;
-}
-.top-btn::after{content:'';position:absolute;inset:0;background:rgba(255,255,255,0);transition:.15s;}
-.top-btn:hover::after{background:rgba(255,255,255,0.06);}
-#load-btn{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#07090f;font-weight:800;}
-#analyze-btn{background:rgba(0,229,255,0.08);border:1px solid rgba(0,229,255,0.3);color:var(--accent);}
-#analyze-btn.stop{background:rgba(255,61,61,0.08);border-color:rgba(255,61,61,0.4);color:var(--danger);}
-#demo-btn{background:rgba(255,215,0,0.08);border:1px solid rgba(255,215,0,0.3);color:var(--gold);}
-#demo-btn:disabled{opacity:.35;cursor:not-allowed;}
-
-#upload-btn{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.6);font-size:11px;padding:7px 10px;}
-#upload-btn:hover{border-color:rgba(255,255,255,0.2);color:#fff;}
+/* TOP BUTTONS */
+.tbtn{border-radius:7px;padding:6px 12px;font-family:'Syne',sans-serif;font-size:11px;font-weight:700;letter-spacing:.5px;cursor:pointer;border:none;white-space:nowrap;transition:all .15s;flex-shrink:0;position:relative;overflow:hidden;}
+.tbtn::after{content:'';position:absolute;inset:0;background:rgba(255,255,255,0);transition:.15s;}
+.tbtn:hover::after{background:rgba(255,255,255,0.06);}
+.tbtn-load{background:linear-gradient(135deg,var(--accent),#00c890);color:#04060d;box-shadow:0 2px 12px rgba(0,255,178,0.25);}
+.tbtn-analyze{background:rgba(0,255,178,0.08);border:1px solid rgba(0,255,178,0.22);color:var(--accent);}
+.tbtn-analyze:hover{box-shadow:0 0 12px rgba(0,255,178,0.12);}
+.tbtn-analyze.stop{background:rgba(255,61,90,0.08);border-color:rgba(255,61,90,0.28);color:var(--danger);}
+.tbtn-demo{background:rgba(255,213,79,0.07);border:1px solid rgba(255,213,79,0.22);color:var(--gold);}
+.tbtn-demo:disabled{opacity:.25;cursor:not-allowed;}
+.tbtn-add{background:rgba(0,255,178,0.06);border:1px solid rgba(0,255,178,0.15);color:var(--accent);}
+.tbtn-del{background:rgba(255,61,90,0.06);border:1px solid rgba(255,61,90,0.2);color:var(--danger);}
+.tbtn-upload{background:rgba(255,255,255,0.03);border:1px solid var(--border2);color:rgba(255,255,255,0.35);font-size:10px;}
+.chan-in{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:6px;padding:5px 9px;color:white;font-family:'DM Mono',monospace;font-size:11px;outline:none;width:112px;transition:border-color .15s;}
+.chan-in:focus{border-color:var(--twitch);box-shadow:0 0 0 2px rgba(145,70,255,0.08);}
+.chan-in::placeholder{color:rgba(255,255,255,0.18);}
 
 /* MODE TABS */
-.mode-tabs{display:flex;gap:2px;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:9px;padding:3px;}
-.mode-tab{
-  padding:5px 11px;border-radius:7px;font-size:12px;font-weight:700;
-  cursor:pointer;color:rgba(255,255,255,0.3);
-  border:none;background:transparent;transition:all .2s;white-space:nowrap;
-}
-.mode-tab.active{background:rgba(0,229,255,0.12);color:var(--accent);box-shadow:inset 0 0 0 1px rgba(0,229,255,0.2);}
-.mode-tab.ai-tab.active{background:rgba(255,215,0,0.1);color:var(--gold);box-shadow:inset 0 0 0 1px rgba(255,215,0,0.2);}
+.mode-tabs{display:flex;gap:2px;background:rgba(255,255,255,0.02);border:1px solid var(--border2);border-radius:8px;padding:2px;flex-shrink:0;}
+.mtab{padding:5px 11px;border-radius:6px;font-size:11px;font-weight:700;cursor:pointer;color:var(--muted);border:none;background:transparent;transition:all .18s;white-space:nowrap;}
+.mtab.active{background:rgba(0,255,178,0.1);color:var(--accent);box-shadow:inset 0 0 0 1px rgba(0,255,178,0.2),0 2px 8px rgba(0,255,178,0.08);}
+.mtab.ai.active{background:rgba(255,213,79,0.1);color:var(--gold);box-shadow:inset 0 0 0 1px rgba(255,213,79,0.2),0 2px 8px rgba(255,213,79,0.08);}
 
 /* COACH PILLS */
-#coach-pills-wrap{display:flex;gap:4px;}
-.coach-pill{
-  background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);
-  border-radius:6px;padding:5px 10px;font-size:12px;font-weight:700;
-  color:rgba(255,255,255,0.3);cursor:pointer;transition:all .15s;white-space:nowrap;
-}
-.coach-pill:hover{border-color:rgba(255,255,255,0.15);color:rgba(255,255,255,0.6);}
-.coach-pill.active{border-color:var(--accent);color:var(--accent);background:rgba(0,229,255,0.07);}
-
-/* FREQ */
-.freq-pills{display:flex;gap:2px;background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:7px;padding:2px;}
-.freq-pill{background:transparent;border:none;border-radius:5px;padding:4px 8px;font-size:11px;font-weight:700;color:rgba(255,255,255,0.3);cursor:pointer;transition:all .15s;}
-.freq-pill.active{background:rgba(0,229,255,0.1);color:var(--accent);}
-
+.c-pills{display:flex;gap:3px;flex-shrink:0;}
+.cpill{background:rgba(255,255,255,0.02);border:1px solid var(--border2);border-radius:6px;padding:4px 9px;font-size:11px;font-weight:700;color:var(--muted);cursor:pointer;transition:all .15s;white-space:nowrap;}
+.cpill:hover{border-color:var(--border);color:rgba(255,255,255,0.6);}
+.cpill.active{border-color:rgba(0,255,178,0.35);color:var(--accent);background:rgba(0,255,178,0.07);box-shadow:0 0 10px rgba(0,255,178,0.08);}
+.freq-pills{display:flex;gap:2px;background:rgba(255,255,255,0.02);border:1px solid var(--border2);border-radius:7px;padding:2px;flex-shrink:0;}
+.fpill{background:transparent;border:none;border-radius:5px;padding:4px 8px;font-size:11px;font-weight:700;color:var(--muted);cursor:pointer;transition:all .15s;font-family:'DM Mono',monospace;}
+.fpill.active{background:rgba(0,255,178,0.1);color:var(--accent);}
 #live-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.1);flex-shrink:0;transition:all .3s;}
-#live-dot.active{background:var(--danger);box-shadow:0 0 8px var(--danger);animation:blink 1.2s ease infinite;}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+#live-dot.on{background:var(--danger);box-shadow:0 0 10px var(--danger),0 0 20px rgba(255,61,90,0.3);animation:blink 1.2s ease infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
 
-/* ═══ MAIN ══════════════════════════════════════════════════ */
-#main{display:flex;flex:1;overflow:hidden;}
-#stream-wrap{flex:1;position:relative;background:#000;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+/* ── MAIN ── */
+#main{display:flex;flex:1;overflow:hidden;position:relative;z-index:1;}
+#stream-wrap{flex:1;background:#000;position:relative;display:flex;align-items:center;justify-content:center;overflow:hidden;}
+#stream-ph{text-align:center;color:var(--muted);padding:40px;position:relative;z-index:1;}
+#stream-ph::before{content:'';position:absolute;inset:-100px;background:linear-gradient(rgba(0,255,178,0.012) 1px,transparent 1px),linear-gradient(90deg,rgba(0,255,178,0.012) 1px,transparent 1px);background-size:40px 40px;animation:gridmv 10s linear infinite;z-index:-1;}
+@keyframes gridmv{from{transform:translateY(0)}to{transform:translateY(40px)}}
+#stream-ph .ico{font-size:60px;margin-bottom:16px;filter:drop-shadow(0 0 24px rgba(0,255,178,0.2));}
+#stream-ph h2{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:4px;color:rgba(255,255,255,0.18);margin-bottom:10px;}
+#stream-ph p{font-family:'DM Mono',monospace;font-size:11px;line-height:2.1;color:rgba(255,255,255,0.13);}
+#stream-ph .hint{margin-top:18px;font-size:10px;color:rgba(0,255,178,0.45);border:1px solid rgba(0,255,178,0.1);border-radius:6px;padding:6px 14px;display:inline-block;font-family:'DM Mono',monospace;background:rgba(0,255,178,0.03);}
+#twitch-if{width:100%;height:100%;border:none;display:none;}
 
-#stream-placeholder{text-align:center;color:rgba(255,255,255,0.1);position:relative;z-index:1;padding:40px;}
-#stream-placeholder::before{
-  content:'';position:absolute;inset:-100px;
-  background:linear-gradient(rgba(0,229,255,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,0.02) 1px,transparent 1px);
-  background-size:40px 40px;animation:gridMove 8s linear infinite;z-index:-1;
-}
-@keyframes gridMove{from{transform:translateY(0)}to{transform:translateY(40px)}}
-#stream-placeholder .big{font-size:60px;margin-bottom:14px;filter:drop-shadow(0 0 20px rgba(0,229,255,0.2));}
-#stream-placeholder h2{font-size:22px;font-weight:800;letter-spacing:2px;color:rgba(255,255,255,0.3);margin-bottom:8px;}
-#stream-placeholder p{font-size:13px;font-family:'Share Tech Mono',monospace;line-height:2;color:rgba(255,255,255,0.2);}
-#stream-placeholder .hint{margin-top:16px;font-size:11px;color:rgba(0,229,255,0.4);border:1px solid rgba(0,229,255,0.15);border-radius:6px;padding:6px 12px;display:inline-block;}
-#twitch-frame{width:100%;height:100%;border:none;display:none;}
+/* ── SIDE PANEL ── */
+#side{width:345px;flex-shrink:0;background:var(--surface);border-left:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;box-shadow:-4px 0 32px rgba(0,0,0,0.5);}
 
-/* ═══ PANEL DERECHO ═══ */
-#coach-panel{
-  width:360px;flex-shrink:0;
-  background:var(--surface);
-  border-left:1px solid var(--border);
-  display:flex;flex-direction:column;
-  height:100%;overflow:hidden;
-  box-shadow:-4px 0 30px rgba(0,0,0,0.4);
-}
+/* SIDE TABS */
+.side-tabs{display:flex;border-bottom:1px solid var(--border);flex-shrink:0;background:rgba(0,0,0,0.2);}
+.stab{flex:1;padding:11px 0;text-align:center;font-size:10px;font-weight:800;letter-spacing:1.5px;color:var(--muted);cursor:pointer;border:none;background:transparent;border-bottom:2px solid transparent;transition:all .18s;}
+.stab.active{color:var(--accent);border-bottom-color:var(--accent);background:rgba(0,255,178,0.03);}
+.stab.active.purple{color:var(--accent2);border-bottom-color:var(--accent2);background:rgba(123,97,255,0.03);}
 
-#panel-header{
-  padding:12px 16px;
-  border-bottom:1px solid var(--border);
-  display:flex;align-items:center;justify-content:space-between;flex-shrink:0;
-  background:rgba(0,0,0,0.2);
-}
-.panel-title{font-size:11px;letter-spacing:2px;color:rgba(255,255,255,0.35);text-transform:uppercase;}
-.panel-title.ai-mode{color:var(--gold);opacity:0.8;}
+.tab-pane{display:none;flex:1;flex-direction:column;overflow:hidden;}
+.tab-pane.active{display:flex;}
+#t-live{flex-direction:column;}
 
-#spin-wrap{display:flex;align-items:center;gap:6px;}
-.spinner{
-  width:12px;height:12px;
-  border:2px solid rgba(0,229,255,0.2);
-  border-top-color:var(--accent);
-  border-radius:50%;animation:spin .7s linear infinite;display:none;
-}
+#panel-hdr{padding:10px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-shrink:0;background:rgba(0,0,0,0.25);}
+.phdr-title{font-size:9px;letter-spacing:2px;color:var(--muted);font-family:'DM Mono',monospace;text-transform:uppercase;}
+.phdr-title.ai{color:var(--gold);}
+#ai-badge{display:none;background:rgba(255,213,79,0.08);border:1px solid rgba(255,213,79,0.2);border-radius:4px;padding:2px 8px;font-size:8px;font-weight:800;color:var(--gold);letter-spacing:1px;}
+#ai-badge.on{display:block;}
+#spin-area{display:flex;align-items:center;gap:5px;}
+.sp{width:12px;height:12px;border:2px solid rgba(0,255,178,0.12);border-top-color:var(--accent);border-radius:50%;animation:spin .65s linear infinite;display:none;}
 @keyframes spin{to{transform:rotate(360deg)}}
-.spinner.show{display:block;}
-#analyzing-txt{font-size:10px;color:var(--accent);font-family:'Share Tech Mono',monospace;display:none;letter-spacing:1px;}
-#analyzing-txt.show{display:block;}
-
-#ai-badge{
-  display:none;
-  background:rgba(255,215,0,0.1);
-  border:1px solid rgba(255,215,0,0.2);border-radius:5px;
-  padding:3px 8px;font-size:9px;font-weight:800;color:var(--gold);
-  letter-spacing:1px;
-}
-#ai-badge.show{display:block;}
-
-#demo-banner{
-  display:none;padding:6px 12px;font-size:10px;color:var(--gold);
-  font-family:'Share Tech Mono',monospace;
-  background:rgba(255,215,0,0.04);
-  border-bottom:1px solid rgba(255,215,0,0.1);text-align:center;flex-shrink:0;
-}
-
-#panel-body{
-  flex:1;
-  overflow-y:auto;
-  padding:12px;
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-}
-::-webkit-scrollbar{width:4px;}
-::-webkit-scrollbar-track{background:transparent;}
-::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:2px;}
-
-/* CARDS */
-@keyframes fadeSlide{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-.card{border-radius:10px;padding:12px 14px;animation:fadeSlide .25s ease;}
-.card-label{
-  font-size:10px;letter-spacing:1.5px;color:var(--accent);
-  margin-bottom:6px;text-transform:uppercase;display:flex;align-items:center;gap:6px;
-}
-.card-label::after{content:'';flex:1;height:1px;background:currentColor;opacity:.15;}
-
-.card-sit{background:rgba(255,255,255,0.02);border:1px solid var(--border);}
-.card-sit p{font-size:15px;color:rgba(255,255,255,0.95);line-height:1.6;font-weight:400;}
-
-.alert-card{display:flex;gap:10px;align-items:flex-start;padding:10px 12px;border-radius:8px;border-left:4px solid;animation:fadeSlide .25s ease;}
-.alert-card.danger {background:rgba(255,61,61,0.08); border-color:var(--danger);}
-.alert-card.warning{background:rgba(255,167,38,0.08);border-color:var(--warn);}
-.alert-card.info   {background:rgba(0,229,255,0.06); border-color:var(--accent);}
-.alert-card.success{background:rgba(105,255,71,0.06);border-color:var(--ok);}
-.alert-zona{font-size:9px;font-family:'Share Tech Mono',monospace;font-weight:800;flex-shrink:0;margin-top:1px;letter-spacing:0.5px;padding:2px 6px;border-radius:4px;}
-.alert-card.danger  .alert-zona{color:var(--danger);background:rgba(255,61,61,0.15);}
-.alert-card.warning .alert-zona{color:var(--warn);  background:rgba(255,167,38,0.15);}
-.alert-card.info    .alert-zona{color:var(--accent);background:rgba(0,229,255,0.12);}
-.alert-card.success .alert-zona{color:var(--ok);    background:rgba(105,255,71,0.12);}
-.alert-msg{font-size:14px;color:#fff;line-height:1.45;font-weight:600;}
-
-.card-advice{background:rgba(255,255,255,0.01);border:1px solid rgba(255,255,255,0.08);border-left:4px solid var(--accent);border-radius:10px;padding:14px;animation:fadeSlide .25s ease;}
-.card-advice.ai-card{border-left-color:var(--gold);background:rgba(255,215,0,0.02);}
-.card-advice .card-label{color:var(--accent);}
-.card-advice.ai-card .card-label{color:var(--gold);}
-.card-advice p{font-size:16px;color:#fff;font-weight:700;line-height:1.55;font-style:italic;}
-
-.card-tactic{background:rgba(105,255,71,0.03);border:1px solid rgba(105,255,71,0.1);border-radius:10px;padding:12px 14px;}
-.card-tactic .card-label{color:var(--ok);}
-.card-tactic p{font-size:14px;color:rgba(255,255,255,0.85);line-height:1.5;font-weight:400;}
-
-.card-formation{background:rgba(255,215,0,0.03);border:1px solid rgba(255,215,0,0.12);border-radius:10px;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;}
-.card-formation .card-label{color:var(--gold);margin-bottom:4px;}
-.card-formation .form-name{font-size:30px;font-weight:800;color:var(--gold);letter-spacing:2px;line-height:1;}
-.card-formation .form-desc{font-size:11px;color:rgba(255,255,255,0.4);margin-top:4px;}
-.form-phase{text-align:right;flex-shrink:0;}
-.form-phase .phase-icon{font-size:24px;}
-.form-phase .phase-txt{font-size:9px;color:rgba(255,255,255,0.4);letter-spacing:1px;margin-top:2px;}
-
-.card-metrics{background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:10px;padding:12px 14px;}
-.card-metrics .card-label{color:rgba(255,255,255,0.3);}
-.metric-row{display:flex;align-items:center;gap:10px;margin-bottom:6px;}
-.metric-row:last-child{margin-bottom:0;}
-.metric-icon{font-size:12px;width:16px;text-align:center;}
-.metric-lbl{font-size:0px;font-family:'Share Tech Mono',monospace;color:rgba(255,255,255,0.4);width:35px;}
-.metric-bar{flex:1;height:6px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden;}
-.metric-fill{height:100%;border-radius:3px;transition:width .5s ease-out;}
-.metric-fill.danger-fill{background:linear-gradient(90deg,var(--danger),#FF7043);}
-.metric-fill.warn-fill  {background:linear-gradient(90deg,var(--warn),#FFD54F);}
-.metric-fill.ok-fill    {background:linear-gradient(90deg,var(--ok),#00E676);}
-.metric-val{font-size:10px;font-family:'Share Tech Mono',monospace;color:rgba(255,255,255,0.4);width:30px;text-align:right;}
-
-.card-ai-tactic{background:rgba(255,215,0,0.02);border:1px solid rgba(255,215,0,0.1);border-left:4px solid var(--gold);border-radius:10px;padding:12px 14px;}
-.card-ai-tactic .card-label{color:var(--gold);}
-.card-ai-tactic p{font-size:15px;color:#fff;font-weight:600;line-height:1.55;font-style:italic;}
-
-.error-card{background:rgba(255,61,61,0.06);border:1px solid rgba(255,61,61,0.2);border-left:4px solid var(--danger);border-radius:10px;padding:10px 14px;}
-.error-card .error-title{font-size:10px;color:var(--danger);letter-spacing:1px;margin-bottom:4px;}
-.error-card .error-msg{font-size:12px;color:rgba(255,255,255,0.7);line-height:1.5;}
-.error-card .error-retry{margin-top:6px;font-size:12px;color:var(--danger);font-weight:700;cursor:pointer;border:none;background:none;}
+.sp.on{display:block;}
+#sp-txt{font-size:9px;color:var(--accent);font-family:'DM Mono',monospace;display:none;letter-spacing:1px;}
+#sp-txt.on{display:block;}
 
 /* TEAM SETUP */
-#team-setup{background:rgba(0,0,0,0.2);border-bottom:1px solid var(--border);padding:12px;display:flex;flex-direction:column;gap:8px;flex-shrink:0;}
-.setup-row{display:flex;align-items:center;gap:8px;}
-.setup-label{font-size:10px;letter-spacing:1px;color:rgba(255,255,255,0.4);width:55px;flex-shrink:0;}
-.setup-input{flex:1;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:6px 10px;color:#fff;font-size:13px;outline:none;}
-.setup-save{background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;border-radius:6px;padding:6px 14px;font-size:13px;font-weight:800;color:#07090f;cursor:pointer;white-space:nowrap;}
-#team-badge{display:none;background:rgba(0,229,255,0.06);border:1px solid rgba(0,229,255,0.15);border-radius:5px;padding:4px 8px;font-size:11px;color:var(--accent);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;}
-#team-badge.show{display:block;}
+#team-setup{padding:10px 13px;border-bottom:1px solid var(--border);display:flex;flex-direction:column;gap:6px;flex-shrink:0;background:rgba(0,0,0,0.15);}
+.ts-row{display:flex;align-items:center;gap:7px;}
+.ts-lbl{font-size:9px;letter-spacing:1px;color:var(--muted);font-family:'DM Mono',monospace;width:48px;flex-shrink:0;}
+.ts-in{flex:1;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:6px;padding:5px 10px;color:white;font-size:12px;outline:none;font-family:'Syne',sans-serif;transition:border-color .15s;}
+.ts-in:focus{border-color:rgba(0,255,178,0.35);}
+.ts-save{background:linear-gradient(135deg,var(--accent),#00c890);border:none;border-radius:6px;padding:5px 12px;font-size:11px;font-weight:800;color:#04060d;cursor:pointer;white-space:nowrap;box-shadow:0 2px 8px rgba(0,255,178,0.2);}
+#team-badge{display:none;font-size:10px;color:var(--accent);font-family:'DM Mono',monospace;background:rgba(0,255,178,0.05);border:1px solid rgba(0,255,178,0.15);border-radius:4px;padding:3px 9px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+#team-badge.on{display:block;}
 
-.card-team{background:rgba(145,70,255,0.04);border:1px solid rgba(145,70,255,0.15);border-left:4px solid #9146FF;border-radius:10px;padding:12px 14px;}
-.card-team .card-label{color:#9146FF;}
-.card-team p{font-size:14px;color:rgba(255,255,255,0.9);line-height:1.55;font-weight:600;}
+/* LIVE OUTPUT */
+#live-out{flex:1;overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:7px;}
+::-webkit-scrollbar{width:3px;}::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.07);border-radius:2px;}
 
-#twitch-note{background:rgba(145,70,255,0.04);border:1px solid rgba(145,70,255,0.15);border-radius:8px;padding:10px;font-size:12px;color:rgba(255,255,255,0.5);line-height:1.6;}
-#idle-msg{text-align:center;color:rgba(255,255,255,0.2);padding:40px 12px;}
-#idle-msg .ico{font-size:40px;margin-bottom:10px;opacity:.5;}
-#idle-msg h3{font-size:15px;color:rgba(255,255,255,0.4);margin-bottom:6px;}
-#idle-msg p{font-size:12px;line-height:1.8;}
+/* CARDS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.acard{border-radius:9px;padding:11px 13px;animation:fadeUp .3s cubic-bezier(.22,1,.36,1);backdrop-filter:blur(12px);background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);box-shadow:0 8px 32px 0 rgba(0,0,0,0.3);transition:all .25s ease;}
+.acard:hover{border-color:var(--accent);box-shadow:0 0 15px rgba(0,255,178,0.12);}
+.alabel{font-family:'DM Mono',monospace;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:6px;display:flex;align-items:center;gap:6px;}
+.alabel::after{content:'';flex:1;height:1px;background:currentColor;opacity:.1;}
 
-/* CHAT LIVE PANEL */
-#chat-section{border-top:1px solid var(--border);background:rgba(13,16,24,0.99);display:flex;flex-direction:column;flex-shrink:0;height:240px;transition:height 0.2s ease;}
-#chat-section.collapsed{height:36px;}
-#chat-header{background:rgba(0,0,0,0.3);padding:8px 14px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;border-bottom:1px solid var(--border);flex-shrink:0;}
-#chat-toggle-btn{background:none;border:none;color:rgba(255,255,255,0.5);font-size:11px;cursor:pointer;}
-#chat-box{flex:1;overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:8px;}
-.chat-msg-row{display:flex;flex-direction:column;font-size:13px;animation:fadeSlide 0.15s ease;line-height:1.45;}
-.chat-msg-row.user{align-items:flex-end;}
-.chat-msg-row.user .chat-bubble{background:rgba(0,229,255,0.12);border:1px solid rgba(0,229,255,0.25);color:#fff;border-bottom-right-radius:2px;}
-.chat-msg-row.coach .chat-bubble{background:rgba(255,255,255,0.03);border:1px solid var(--border);color:rgba(255,255,255,0.9);border-bottom-left-radius:2px;}
-.chat-msg-row.coach .chat-author{color:var(--accent);font-size:10px;margin-bottom:3px;letter-spacing:0.5px;text-transform:uppercase;}
-.chat-msg-row.coach.ai-style .chat-author{color:var(--gold);}
-.chat-bubble{padding:8px 12px;border-radius:9px;max-width:85%;word-break:break-word;font-size:14px;}
-#chat-input-row{display:flex;padding:6px;background:rgba(0,0,0,0.25);border-top:1px solid var(--border);gap:6px;flex-shrink:0;}
-#chat-input{flex:1;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);border-radius:6px;padding:6px 12px;color:#fff;font-size:13px;outline:none;}
-#chat-input:focus{border-color:rgba(0,229,255,0.3);}
-#chat-send-btn{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#fff;font-size:12px;font-weight:700;padding:0 14px;border-radius:6px;cursor:pointer;}
-#chat-send-btn:hover{background:rgba(0,229,255,0.1);border-color:var(--accent);color:var(--accent);}
+.acard.sit{background:rgba(255,255,255,0.025);border:1px solid var(--border);}
+.acard.sit .alabel{color:var(--accent);}
+.acard.sit p{font-size:13px;color:var(--text);line-height:1.6;}
+
+.acard.advice{background:linear-gradient(135deg,rgba(0,255,178,0.04),rgba(0,255,178,0.01));border:1px solid rgba(0,255,178,0.14);border-left:3px solid var(--accent);box-shadow:inset 0 0 20px rgba(0,255,178,0.02);}
+.acard.advice .alabel{color:var(--accent);}
+.acard.advice p{font-size:14px;color:white;font-weight:700;line-height:1.55;font-style:italic;}
+.acard.advice.ai-a{background:linear-gradient(135deg,rgba(255,213,79,0.04),rgba(255,213,79,0.01));border-color:rgba(255,213,79,0.18);border-left-color:var(--gold);box-shadow:inset 0 0 20px rgba(255,213,79,0.02);}
+.acard.advice.ai-a .alabel{color:var(--gold);}
+
+.acard.tactic{background:rgba(80,250,123,0.03);border:1px solid rgba(80,250,123,0.12);}
+.acard.tactic .alabel{color:var(--ok);}
+.acard.tactic p{font-size:12px;color:rgba(255,255,255,0.72);font-family:'DM Mono',monospace;line-height:1.5;}
+
+.acard.personal{background:linear-gradient(135deg,rgba(255,171,0,0.05),rgba(255,171,0,0.02));border:1px solid rgba(255,171,0,0.15);border-left:3px solid var(--warn);}
+.acard.personal .alabel{color:var(--warn);}
+.acard.personal p{font-size:12px;color:rgba(255,255,255,0.8);line-height:1.5;}
+
+.acard.team{background:linear-gradient(135deg,rgba(145,70,255,0.06),rgba(145,70,255,0.02));border:1px solid rgba(145,70,255,0.16);border-left:3px solid var(--twitch);}
+.acard.team .alabel{color:var(--twitch);}
+.acard.team p{font-size:13px;color:rgba(255,255,255,0.85);font-weight:600;line-height:1.5;}
+
+/* FORMATION CARD */
+.acard.formation{background:linear-gradient(135deg,rgba(255,213,79,0.05),rgba(255,213,79,0.01));border:1px solid rgba(255,213,79,0.15);overflow:hidden;position:relative;}
+.acard.formation::after{content:'';position:absolute;top:-20px;right:-20px;width:80px;height:80px;border-radius:50%;background:radial-gradient(circle,rgba(255,213,79,0.08),transparent);pointer-events:none;}
+.acard.formation .alabel{color:var(--gold);}
+.form-row{display:flex;align-items:center;justify-content:space-between;}
+.form-num{font-family:'Bebas Neue',sans-serif;font-size:38px;letter-spacing:3px;color:var(--gold);text-shadow:0 0 20px rgba(255,213,79,0.3);line-height:1;}
+.form-phase{text-align:right;}
+.form-phase .pi{font-size:26px;}.form-phase .pt{font-size:8px;color:var(--muted);letter-spacing:1px;font-family:'DM Mono',monospace;}
+
+/* METRICS CARD WITH RING METRICS INTEGRATED */
+.acard.metrics{background:rgba(255,255,255,0.02);border:1px solid var(--border);}
+.acard.metrics .alabel{color:var(--muted);}
+
+/* RING METRICS */
+.rings-wrap{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:10px;background:rgba(0,0,0,0.18);padding:8px 4px;border-radius:8px;}
+.ring-item{display:flex;flex-direction:column;align-items:center;gap:4px;}
+.ring-svg{width:52px;height:52px;transform:rotate(-90deg);}
+.ring-bg{fill:none;stroke:rgba(255,255,255,0.05);stroke-width:4;}
+.ring-fill{fill:none;stroke-width:4;stroke-linecap:round;transition:stroke-dashoffset 0.8s cubic-bezier(.22,1,.36,1);}
+.ring-val-text{position:absolute;font-family:'Bebas Neue',sans-serif;font-size:12px;color:white;font-weight:bold;}
+.ring-container-box{position:relative;width:52px;height:52px;display:flex;align-items:center;justify-content:center;}
+.ring-lbl{font-size:8px;color:var(--muted);font-family:'DM Mono',monospace;letter-spacing:.5px;text-align:center;text-transform:uppercase;}
+
+/* BAR METRICS */
+.mrow{display:flex;align-items:center;gap:8px;margin-bottom:5px;}
+.mrow:last-child{margin-bottom:0;}
+.mico{font-size:10px;width:14px;text-align:center;}
+.mlbl{font-size:9px;font-family:'DM Mono',monospace;color:var(--muted);width:48px;}
+.mbar{flex:1;height:4px;background:rgba(255,255,255,0.05);border-radius:2px;overflow:hidden;}
+.mfill{height:100%;border-radius:2px;transition:width .8s cubic-bezier(.22,1,.36,1);}
+.mfill.d{background:linear-gradient(90deg,var(--danger),#FF6B5B);}
+.mfill.w{background:linear-gradient(90deg,var(--warn),#FFD060);}
+.mfill.o{background:linear-gradient(90deg,var(--ok),#00E676);}
+.mfill.b{background:linear-gradient(90deg,#4FC3F7,#0288D1);}
+.mval{font-size:10px;font-family:'DM Mono',monospace;font-weight:700;width:30px;text-align:right;}
+.mval.d{color:var(--danger);}
+.mval.w{color:var(--warn);}
+.mval.o{color:var(--ok);}
+.mval.b{color:#4FC3F7;}
+
+.acard.ai-own{background:linear-gradient(135deg,rgba(255,213,79,0.04),rgba(255,213,79,0.01));border:1px solid rgba(255,213,79,0.14);border-left:3px solid var(--gold);box-shadow:inset 0 0 20px rgba(255,213,79,0.02);}
+.acard.ai-own .alabel{color:var(--gold);}
+.acard.ai-own p{font-size:13px;color:white;font-weight:600;line-height:1.55;font-style:italic;}
+
+.acard.err{background:rgba(255,61,90,0.05);border:1px solid rgba(255,61,90,0.18);border-left:3px solid var(--danger);}
+.acard.err .alabel{color:var(--danger);}
+.acard.err p{font-size:11px;color:rgba(255,255,255,0.6);font-family:'DM Mono',monospace;line-height:1.5;}
+.acard.err button{margin-top:5px;background:none;border:none;color:var(--danger);font-size:11px;cursor:pointer;font-weight:700;}
+
+.alertbox{display:flex;flex-direction:column;gap:4px;}
+.al{display:flex;gap:8px;align-items:flex-start;padding:8px 10px;border-radius:7px;border-left:3px solid;animation:fadeUp .3s ease;}
+.al.danger{background:linear-gradient(90deg,rgba(255,61,90,0.1),rgba(255,61,90,0.04));border-color:var(--danger);}
+.al.warning{background:linear-gradient(90deg,rgba(255,171,0,0.1),rgba(255,171,0,0.04));border-color:var(--warn);}
+.al.info{background:linear-gradient(90deg,rgba(0,255,178,0.07),rgba(0,255,178,0.02));border-color:var(--accent);}
+.al.success{background:linear-gradient(90deg,rgba(80,250,123,0.07),rgba(80,250,123,0.02));border-color:var(--ok);}
+.alzona{font-size:8px;font-family:'DM Mono',monospace;font-weight:700;flex-shrink:0;margin-top:1px;letter-spacing:1px;padding:2px 6px;border-radius:3px;}
+.al.danger  .alzona{color:var(--danger);background:rgba(255,61,90,0.18);}
+.al.warning .alzona{color:var(--warn);background:rgba(255,171,0,0.18);}
+.al.info    .alzona{color:var(--accent);background:rgba(0,255,178,0.15);}
+.al.success .alzona{color:var(--ok);background:rgba(80,250,123,0.15);}
+.almsg{font-size:12px;color:rgba(255,255,255,0.88);line-height:1.45;font-weight:600;}
+.divl{height:1px;background:linear-gradient(to right,transparent,var(--border),transparent);margin:3px 0;}
+
+/* CHAT */
+#chat-sec{border-top:1px solid var(--border);display:flex;flex-direction:column;flex-shrink:0;height:42px;transition:height .22s cubic-bezier(.22,1,.36,1);overflow:hidden;background:rgba(0,0,0,0.2);}
+#chat-sec.open{height:230px;}
+#chat-hdr{padding:8px 13px;display:flex;align-items:center;justify-content:space-between;cursor:pointer;flex-shrink:0;}
+#chat-toggle{background:none;border:none;color:var(--muted);font-size:10px;cursor:pointer;font-family:'DM Mono',monospace;letter-spacing:1px;transition:color .15s;}
+#chat-toggle:hover{color:white;}
+#chat-hdr-title{font-size:9px;letter-spacing:2px;color:var(--accent);font-family:'DM Mono',monospace;font-weight:700;}
+#chat-box{flex:1;overflow-y:auto;padding:8px;display:flex;flex-direction:column;gap:6px;}
+.cmrow{display:flex;flex-direction:column;animation:fadeUp .18s ease;}
+.cmrow.user{align-items:flex-end;}
+.cmrow.coach{align-items:flex-start;}
+.cmrow .ca{font-size:8px;color:var(--accent);font-family:'DM Mono',monospace;letter-spacing:.5px;margin-bottom:2px;text-transform:uppercase;}
+.cmrow.user .ca{color:var(--muted);}
+.cmrow.ai-style .ca{color:var(--gold);}
+.cbubble{padding:8px 12px;border-radius:9px;max-width:88%;word-break:break-word;font-size:12px;line-height:1.48;}
+.cmrow.user .cbubble{background:rgba(0,255,178,0.09);border:1px solid rgba(0,255,178,0.2);border-bottom-right-radius:2px;}
+.cmrow.coach .cbubble{background:rgba(255,255,255,0.03);border:1px solid var(--border);border-bottom-left-radius:2px;color:rgba(255,255,255,0.85);}
+#chat-in-row{display:flex;padding:6px 7px;gap:5px;flex-shrink:0;border-top:1px solid var(--border);}
+#chat-in{flex:1;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:6px;padding:6px 11px;color:white;font-size:12px;outline:none;font-family:'Syne',sans-serif;transition:border-color .15s;}
+#chat-in:focus{border-color:rgba(0,255,178,0.3);}
+#chat-send{background:rgba(0,255,178,0.08);border:1px solid rgba(0,255,178,0.2);color:var(--accent);font-size:11px;font-weight:700;padding:0 13px;border-radius:6px;cursor:pointer;font-family:'Syne',sans-serif;transition:all .15s;}
+#chat-send:hover{background:rgba(0,255,178,0.15);}
 
 /* COUNTDOWN */
-#countdown-wrap{padding:8px 12px;border-top:1px solid var(--border);flex-shrink:0;background:rgba(0,0,0,0.15);}
-#countdown-top{display:flex;justify-content:space-between;margin-bottom:4px;font-size:10px;font-family:'Share Tech Mono',monospace;color:rgba(255,255,255,0.3);}
-#scan-label{color:var(--accent);}
-#countdown-bar{height:3px;background:rgba(255,255,255,0.05);border-radius:2px;overflow:hidden;}
-#countdown-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));width:100%;transition:width 1s linear;}
+#cdwrap{padding:8px 13px;border-top:1px solid var(--border);flex-shrink:0;display:none;background:rgba(0,0,0,0.2);}
+#cdtop{display:flex;justify-content:space-between;margin-bottom:5px;font-size:9px;font-family:'DM Mono',monospace;color:var(--muted);}
+#scan-lbl{color:var(--accent);}
+#cdbar{height:2px;background:rgba(255,255,255,0.05);border-radius:1px;overflow:hidden;}
+#cdfill{height:100%;background:linear-gradient(90deg,var(--accent),#00c890);border-radius:1px;width:100%;transition:width 1s linear;box-shadow:0 0 6px rgba(0,255,178,0.3);}
+
+/* ── TACTICS TAB ── */
+#t-tactics{overflow-y:auto;padding:12px;gap:11px;}
+.sect{display:flex;flex-direction:column;gap:7px;}
+.sect-title{font-size:11px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;color:white;}
+
+#profile-card{background:linear-gradient(135deg,rgba(123,97,255,0.08),rgba(123,97,255,0.03));border:1px solid rgba(123,97,255,0.2);border-radius:9px;padding:11px 13px;flex-shrink:0;box-shadow:0 4px 20px rgba(123,97,255,0.06);}
+#profile-card .pc-title{font-size:9px;font-weight:800;letter-spacing:2px;color:var(--accent2);margin-bottom:8px;font-family:'DM Mono',monospace;}
+.pcrow{display:flex;justify-content:space-between;margin-bottom:4px;}
+.pckey{font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;}
+.pcval{font-size:10px;color:white;font-weight:700;}
+
+.fgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:4px;}
+.fbtn{background:var(--card);border:1px solid var(--border2);border-radius:6px;padding:7px 3px;text-align:center;font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);cursor:pointer;transition:all .15s;}
+.fbtn:hover{border-color:var(--border);color:rgba(255,255,255,0.5);}
+.fbtn.active{border-color:rgba(123,97,255,0.5);color:var(--accent2);background:rgba(123,97,255,0.1);box-shadow:0 0 10px rgba(123,97,255,0.1);}
+
+.sgrid{display:grid;grid-template-columns:1fr 1fr;gap:5px;}
+.sbtn{background:var(--card);border:1px solid var(--border2);border-radius:7px;padding:9px 10px;cursor:pointer;transition:all .15s;text-align:left;}
+.sbtn:hover{border-color:var(--border);}
+.sbtn.active{border-color:rgba(123,97,255,0.4);background:rgba(123,97,255,0.07);box-shadow:0 2px 12px rgba(123,97,255,0.08);}
+.sbtn .sn{font-size:12px;font-weight:700;color:white;display:block;margin-bottom:1px;}
+.sbtn .sd{font-size:9px;color:var(--muted);font-family:'DM Mono',monospace;}
+.sbtn.active .sn{color:var(--accent2);}
+
+.slrow{display:flex;flex-direction:column;gap:3px;}
+.sllbl{display:flex;justify-content:space-between;font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;}
+.sllbl span:last-child{color:var(--accent2);font-weight:500;}
+input[type=range]{-webkit-appearance:none;width:100%;height:3px;background:rgba(255,255,255,0.07);border-radius:2px;outline:none;}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:13px;height:13px;border-radius:50%;background:var(--accent2);cursor:pointer;box-shadow:0 0 8px rgba(123,97,255,.6);}
+
+.tagwrap{display:flex;flex-wrap:wrap;gap:4px;}
+.tag{background:var(--card);border:1px solid var(--border2);border-radius:20px;padding:3px 10px;font-size:10px;color:var(--muted);cursor:pointer;transition:all .15s;font-family:'DM Mono',monospace;}
+.tag:hover{border-color:var(--border);color:rgba(255,255,255,0.5);}
+.tag.tg{border-color:rgba(0,255,178,0.4);color:var(--accent);background:rgba(0,255,178,0.06);box-shadow:0 0 8px rgba(0,255,178,0.06);}
+.tag.tb{border-color:rgba(255,61,90,0.4);color:var(--danger);background:rgba(255,61,90,0.06);}
+
+#save-btn{width:100%;padding:12px;border:none;border-radius:8px;background:linear-gradient(135deg,var(--accent2),#5B42D1);color:white;font-family:'Bebas Neue',sans-serif;font-size:17px;letter-spacing:3px;cursor:pointer;box-shadow:0 4px 24px rgba(123,97,255,0.25);transition:all .15s;flex-shrink:0;}
+#save-btn:hover{transform:translateY(-1px);box-shadow:0 6px 28px rgba(123,97,255,0.3);}
+#save-ok{text-align:center;font-size:10px;color:var(--accent);font-family:'DM Mono',monospace;letter-spacing:1px;display:none;}
+@keyframes fadeOut{0%{opacity:1}60%{opacity:1}100%{opacity:0}}
 
 canvas,video{display:none;}
 </style>
 </head>
 <body>
 
-<div id="drag-overlay">
-  <div class="drag-msg">
-    <h3>⚡ SOLTAR ARCHIVO SCRIPT</h3>
-    <p>Suelta el archivo .html para actualizar la l&oacute;gica al instante</p>
-  </div>
-</div>
-
-<canvas id="canvas"></canvas>
-<video id="video" muted playsinline></video>
+<div id="drag-ov"><div class="drag-box"><h3>⚡ SOLTAR ARCHIVO</h3><p>Suelta el .html para actualizar al instante</p></div></div>
+<canvas id="cvs"></canvas><video id="vid" muted playsinline></video>
 
 <div id="topbar">
-  <div class="logo">FC24 <em>COACH</em></div>
-  
-  <div class="keys-container">
-    <select id="provider-select" class="provider-select">
+  <div class="wordmark">FC24 <em>COACH</em></div>
+  <div class="vsep"></div>
+
+  <div class="key-row">
+    <select id="prov-sel" class="prov-sel">
       <option value="gemini">Gemini</option>
+      <option value="anthropic">Anthropic</option>
       <option value="openrouter">OpenRouter</option>
       <option value="huggingface">HuggingFace</option>
     </select>
-    <input id="apikey-input" class="top-input" type="password" placeholder="🔑 API Key" />
-    <button id="add-key-btn" class="top-btn" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#fff;padding:6px 10px;">+ AGREGAR</button>
-    <select id="keys-select" class="keys-select">
-      <option value="">— Sin llaves —</option>
-    </select>
-    <button id="del-key-btn" class="top-btn" style="background:rgba(255,61,61,0.1);border:1px solid rgba(255,61,61,0.3);color:var(--danger);padding:6px 10px;font-weight:800;">❌ BORRAR</button>
+    <input id="key-in" class="key-in" type="password" placeholder="🔑 API Key"/>
+    <button class="tbtn tbtn-add" id="add-key-btn">+ ADD</button>
+    <select id="keys-sel" class="key-sel"></select>
+    <button class="tbtn tbtn-del" id="del-key-btn">✕</button>
   </div>
+  <div class="vsep"></div>
 
-  <input id="channel-input" class="top-input" type="text" placeholder="canal_twitch" maxlength="30" />
-  <button id="load-btn" class="top-btn">▶ CARGAR</button>
-  <button id="upload-btn" class="top-btn">📂 SUBIR CODE</button>
-  <input type="file" id="hidden-file-input" accept=".html" style="display:none" />
+  <input id="chan-in" class="chan-in" type="text" placeholder="canal_twitch" maxlength="30"/>
+  <button class="tbtn tbtn-load" id="load-btn">▶ CARGAR</button>
+  <div class="vsep"></div>
+
+  <button class="tbtn tbtn-upload" id="upload-btn">📂 CODE</button>
+  <input type="file" id="file-in" accept=".html" style="display:none"/>
+  <div class="vsep"></div>
 
   <div class="mode-tabs">
-    <button class="mode-tab active" data-mode="coach">🎽 COACHES</button>
-    <button class="mode-tab ai-tab" data-mode="ai">🤖 IA T&Aacute;CTICA</button>
+    <button class="mtab active" data-mode="coach">🎽 COACHES</button>
+    <button class="mtab ai" data-mode="ai">🤖 IA TÁCTICA</button>
   </div>
-  <div id="coach-pills-wrap">
-    <button class="coach-pill active" data-coach="guardiola">🔵 GUARDI</button>
-    <button class="coach-pill" data-coach="klopp">🔴 KLOPP</button>
-    <button class="coach-pill" data-coach="mourinho">⚫ MOURI</button>
-    <button class="coach-pill" data-coach="ancelotti">🟡 ANCE</button>
+
+  <div class="c-pills" id="coach-pills">
+    <button class="cpill active" data-c="guardiola">🔵 GUARDI</button>
+    <button class="cpill" data-c="klopp">🔴 KLOPP</button>
+    <button class="cpill" data-c="mourinho">⚫ MOURI</button>
+    <button class="cpill" data-c="ancelotti">🟡 ANCE</button>
   </div>
+
   <div class="freq-pills">
-    <button class="freq-pill" data-ms="5000">5s</button>
-    <button class="freq-pill active" data-ms="10000">10s</button>
-    <button class="freq-pill" data-ms="15000">15s</button>
+    <button class="fpill" data-ms="5000">5s</button>
+    <button class="fpill active" data-ms="10000">10s</button>
+    <button class="fpill" data-ms="15000">15s</button>
+    <button class="fpill" data-ms="20000">20s</button>
   </div>
-  <button id="analyze-btn" class="top-btn">⚡ ANALIZAR</button>
-  <button id="demo-btn" class="top-btn">🎮 DEMO</button>
+
+  <button class="tbtn tbtn-analyze" id="analyze-btn">⚡ ANALIZAR</button>
+  <button class="tbtn tbtn-demo" id="demo-btn">🎮 DEMO</button>
   <div id="live-dot"></div>
 </div>
 
 <div id="main">
   <div id="stream-wrap">
-    <div id="stream-placeholder">
-      <div class="big">📺</div>
-      <h2>FC24 COACH EN VIVO</h2>
-      <p>Ingresa tu canal de Twitch arriba y presiona CARGAR<br>Luego pulsa ⚡ ANALIZAR y comparte tu pantalla</p>
-      <div class="hint">¿Primera vez? Prueba 🎮 DEMO para ver la IA en acci&oacute;n</div>
+    <div id="stream-ph">
+      <div class="ico">📺</div>
+      <h2>FC24 TACTICAL COACH</h2>
+      <p>Escribe tu canal de Twitch y presiona CARGAR<br>Luego ⚡ ANALIZAR y selecciona la ventana del stream</p>
+      <div class="hint">¿Primera vez? Prueba 🎮 DEMO para ver la IA en acción sin stream</div>
     </div>
-    <iframe id="twitch-frame" allowfullscreen></iframe>
+    <iframe id="twitch-if" allowfullscreen></iframe>
   </div>
 
-  <div id="coach-panel">
-    <div id="panel-header">
-      <div class="panel-title" id="panel-title-txt">AN&Aacute;LISIS T&Aacute;CTICO</div>
-      <div id="ai-badge">🤖 IA PROPIA</div>
-      <div id="spin-wrap">
-        <div class="spinner" id="spinner"></div>
-        <div id="analyzing-txt">analizando...</div>
-      </div>
-    </div>
-    <div id="demo-banner"></div>
-
-    <div id="team-setup">
-      <div class="setup-row">
-        <span class="setup-label">⚽ EQUIPO</span>
-        <input id="team-input" class="setup-input" type="text" placeholder="Ej: Real Madrid, 4-3-3..." maxlength="80"/>
-      </div>
-      <div class="setup-row">
-        <span class="setup-label">🎮 ESTILO</span>
-        <input id="style-input" class="setup-input" type="text" placeholder="Ej: presi&oacute;n alta, tiki-taka..." maxlength="80"/>
-      </div>
-      <div class="setup-row" style="justify-content:space-between; margin-top:2px;">
-        <div id="team-badge"></div>
-        <button class="setup-save" id="team-save-btn">GUARDAR ✓</button>
-      </div>
+  <div id="side">
+    <div class="side-tabs">
+      <button class="stab active" data-st="live">⚡ EN VIVO</button>
+      <button class="stab purple" data-st="tactics">🎯 MIS TÁCTICAS</button>
     </div>
 
-    <div id="panel-body">
-      <div id="twitch-note">
-        ⚠ Twitch tiene ~5-15s de delay.<br>Usa 10-15s de intervalo para mejor an&aacute;lisis.
+    <div class="tab-pane active" id="t-live">
+      <div id="panel-hdr">
+        <div class="phdr-title" id="phdr-txt">ANÁLISIS TÁCTICO</div>
+        <div id="ai-badge">🤖 IA PROPIA</div>
+        <div id="spin-area"><div class="sp" id="sp"></div><div id="sp-txt">analizando...</div></div>
       </div>
-      <div id="idle-msg">
-        <div class="ico">🧠</div>
-        <h3>LISTO PARA ANALIZAR</h3>
-        <p>Carga tu stream y activa el an&aacute;lisis para recibir consejos t&aacute;cticos en vivo</p>
-      </div>
-    </div>
 
-    <div id="chat-section" class="collapsed">
-      <div id="chat-header">
-        <span class="panel-title" style="color:var(--accent); font-size:11px;">💬 INTERACTUAR CON COACH</span>
-        <button id="chat-toggle-btn">▲ ABRIR CHAT</button>
-      </div>
-      <div id="chat-box">
-        <div class="chat-msg-row coach">
-          <span class="chat-author">SISTEMA</span>
-          <div class="chat-bubble" style="font-family:'Share Tech Mono',monospace; font-size:12px;">Preg&uacute;ntame lo que quieras sobre tu partido o tu estrategia...</div>
+      <div id="team-setup">
+        <div class="ts-row">
+          <span class="ts-lbl">⚽ EQUIPO</span>
+          <input id="team-in" class="ts-in" type="text" placeholder="Ej: Real Madrid, 4-3-3..." maxlength="80"/>
+        </div>
+        <div class="ts-row">
+          <span class="ts-lbl">🎮 ESTILO</span>
+          <input id="style-in" class="ts-in" type="text" placeholder="Ej: presión alta, tiki-taka..." maxlength="80"/>
+        </div>
+        <div class="ts-row" style="justify-content:space-between">
+          <div id="team-badge"></div>
+          <button class="ts-save" id="team-save">GUARDAR ✓</button>
         </div>
       </div>
-      <div id="chat-input-row">
-        <input type="text" id="chat-input" placeholder="Escribe al coach aqu&iacute;..." autocomplete="off"/>
-        <button id="chat-send-btn">ENVIAR</button>
+
+      <div id="live-out">
+        <div style="text-align:center;padding:28px 12px;color:var(--muted);">
+          <div style="font-size:32px;margin-bottom:8px;opacity:.4;">🧠</div>
+          <div style="font-size:12px;font-family:'DM Mono',monospace;line-height:1.9;letter-spacing:.3px;">Activa el análisis en vivo<br>o prueba el modo DEMO.<br><br>Configura tus tácticas en<br>"MIS TÁCTICAS" para consejos<br>100% personalizados.</div>
+        </div>
+      </div>
+
+      <div id="chat-sec">
+        <div id="chat-hdr">
+          <span id="chat-hdr-title">💬 CHAT CON EL COACH</span>
+          <div style="display:flex;gap:6px;align-items:center;">
+            <button id="chat-clear" style="background:none;border:none;color:var(--muted);font-size:10px;cursor:pointer;font-family:'DM Mono',monospace;letter-spacing:1px;padding:2px 6px;border-radius:3px;transition:all .15s;" onmouseover="this.style.color='white'" onmouseout="this.style.color='var(--muted)'">🗑 LIMPIAR</button>
+            <button id="chat-toggle">▲ ABRIR</button>
+          </div>
+        </div>
+        <div id="chat-box">
+          <div class="cmrow coach"><span class="ca">SISTEMA</span><div class="cbubble" style="font-family:'DM Mono',monospace;font-size:11px;">Pregúntame sobre tácticas, formaciones o situaciones del partido...</div></div>
+        </div>
+        <div id="chat-in-row">
+          <input type="text" id="chat-in" placeholder="Pregunta al coach..." autocomplete="off"/>
+          <button id="chat-send">ENVIAR</button>
+        </div>
+      </div>
+
+      <div id="cdwrap">
+        <div id="cdtop"><span id="scan-lbl">0 análisis</span><span id="nxt-lbl">esperando...</span></div>
+        <div id="cdbar"><div id="cdfill"></div></div>
       </div>
     </div>
 
-    <div id="countdown-wrap" style="display:none">
-      <div id="countdown-top">
-        <span id="scan-label">0 an&aacute;lisis</span>
-        <span id="next-label">esperando...</span>
+    <div class="tab-pane" id="t-tactics">
+      <div id="profile-card">
+        <div class="pc-title">🎮 MI PERFIL TÁCTICO</div>
+        <div class="pcrow"><span class="pckey">Formación</span><span class="pcval" id="pc-form">4-3-3</span></div>
+        <div class="pcrow"><span class="pckey">Estilo</span><span class="pcval" id="pc-style">Posesión</span></div>
+        <div class="pcrow"><span class="pckey">Presión</span><span class="pcval" id="pc-press">Media (5)</span></div>
+        <div class="pcrow"><span class="pckey">Estado</span><span class="pcval" id="pc-status" style="color:var(--muted)">Sin guardar</span></div>
       </div>
-      <div id="countdown-bar"><div id="countdown-fill"></div></div>
+
+      <div class="sect">
+        <div class="sect-title">⬛ Formación</div>
+        <div class="fgrid">
+          <button class="fbtn active" data-f="4-3-3">4-3-3</button>
+          <button class="fbtn" data-f="4-4-2">4-4-2</button>
+          <button class="fbtn" data-f="4-2-3-1">4-2-3-1</button>
+          <button class="fbtn" data-f="3-5-2">3-5-2</button>
+          <button class="fbtn" data-f="5-3-2">5-3-2</button>
+          <button class="fbtn" data-f="4-1-4-1">4-1-4-1</button>
+          <button class="fbtn" data-f="3-4-3">3-4-3</button>
+          <button class="fbtn" data-f="4-5-1">4-5-1</button>
+        </div>
+      </div>
+
+      <div class="sect">
+        <div class="sect-title">🎮 Estilo de juego</div>
+        <div class="sgrid">
+          <button class="sbtn active" data-s="Posesión"><span class="sn">Posesión</span><span class="sd">toque corto, control</span></button>
+          <button class="sbtn" data-s="Contraataque"><span class="sn">Contraataque</span><span class="sd">repliegue y velocidad</span></button>
+          <button class="sbtn" data-s="Balón Largo"><span class="sn">Balón Largo</span><span class="sd">saltar líneas, balones aéreos</span></button>
+          <button class="sbtn" data-s="Equilibrado"><span class="sn">Equilibrado</span><span class="sd">adaptable al partido</span></button>
+        </div>
+      </div>
+
+      <div class="sect">
+        <div class="sect-title">📈 Parámetros avanzados</div>
+        <div class="slrow">
+          <div class="sllbl"><span>Presión de bloque</span><span id="v-press">5</span></div>
+          <input type="range" id="sl-press" min="1" max="10" value="5"/>
+        </div>
+        <div class="slrow">
+          <div class="sllbl"><span>Anchura de equipo</span><span id="v-width">5</span></div>
+          <input type="range" id="sl-width" min="1" max="10" value="5"/>
+        </div>
+      </div>
+
+      <div class="sect">
+        <div class="sect-title">🎯 Prioridades de Ajuste</div>
+        <div class="tagwrap">
+          <button class="tag tg" data-t="Marcar Extremos">Marcar Extremos</button>
+          <button class="tag" data-t="Pases Filtrados">Pases Filtrados</button>
+          <button class="tag" data-t="Presión Tras Pérdida">Presión Tras Pérdida</button>
+          <button class="tag" data-t="Laterales Ofensivos">Laterales Ofensivos</button>
+          <button class="tag tb" data-t="Evitar Centros">Evitar Centros</button>
+        </div>
+      </div>
+
+      <button id="save-btn">GUARDAR PERFIL TÁTICO</button>
+      <div id="save-ok">✓ CONFIGURACIÓN GUARDADA CORRECTAMENTE</div>
     </div>
   </div>
 </div>
 
 <script>
-const COACHES={
-  guardiola:{full:"Pep Guardiola",prompt:"Eres Pep Guardiola. Analizas con foco en tri&aacute;ngulos de pase, superioridad posicional, construcci&oacute;n desde portero, presi&oacute;n coordinada y falso 9."},
-  klopp:    {full:"J&uuml;rgen Klopp", prompt:"Eres J&uuml;rgen Klopp. Analizas con foco en gegenpressing, transiciones explosivas en 5s, profundidad por bandas e intensidad m&aacute;xima."},
-  mourinho: {full:"Jos&eacute; Mourinho",prompt:"Eres Mourinho. Analizas con foco en bloque bajo compacto, l&iacute;neas juntas, contragolpe directo al espacio y gesti&oacute;n fr&iacute;a del marcador."},
-  ancelotti:{full:"C. Ancelotti", prompt:"Eres Ancelotti. Analizas con foco en equilibrio t&aacute;ctico, libertad creativa a los mejores y adaptaci&oacute;n inteligente al rival."},
+// --- MOTOR DE PROMPTS Y FORMATOS ---
+const SYSTEM_BASE = `Actúas como una API analítica táctica experta en FC24. Analizas imágenes de retransmisión (Twitch) del juego.
+Es vital que respondas EXCLUSIVAMENTE con un objeto JSON válido, mapeando métricas y consejos. No incluyas texto explicativo antes ni después.`;
+
+const JSON_PROMPT = `Formato JSON obligatorio esperado:
+{
+  "situacion": "Breve resumen de la situación de juego actual observada.",
+  "consejo": "Consejo táctico directo y accionable basado en tu estilo o personalidad.",
+  "formacion_sugerida": "4-3-3", 
+  "fase": "Ataque",
+  "metricas": { "ataque": 75, "defensa": 45, "posesion": 60, "riesgo": 30 },
+  "alertas": [
+    { "tipo": "danger", "zona": "MCD", "msg": "Rival libre entre líneas." }
+  ]
+}`;
+
+let state = {
+  mode: 'coach',
+  coach: 'guardiola',
+  intervalMs: 10000,
+  running: false,
+  apiKeys: [], // Objetos: {key: "...", provider: "...", exhausted: false}
+  activeKeyIdx: -1,
+  scansCount: 0,
+  timer: null,
+  teamInfo: "",
+  styleInfo: "",
+  myTactics: {
+    formacion: '4-3-3',
+    estilo: 'Posesión',
+    presion: 5,
+    anchura: 5,
+    tags: ['Marcar Extremos', 'Evitar Centros']
+  }
 };
 
-const SYS_COACH=(p)=>`${p}
-Analizas capturas de EA Sports FC 24 en Twitch.
-${userTeam?`CONTEXTO DEL JUGADOR: Juega con ${userTeam}${userStyle?', estilo: '+userStyle:''}. Adapta TODOS tus consejos espec&iacute;ficamente para este equipo y estilo de juego.`:''}
-REGLA ABSOLUTA: responde &Uacute;NICAMENTE con el objeto JSON. Sin texto antes, sin texto despues, sin explicaciones, sin backticks, sin markdown.
-FORMATO EXACTO:
-{"situacion":"lo que ves","alertas":[{"tipo":"warning","zona":"DEF","mensaje":"alerta"}],"consejo_principal":"consejo adaptado al equipo","ajuste":"ajuste espec&iacute;fico para este equipo","recomendacion_equipo":"tip espec&iacute;fico para ${userTeam||'tu equipo'} en esta situaci&oacute;n"}
-Tipos v&aacute;lidos: warning danger info success. Zonas: DEF MID ATK TAC. M&aacute;ximo 2 alertas.`;
+const $ = id => document.getElementById(id);
 
-const SYS_AI=()=>`Eres una IA t&aacute;ctica aut&oacute;noma de EA Sports FC 24. Generas t&aacute;cticas originales.
-${userTeam?`CONTEXTO DEL JUGADOR: Usa ${userTeam}${userStyle?', estilo declarado: '+userStyle:''}. Genera recommendations 100% espec&iacute;ficas para las fortalezas y debilidades conocidas de este equipo en FC 24.`:''}
-REGLA ABSOLUTA: responde &Uacute;NICAMENTE con el objeto JSON. Sin texto antes, sin texto despues, sin backticks, sin markdown, sin explicaciones.
-FORMATO EXACTO (usa n&uacute;meros reales del 0 al 100, no rangos):
-{"situacion":"lo que ves exactamente","formacion_detectada":"4-3-3","fase":"ataque","presion_rival":65,"control_medio":55,"riesgo_defensa":40,"alertas":[{"tipo":"danger","zona":"DEF","mensaje":"alerta"}],"consejo_principal":"an&aacute;lisis adaptado al equipo","tactica_propia":"t&aacute;ctica espec&iacute;fica para ${userTeam||'tu equipo'}","ajuste_inmediato":"acci&oacute;n en pr&oacute;ximos 30s","recomendacion_equipo":"tip exclusivo para aprovechar las ventajas de ${userTeam||'tu equipo'} aqu&iacute;"}
-Tipos: warning danger info success. Zonas: DEF MID ATK TAC. M&aacute;ximo 3 alertas.`;
+// --- INICIALIZACIÓN ---
+window.onload = () => {
+  loadLocalData();
+  setupUIEvents();
+  renderKeys();
+};
 
-let mode='coach',coach='guardiola',ms=10000;
-let running=false,scanCount=0,itvId=null,cdId=null,capStream=null;
-let userTeam='', userStyle='';
-let apiKeys=[]; 
-let chatHistory=[]; 
-
-const $=id=>document.getElementById(id);
-const providerSelect=$('provider-select'),apiKeyIn=$('apikey-input'),addKeyBtn=$('add-key-btn'),keysSelect=$('keys-select'),delKeyBtn=$('del-key-btn');
-const chIn=$('channel-input'),loadBtn=$('load-btn');
-const tFrame=$('twitch-frame'),placeholder=$('stream-placeholder');
-const analyzeBtn=$('analyze-btn'),demoBtn=$('demo-btn'),liveDot=$('live-dot');
-const panelBody=$('panel-body'),spinner=$('spinner'),analyzingTxt=$('analyzing-txt');
-const cdWrap=$('countdown-wrap'),cdFill=$('countdown-fill');
-const scanLabel=$('scan-label'),nextLabel=$('next-label');
-const cvs=$('canvas'),vid=$('video');
-const panelTitle=$('panel-title-txt'),aiBadge=$('ai-badge'),demoBanner=$('demo-banner');
-const coachWrap=$('coach-pills-wrap');
-const teamInput=$('team-input'),styleInput=$('style-input');
-const teamSaveBtn=$('team-save-btn'),teamBadge=$('team-badge');
-
-const chatSection=$('chat-section'),chatHeader=$('chat-header'),chatToggleBtn=$('chat-toggle-btn');
-const chatBox=$('chat-box'),chatInput=$('chat-input'),chatSendBtn=$('chat-send-btn');
-
-loadKeys();
-addKeyBtn.addEventListener('click', addKey);
-apiKeyIn.addEventListener('keydown', e=>{if(e.key==='Enter') addKey();});
-delKeyBtn.addEventListener('click', deleteSelectedKey);
-
-function addKey() {
-  const val = apiKeyIn.value.trim();
-  const prov = providerSelect.value;
-  if(!val) return;
-  // Verificar si ya existe esa key para evitar duplicados
-  if(!apiKeys.some(k => k.value === val)) {
-    apiKeys.push({
-      value: val,
-      provider: prov,
-      status: 'activa' // 'activa' = verde, 'en_uso' = azul, 'agotada' = rojo
-    }); 
-    saveKeys(); 
-    renderKeysSelect(); 
-    keysSelect.value = val; 
-  }
-  apiKeyIn.value = '';
-}
-
-function deleteSelectedKey() {
-  const currentVal = keysSelect.value;
-  if(!currentVal) { showError('Operaci&oacute;n inv&aacute;lida', 'No hay ninguna llave seleccionada para borrar.'); return; }
-  apiKeys = apiKeys.filter(k => k.value !== currentVal);
-  saveKeys();
-  renderKeysSelect();
-}
-
-function saveKeys() { localStorage.setItem('fc24_multi_providers_keys', JSON.stringify(apiKeys)); }
-
-function loadKeys() {
+function loadLocalData() {
   try {
-    const stored = localStorage.getItem('fc24_multi_providers_keys');
-    if(stored) {
-      apiKeys = JSON.parse(stored);
-      // Migración si venía de formato antiguo de texto plano
-      if(apiKeys.length > 0 && typeof apiKeys[0] === 'string') {
-        apiKeys = apiKeys.map(k => ({ value: k, provider: 'gemini', status: 'activa' }));
-      }
-    }
-  } catch(e) { apiKeys = []; }
-  renderKeysSelect();
-}
-
-function renderKeysSelect() {
-  keysSelect.innerHTML = '';
-  if(apiKeys.length === 0) {
-    const opt = document.createElement('option'); opt.value = ''; opt.textContent = '— Sin llaves —';
-    keysSelect.appendChild(opt); return;
-  }
-  apiKeys.forEach((k) => {
-    const opt = document.createElement('option'); opt.value = k.value;
-    let icon = '🟢';
-    if(k.status === 'en_uso') icon = '🔵';
-    if(k.status === 'agotada') icon = '🔴';
+    const k = localStorage.getItem('fc24_keys');
+    if(k) state.apiKeys = JSON.parse(k);
+    const t = localStorage.getItem('fc24_tactics');
+    if(t) state.myTactics = JSON.parse(t);
     
-    let pName = k.provider === 'gemini' ? 'Gemini' : k.provider === 'openrouter' ? 'OpenR' : 'HF';
-    opt.textContent = `${icon} [${pName}] ${k.value.slice(0,4)}...${k.value.slice(-4)}`;
-    keysSelect.appendChild(opt);
+    $('team-in').value = localStorage.getItem('fc24_team_info') || "";
+    $('style-in').value = localStorage.getItem('fc24_style_info') || "";
+    updateTacticsUI();
+  } catch(e) { console.error(e); }
+}
+
+function saveLocalKeys() {
+  localStorage.setItem('fc24_keys', JSON.stringify(state.apiKeys));
+}
+
+// --- ROTACIÓN INTELIGENTE DE API KEYS ---
+function addKey(key, provider) {
+  if(!key) return;
+  state.apiKeys.push({ key, provider, exhausted: false });
+  saveLocalKeys();
+  renderKeys();
+}
+
+function renderKeys() {
+  const sel = $('keys-sel');
+  sel.innerHTML = '';
+  state.apiKeys.forEach((item, index) => {
+    const opt = document.createElement('option');
+    opt.value = index;
+    opt.textContent = `${item.exhausted ? '🔴' : '🟢'} [${item.provider.toUpperCase()}] ${item.key.slice(0,6)}...`;
+    sel.appendChild(opt);
   });
-}
-
-function getSelectedKeyObj() {
-  const val = keysSelect.value;
-  return apiKeys.find(k => k.value === val) || null;
-}
-
-function setKeyStatus(val, status) {
-  const k = apiKeys.find(x => x.value === val);
-  if(k) { k.status = status; saveKeys(); renderKeysSelect(); keysSelect.value = val; }
-}
-
-userTeam=localStorage.getItem('fc24_team')||'';
-userStyle=localStorage.getItem('fc24_style')||'';
-if(userTeam){teamInput.value=userTeam;styleInput.value=userStyle;updateTeamBadge();}
-
-document.querySelectorAll('.mode-tab').forEach(btn=>{
-  btn.addEventListener('click',()=>{
-    document.querySelectorAll('.mode-tab').forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active'); mode=btn.dataset.mode;
-    const ai=mode==='ai';
-    coachWrap.style.display=ai?'none':'flex';
-    panelTitle.textContent=ai?'IA T&Aacute;CTICA AUT&Oacute;NOMA':'AN&Aacute;LISIS T&Aacute;CTICO';
-    panelTitle.classList.toggle('ai-mode',ai);
-    aiBadge.classList.toggle('show',ai);
-  });
-});
-
-function loadStream(){
-  const ch=chIn.value.trim().replace(/[^a-zA-Z0-9_]/g,'');
-  if(!ch)return;
-  tFrame.src=`https://player.twitch.tv/?channel=${ch}&parent=${location.hostname||'localhost'}&autoplay=true&muted=false`;
-  tFrame.style.display='block'; placeholder.style.display='none';
-}
-loadBtn.addEventListener('click',loadStream);
-chIn.addEventListener('keydown',e=>{if(e.key==='Enter')loadStream();});
-
-document.querySelectorAll('.coach-pill').forEach(b=>{
-  b.addEventListener('click',()=>{
-    document.querySelectorAll('.coach-pill').forEach(x=>x.classList.remove('active'));
-    b.classList.add('active');coach=b.dataset.coach;
-  });
-});
-
-teamSaveBtn.addEventListener('click', addTeam);
-function addTeam() {
-  const teamVal = teamInput.value.trim(); const styleVal = styleInput.value.trim();
-  if(!teamVal) { showError('Campo vac&iacute;o', 'Ingresa un equipo.'); return; }
-  userTeam = teamVal; userStyle = styleVal;
-  localStorage.setItem('fc24_team', userTeam); localStorage.setItem('fc24_style', userStyle);
-  updateTeamBadge();
-  teamSaveBtn.textContent='✅ GUARDADO'; teamSaveBtn.style.background = 'var(--ok)';
-  setTimeout(()=>{
-    teamSaveBtn.textContent='GUARDAR ✓';
-    teamSaveBtn.style.background = 'linear-gradient(135deg,var(--accent),var(--accent2))';
-  },1500);
-}
-function updateTeamBadge(){
-  if(userTeam){
-    teamBadge.textContent=`🏟 ${userTeam}${userStyle?' · '+userStyle:''}`;
-    teamBadge.style.display = 'block';
-  }else{ teamBadge.style.display = 'none'; }
-}
-
-document.querySelectorAll('.freq-pill').forEach(b=>{
-  b.addEventListener('click',()=>{
-    document.querySelectorAll('.freq-pill').forEach(x=>x.classList.remove('active'));
-    b.classList.add('active');ms=parseInt(b.dataset.ms);
-    if(running)resetInterval();
-  });
-});
-
-const fileIn = $('hidden-file-input'), uploadBtn = $('upload-btn'), dragOverlay = $('drag-overlay');
-uploadBtn.addEventListener('click', () => fileIn.click());
-fileIn.addEventListener('change', (e) => { if(e.target.files.length > 0) handleFile(e.target.files[0]); });
-window.addEventListener('dragenter', (e) => { e.preventDefault(); dragOverlay.classList.add('active'); });
-dragOverlay.addEventListener('dragover', (e) => { e.preventDefault(); });
-dragOverlay.addEventListener('dragleave', () => { dragOverlay.classList.remove('active'); });
-window.addEventListener('drop', (e) => {
-  e.preventDefault(); dragOverlay.classList.remove('active');
-  if(e.dataTransfer.files.length > 0) handleFile(e.dataTransfer.files[0]);
-});
-function handleFile(file) {
-  if(!file.name.endsWith('.html')) { showError('Archivo inv&aacute;lido', 'Usa un archivo .html'); return; }
-  const reader = new FileReader();
-  reader.onload = (e) => { document.open(); document.write(e.target.result); document.close(); };
-  reader.readAsText(file);
-}
-
-chatHeader.addEventListener('click', () => {
-  const isCollapsed = chatSection.classList.toggle('collapsed');
-  chatToggleBtn.textContent = isCollapsed ? '▲ ABRIR CHAT' : '▼ CERRAR CHAT';
-  if(!isCollapsed) {
-    setTimeout(() => { chatBox.scrollTop = chatBox.scrollHeight; }, 30);
+  if(state.apiKeys.length > 0 && state.activeKeyIdx === -1) {
+    state.activeKeyIdx = 0;
   }
-});
+}
 
-chatSendBtn.addEventListener('click', sendChatMessage);
-chatInput.addEventListener('keydown', e => { if(e.key === 'Enter') sendChatMessage(); });
-
-async function sendChatMessage() {
-  const query = chatInput.value.trim(); if(!query) return;
-  const kObj = getSelectedKeyObj();
-  if(!kObj) { showError('Falta Clave', 'Agrega o selecciona tu API Key arriba.'); return; }
-
-  appendChatBubble('T&Uacute;', query, 'user'); chatInput.value = '';
-
-  const coachLabel = mode === 'ai' ? 'IA T&Aacute;CTICA' : COACHES[coach].full.toUpperCase();
-  const baseStyle = mode === 'ai' ? SYS_AI() : COACHES[coach].prompt;
+// --- PETICIÓN COMPLETA CON FALLOVER AUTOMÁTICALMENTE ---
+async function fetchAIAnalysis(base64Img, customQuery = null) {
+  // Buscamos la primera llave disponible de Gemini que no esté agotada
+  const activeKeyObj = state.apiKeys.find(k => k.provider === 'gemini' && !k.exhausted);
   
-  const chatSystemInstruction = `Tienes el rol de asistente en vivo para EA Sports FC 24.
-  PERSONALIDAD ACTUAL: ${baseStyle}
-  CONTEXTO EXTRA: El usuario juega con: "${userTeam || 'No especificado'}" y estilo: "${userStyle || 'No especificado'}".
-  REGLA DE RESPUESTA: Responde de forma directa, corta, en tono de DT real. M&aacute;ximo 2 o 3 l&iacute;neas. Texto plano, no JSON.`;
+  if (!activeKeyObj) {
+    appendCard('err', 'SISTEMA', '❌ Todas las API Keys de Gemini se han agotado o no hay ninguna cargada. Añade llaves válidas.');
+    stopAnalysis();
+    return null;
+  }
+
+  // Si hay datos de equipo de usuario, se inyectan al motor
+  let userContext = "";
+  if(state.teamInfo || state.styleInfo) {
+    userContext = `\nContexto de mi equipo actual: Juego con el ${state.teamInfo}. Mi estilo de juego base configurado es: ${state.styleInfo}.`;
+  }
+  userContext += `\nTácticas guardadas en mi perfil: Formación ${state.myTactics.formacion}, Estilo ${state.myTactics.estilo}, Bloque ${state.myTactics.presion}/10. Prioridades: ${state.myTactics.tags.join(', ')}.`;
+
+  let systemPrompt = SYSTEM_BASE + userContext;
+  if (state.mode === 'ai') {
+    systemPrompt += `\nModo de análisis Avanzado: Concéntrate en detectar vulnerabilidades espaciales y métricas crudas de peligro.`;
+  } else {
+    systemPrompt += `\nPersonalidad del entrenador actual a emular: Modo Coach ${state.coach.toUpperCase()}. Ofrece la crítica en su estilo característico.`;
+  }
+  
+  const finalPrompt = customQuery || "Analiza esta jugada actual del partido y extrae los datos correspondientes en JSON.";
 
   try {
-    chatSendBtn.disabled = true; chatSendBtn.textContent = '...';
-    setKeyStatus(kObj.value, 'en_uso');
+    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${activeKeyObj.key}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        system_instruction: { parts: [{ text: systemPrompt + "\n" + JSON_PROMPT }] },
+        contents: [{ parts: [{ text: finalPrompt }, ...(base64Img ? [{ inline_data: { mime_type: 'image/jpeg', data: base64Img } }] : [])] }]
+      })
+    });
 
-    let replyText = '';
-    const currentB64 = captureFrame();
-
-    if (kObj.provider === 'gemini') {
-      let userParts = [{ text: query }];
-      if (currentB64) { userParts.push({ inline_data: { mime_type: 'image/jpeg', data: currentB64 } }); }
-      chatHistory.push({ role: 'user', parts: userParts });
-
-      let formattedContents = chatHistory.map(msg => ({
-        role: msg.role, parts: msg.parts.map(p => p.text ? { text: p.text } : p)
-      }));
-
-      const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${kObj.value}`, {
-          method: 'POST', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            system_instruction: { parts: [{ text: chatSystemInstruction }] },
-            contents: formattedContents,
-            generationConfig: { temperature: 0.6, maxOutputTokens: 250 }
-          })
-      });
-      const d = await res.json();
-      if(!res.ok) {
-        if(res.status === 429 || d.error?.message?.includes("quota")) { setKeyStatus(kObj.value, 'agotada'); throw new Error("Cuota agotada en Gemini."); }
-        throw new Error(d.error?.message || 'Error');
-      }
-      replyText = d.candidates?.[0]?.content?.parts?.[0]?.text || '';
-    } 
-    else if (kObj.provider === 'openrouter') {
-      let contentArr = [{ type: 'text', text: query }];
-      if (currentB64) { contentArr.push({ type: 'image_url', image_url: { url: `data:image/jpeg;base64,${currentB64}` } }); }
+    // ¡MEJORA DE ROTACIÓN! Detección de cuota muerta o error de llave
+    if (response.status === 429 || response.status === 400) {
+      console.warn(`La API Key ${activeKeyObj.key.slice(0,6)}... falló o está agotada (Status ${response.status}). Rotando...`);
+      activeKeyObj.exhausted = true;
+      saveLocalKeys();
+      renderKeys();
       
-      const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${kObj.value}` },
-        body: JSON.stringify({
-          model: 'google/gemini-2.5-flash',
-          messages: [
-            { role: 'system', content: chatSystemInstruction },
-            { role: 'user', content: contentArr }
-          ]
-        })
-      });
-      const d = await res.json();
-      if(!res.ok) {
-        if(res.status === 429 || d.error?.message?.includes("credit")) { setKeyStatus(kObj.value, 'agotada'); throw new Error("Cuota o créditos agotados en OpenRouter."); }
-        throw new Error(d.error?.message || 'Error OpenRouter');
-      }
-      replyText = d.choices?.[0]?.message?.content || '';
-    } 
-    else if (kObj.provider === 'huggingface') {
-      // HF Inference API maneja texto o inputs directos estructurados de manera diferente según el modelo multimodal usado (ej: Llama-3.2-Vision)
-      const res = await fetch('https://api-inference.huggingface.co/models/meta-llama/Llama-3.2-11B-Vision-Instruct/v1/chat/completions', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${kObj.value}` },
-        body: JSON.stringify({
-          messages: [
-            { role: 'user', content: [{ type: 'text', text: `${chatSystemInstruction}\n\nPregunta: ${query}` }] }
-          ],
-          max_tokens: 150
-        })
-      });
-      if(res.status === 429 || res.status === 403) { setKeyStatus(kObj.value, 'agotada'); throw new Error("L&iacute;mite o llave no v&aacute;lida en HuggingFace."); }
-      const d = await res.json();
-      replyText = d.choices?.[0]?.message?.content || 'Sin respuesta.';
+      return fetchAIAnalysis(base64Img, customQuery); // Recursión al siguiente nodo disponible
     }
 
-    appendChatBubble(coachLabel, replyText, 'coach', mode === 'ai');
-    chatHistory.push({ role: 'model', parts: [{ text: replyText }] });
-    setKeyStatus(kObj.value, 'activa');
-  } catch (err) { 
-    appendChatBubble('SISTEMA (ERROR)', err.message, 'coach'); 
-  } finally { 
-    chatSendBtn.disabled = false; chatSendBtn.textContent = 'ENVIAR'; 
+    const data = await response.json();
+    let rawText = data.candidates[0].content.parts[0].text;
+    
+    // Limpieza de bloques de código markdown si los hay
+    rawText = rawText.replace(/```json/gi, '').replace(/```/g, '').trim();
+    return JSON.parse(rawText);
+
+  } catch(err) {
+    console.error("Error de conexión, saltando de nodo...", err);
+    return fetchAIAnalysis(base64Img, customQuery);
   }
 }
 
-function appendChatBubble(author, text, type, isAiStyle=false) {
-  const row = mkDiv(`chat-msg-row ${type}${isAiStyle ? ' ai-style' : ''}`);
-  if(type === 'coach') { row.innerHTML = `<span class="chat-author">${author}</span>`; }
-  const bubble = mkDiv('chat-bubble'); bubble.textContent = text;
-  row.appendChild(bubble); chatBox.appendChild(row);
-  chatBox.scrollTop = chatBox.scrollHeight;
-}
+// --- RENDERIZADO COMPLETO DE TARJETAS ---
+function renderTacticalBlocks(json) {
+  const container = $('live-out');
+  container.innerHTML = ''; // Limpieza automática del frame
 
-analyzeBtn.addEventListener('click',async()=>{
-  if(running){stopAnalysis();return;} await startAnalysis();
-});
+  // 1. Bloque de Situación General
+  const sitCard = document.createElement('div');
+  sitCard.className = 'acard sit';
+  sitCard.innerHTML = `<div class="alabel">Situación en vivo</div><p>${json.situacion}</p>`;
+  container.appendChild(sitCard);
 
-async function startAnalysis(){
-  try{
-    capStream=await navigator.mediaDevices.getDisplayMedia({
-      video:{ frameRate: { ideal: 15, max: 30 }, width:{ ideal: 1920 }, height:{ ideal: 1080 } },
-      audio:false
-    });
-    vid.srcObject=capStream; await vid.play();
-    capStream.getVideoTracks()[0].addEventListener('ended',stopAnalysis);
-    running=true;
-    analyzeBtn.textContent='⏹ DETENER';analyzeBtn.classList.add('stop');
-    liveDot.classList.add('active');cdWrap.style.display='block';
-    $('idle-msg')?.remove();$('twitch-note')?.remove(); demoBanner.style.display='none';
-    setTimeout(runAnalysis,600); resetInterval();
-  }catch(e){ if(e.name!=='NotAllowedError') showError('Error en captura.',e.message); }
-}
-
-function stopAnalysis(){
-  running=false;clearInterval(itvId);clearInterval(cdId);
-  if(capStream)capStream.getTracks().forEach(t=>t.stop());
-  capStream=null;vid.srcObject=null;
-  analyzeBtn.textContent='⚡ ANALIZAR';analyzeBtn.classList.remove('stop');
-  liveDot.classList.remove('active');cdWrap.style.display='none';
-  const kObj = getSelectedKeyObj();
-  if(kObj && kObj.status === 'en_uso') setKeyStatus(kObj.value, 'activa');
-}
-
-function resetInterval(){clearInterval(itvId);itvId=setInterval(runAnalysis,ms);startCountdown();}
-
-function startCountdown(){
-  clearInterval(cdId); let rem=ms/1000; nextLabel.textContent=`pr&oacute;ximo en ${rem}s`;
-  cdFill.style.transition='none';cdFill.style.width='100%';
-  requestAnimationFrame(()=>requestAnimationFrame(()=>{
-    cdFill.style.transition=`width ${ms/1000}s linear`;cdFill.style.width='0%';
-  }));
-  cdId=setInterval(()=>{
-    rem--;nextLabel.textContent=rem>0?`pr&oacute;ximo en ${rem}s`:'analizando...';
-    if(rem<=0)clearInterval(cdId);
-  },1000);
-}
-
-function captureFrame(){
-  if(!vid.videoWidth)return null;
-  cvs.width = 1280; cvs.height = 720;
-  const ctx = cvs.getContext('2d');
-  ctx.drawImage(vid, 0, 0, cvs.width, cvs.height);
-  return cvs.toDataURL('image/jpeg', 0.85).split(',')[1]; 
-}
-
-async function callAIProviders(b64, sys, usr, kObj) {
-  if (kObj.provider === 'gemini') {
-    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${kObj.value}`, {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        system_instruction:{parts:[{text:sys}]},
-        contents:[{parts:[{text:usr},{inline_data:{mime_type:'image/jpeg',data:b64}}]}],
-        generationConfig:{temperature:0.2,maxOutputTokens:800}
-      })
-    });
-    if (!res.ok) {
-      if (res.status === 429) return "__QUOTA_LIMIT_EXCEEDED__";
-      const errD = await res.json(); throw new Error(errD.error?.message || 'Error Gemini API');
-    }
-    const d = await res.json(); return d.candidates?.[0]?.content?.parts?.[0]?.text || '';
-  } 
-  else if (kObj.provider === 'openrouter') {
-    const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${kObj.value}` },
-      body: JSON.stringify({
-        model: 'google/gemini-2.5-flash',
-        response_format: { type: "json_object" },
-        messages: [
-          { role: 'system', content: sys },
-          { role: 'user', content: [ { type: 'text', text: usr }, { type: 'image_url', image_url: { url: `data:image/jpeg;base64,${b64}` } } ] }
-        ]
-      })
-    });
-    if (!res.ok) {
-      if (res.status === 429) return "__QUOTA_LIMIT_EXCEEDED__";
-      const errD = await res.json(); throw new Error(errD.error?.message || 'Error OpenRouter');
-    }
-    const d = await res.json(); return d.choices?.[0]?.message?.content || '';
-  } 
-  else if (kObj.provider === 'huggingface') {
-    // Usamos el endpoint público para Llama-3.2 Vision en HF
-    const res = await fetch('https://api-inference.huggingface.co/models/meta-llama/Llama-3.2-11B-Vision-Instruct/v1/chat/completions', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${kObj.value}` },
-      body: JSON.stringify({
-        response_format: { type: "json_object" },
-        messages: [
-          { role: 'user', content: [
-              { type: 'text', text: `${sys}\n\n${usr}` },
-              { type: 'image_url', image_url: { url: `data:image/jpeg;base64,${b64}` } }
-            ] 
-          }
-        ],
-        max_tokens: 600
-      })
-    });
-    if (res.status === 429 || res.status === 403) return "__QUOTA_LIMIT_EXCEEDED__";
-    if (!res.ok) throw new Error(`HF retorn&oacute; estado ${res.status}`);
-    const d = await res.json(); return d.choices?.[0]?.message?.content || '';
+  // 2. Bloque de Formación Detectada / Propuesta
+  if(json.formacion_sugerida) {
+    const formCard = document.createElement('div');
+    formCard.className = 'acard formation';
+    formCard.innerHTML = `
+      <div class="alabel">Estructura Sugerida</div>
+      <div class="form-row">
+        <div class="form-num">${json.formacion_sugerida}</div>
+        <div class="form-phase"><div class="pi">🛡️</div><div class="pt">${json.fase || 'Fase No Especificada'}</div></div>
+      </div>
+    `;
+    container.appendChild(formCard);
   }
-  throw new Error('Proveedor no soportado.');
+
+  // 3. MEJORA VISUAL: MÓDULO DE ANILLOS COMPLETO
+  if(json.metricas) {
+    const mCard = document.createElement('div');
+    mCard.className = 'acard metrics';
+    
+    const dash = 157; // 2 * Math.PI * r (25)
+    
+    let ringsHTML = `
+      <div class="alabel">Métricas de Rendimiento</div>
+      <div class="rings-wrap">
+        ${renderRingItem('Ataque', json.metricas.ataque || 50, '#00FFB2', dash)}
+        ${renderRingItem('Defensa', json.metricas.defensa || 50, '#7B61FF', dash)}
+        ${renderRingItem('Posesión', json.metricas.posesion || 50, '#FFD54F', dash)}
+        ${renderRingItem('Riesgo', json.metricas.riesgo || 50, '#FF3D5A', dash)}
+      </div>
+    `;
+    
+    // Barras complementarias clásicas para balancear el layout
+    ringsHTML += `
+      <div class="divl"></div>
+      <div class="mrow"><span class="mico">🎯</span><span class="mlbl">Efectividad</span><div class="mbar"><div class="mfill o" style="width:${json.metricas.ataque || 50}%"></div></div><span class="mval o">${json.metricas.ataque || 50}%</span></div>
+      <div class="mrow"><span class="mico">⚠️</span><span class="mlbl">Peligro</span><div class="mbar"><div class="mfill d" style="width:${json.metricas.riesgo || 50}%"></div></div><span class="mval d">${json.metricas.riesgo || 50}%</span></div>
+    `;
+    
+    mCard.innerHTML = ringsHTML;
+    container.appendChild(mCard);
+  }
+
+  // 4. Consejo Táctico Personalizado / Coach
+  const adviceCard = document.createElement('div');
+  adviceCard.className = `acard advice ${state.mode === 'ai' ? 'ai-a' : ''}`;
+  const titleLbl = state.mode === 'ai' ? 'Análisis de Inteligencia IA' : `Instrucciones de ${state.coach.toUpperCase()}`;
+  adviceCard.innerHTML = `<div class="alabel">${titleLbl}</div><p>"${json.consejo}"</p>`;
+  container.appendChild(adviceCard);
+
+  // 5. Mapeo del Sistema de Alertas de Zona
+  if(json.alertas && json.alertas.length > 0) {
+    const alertWrap = document.createElement('div');
+    alertWrap.className = 'alertbox';
+    json.alertas.forEach(al => {
+      const box = document.createElement('div');
+      box.className = `al ${al.tipo || 'warning'}`;
+      box.innerHTML = `<span class="alzona">${al.zona || 'GEN'}</span><span class="almsg">${al.msg}</span>`;
+      alertWrap.appendChild(box);
+    });
+    container.appendChild(alertWrap);
+  }
 }
 
-function tryJSON(raw){
-  if(!raw) return null; let s = raw.trim();
-  try { return JSON.parse(s); } catch(e) {}
-  s = s.replace(/```json/gi, '').replace(/```/g, '').trim();
-  try { return JSON.parse(s); } catch(e) {}
+function renderRingItem(label, val, color, dash) {
+  const offset = dash - (val / 100) * dash;
+  return `
+    <div class="ring-item">
+      <div class="ring-container-box">
+        <svg class="ring-svg" viewBox="0 0 52 52">
+          <circle class="ring-bg" cx="26" cy="26" r="23" />
+          <circle class="ring-fill" cx="26" cy="26" r="23" stroke="${color}" stroke-dasharray="${dash}" stroke-dashoffset="${offset}" />
+        </svg>
+        <span class="ring-val-text">${val}%</span>
+      </div>
+      <span class="ring-lbl">${label}</span>
+    </div>
+  `;
+}
+
+function appendCard(type, label, msg) {
+  const container = $('live-out');
+  const card = document.createElement('div');
+  card.className = `acard ${type}`;
+  card.innerHTML = `<div class="alabel">${label}</div><p>${msg}</p>`;
+  container.insertBefore(card, container.firstChild);
+}
+
+// --- CONTROL DE FLUJO MULTIMEDIA (CAPTURE) ---
+async function startAnalysis() {
+  if(state.apiKeys.length === 0) {
+    alert("Inserta al menos una API Key para iniciar el motor analítico.");
+    return;
+  }
   try {
-    const start = s.indexOf('{'); const end = s.lastIndexOf('}');
-    if(start !== -1 && end > start) return JSON.parse(s.slice(start, end + 1));
-  } catch(e) {}
-  return null;
-}
-
-async function runAnalysis(){
-  const b64=captureFrame(); if(!b64)return;
-  const kObj = getSelectedKeyObj();
-  if(!kObj) { showError('Falta Key', 'Por favor selecciona o agrega una llave v&aacute;lida.'); stopAnalysis(); return; }
-  
-  setKeyStatus(kObj.value, 'en_uso');
-  spinner.classList.add('show'); analyzingTxt.classList.add('show');
-  
-  try{
-    const sys=mode==='ai'?SYS_AI():SYS_COACH(COACHES[coach].prompt);
-    const raw = await callAIProviders(b64, sys, 'Gameplay. Responde SOLO con el JSON estructurado solicitado.', kObj);
+    const stream = await navigator.mediaDevices.getDisplayMedia({ video: true, audio: false });
+    $('vid').srcObject = stream;
+    $('vid').play();
     
-    if (raw === "__QUOTA_LIMIT_EXCEEDED__") {
-      setKeyStatus(kObj.value, 'agotada');
-      showError('L&iacute;mite de Cuota', `La llave actual de ${kObj.provider.toUpperCase()} se ha agotado (Luz Roja).`);
-      stopAnalysis();
-      return;
-    }
+    state.running = true;
+    $('analyze-btn').textContent = "⏹ DETENER";
+    $('analyze-btn').classList.add('stop');
+    $('live-dot').classList.add('on');
+    $('cdwrap').style.display = 'block';
+    $('sp').classList.add('on');
+    $('sp-txt').classList.add('on');
 
-    const d=tryJSON(raw); 
-    if(!d) throw new Error('La respuesta de la IA no contiene un formato JSON v&aacute;lido.');
-    
-    setKeyStatus(kObj.value, 'activa'); // Regresa a verde si todo salió bien
-    scanCount++; scanLabel.textContent=`${scanCount} an&aacute;lisis`;
-    mode==='ai'?renderAI(d):renderCoach(d);
-    resetInterval();
-  }catch(e){
-    showError('Error en an&aacute;lisis', e.message);
-    setKeyStatus(kObj.value, 'activa');
-  } finally{
-    spinner.classList.remove('show'); analyzingTxt.classList.remove('show');
+    runLoop();
+  } catch(e) {
+    console.error("Acceso denegado a la captura de pantalla", e);
   }
 }
 
-const DEMO_IMGS=[
-  'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/FC_Barcelona_vs_Recreativo_de_Huelva%2C_2006_%2802%29.jpg/1280px-FC_Barcelona_vs_Recreativo_de_Huelva%2C_2006_%2802%29.jpg',
-  'https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/2010_FIFA_World_Cup_Final_1.jpg/1280px-2010_FIFA_World_Cup_Final_1.jpg'
-];
-let demoIdx=0;
-
-demoBtn.addEventListener('click',async()=>{
-  const kObj = getSelectedKeyObj(); if(!kObj){showError('API Key requerida','Agrega una clave.');return;}
-  demoBtn.disabled=true; demoBtn.textContent='⏳...';
-  setKeyStatus(kObj.value, 'en_uso');
-  spinner.classList.add('show'); analyzingTxt.classList.add('show');
-  $('idle-msg')?.remove(); $('twitch-note')?.remove();
-  const sc=demoIdx%DEMO_IMGS.length; demoBanner.style.display='block';
-  demoBanner.textContent=`🎮 DEMO · Escena ${sc+1}/${DEMO_IMGS.length}`;
-  try{
-    const res=await fetch(DEMO_IMGS[sc]); if(!res.ok)throw new Error('Error imagen');
-    const blob=await res.blob();
-    const b64=await new Promise((ok,ko)=>{const r=new FileReader();r.onload=()=>ok(r.result.split(',')[1]);r.readAsDataURL(blob);});
-    demoIdx++;
-    const sys=mode==='ai'?SYS_AI():SYS_COACH(COACHES[coach].prompt);
-    
-    const raw = await callAIProviders(b64, sys, 'Gameplay. Responde SOLO con el JSON.', kObj);
-    if (raw === "__QUOTA_LIMIT_EXCEEDED__") {
-      setKeyStatus(kObj.value, 'agotada');
-      showError('L&iacute;mite alcanzado', 'Llave agotada durante demostraci&oacute;n.');
-      return;
-    }
-    
-    const d=tryJSON(raw); scanCount++; scanLabel.textContent=`${scanCount} an&aacute;lisis`;
-    if(mode==='ai'&&d)renderAI(d);else if(d)renderCoach(d);
-    setKeyStatus(kObj.value, 'activa');
-  }catch(e){showError('Error Demo',e.message); setKeyStatus(kObj.value, 'activa');}
-  finally{spinner.classList.remove('show');analyzingTxt.classList.remove('show');demoBtn.disabled=false;demoBtn.textContent='🎮 DEMO';}
-});
-
-function renderCoach(d){
-  clearCards(); const t=ts(); add(mkSit(d.situacion,t));
-  const alerts=mkAlerts(d.alertas||[]); if(alerts)add(alerts);
-  add(mkAdvice(`💬 ${COACHES[coach].full.toUpperCase()}`,d.consejo_principal||'',false));
-  if(d.ajuste)add(mkTactic('🎯 AJUSTE',d.ajuste));
-  if(d.recomendacion_equipo&&userTeam){
-    const tc=mkDiv('card-team'); tc.innerHTML=`<div class="card-label">🏟 ${userTeam.toUpperCase()}</div><p>${d.recomendacion_equipo}</p>`; add(tc);
+function stopAnalysis() {
+  state.running = false;
+  if(state.timer) clearTimeout(state.timer);
+  
+  const stream = $('vid').srcObject;
+  if(stream) {
+    stream.getTracks().forEach(t => t.stop());
   }
+  $('vid').srcObject = null;
+  
+  $('analyze-btn').textContent = "⚡ ANALIZAR";
+  $('analyze-btn').classList.remove('stop');
+  $('live-dot').classList.remove('on');
+  $('cdwrap').style.display = 'none';
+  $('sp').classList.remove('on');
+  $('sp-txt').classList.remove('on');
 }
 
-const PHASE={ataque:{icon:'⚽',txt:'ATAQUE'},defensa:{icon:'🛡',txt:'DEFENSA'},transicion:{icon:'⚡',txt:'TRANSICI&Oacute;N'}};
-function renderAI(d){
-  clearCards(); const t=ts(); add(mkSit(d.situacion,t,true));
-  const ph=PHASE[d.fase]||{icon:'⚽',txt:'—'};
-  const form=mkDiv('card-formation');
-  form.innerHTML=`<div class="form-left"><div class="card-label">🔎 DETECTADA</div><div class="form-name">${d.formacion_detectada||'—'}</div></div><div class="form-phase"><div class="phase-icon">${ph.icon}</div><div class="phase-txt">${ph.txt}</div></div>`;
-  add(form);
-  const metrics=mkDiv('card-metrics');
-  metrics.innerHTML=`<div class="card-label">📊 M&Eacute;TRICAS</div>${mkMetric('🔴','PRES','danger-fill',clamp(d.presion_rival,0,100))}${mkMetric('🟡','CTRL','warn-fill',clamp(d.control_medio,0,100))}${mkMetric('🟢','RIESG','ok-fill',100-clamp(d.riesgo_defensa,0,100))}`;
-  add(metrics);
-  const alerts=mkAlerts(d.alertas||[]); if(alerts)add(alerts);
-  const tac=mkDiv('card-ai-tactic'); tac.innerHTML=`<div class="card-label">🤖 T&Aacute;CTICA IA PROPIA</div><p>${d.tactica_propia||d.consejo_principal||''}</p>`; add(tac);
+async function runLoop() {
+  if(!state.running) return;
+  
+  $('sp-txt').textContent = "capturando...";
+  const rawImg = captureFrame();
+  
+  $('sp-txt').textContent = "analizando...";
+  const res = await fetchAIAnalysis(rawImg);
+  
+  if(res) {
+    state.scansCount++;
+    $('scan-lbl').textContent = `${state.scansCount} análisis`;
+    renderTacticalBlocks(res);
+  }
+  
+  $('sp-txt').textContent = "en espera";
+  animateProgressBar(state.intervalMs);
+  
+  state.timer = setTimeout(runLoop, state.intervalMs);
 }
 
-function mkMetric(icon,lbl,cls,val){
-  return `<div class="metric-row"><span class="metric-icon">${icon}</span><span class="metric-lbl">${lbl}</span><div class="metric-bar"><div class="metric-fill ${cls}" style="width:${val}%"></div></div><span class="metric-val">${val}%</span></div>`;
+function captureFrame() {
+  const video = $('vid');
+  const canvas = $('cvs');
+  if(video.videoWidth === 0) return null;
+  
+  canvas.width = 1280;
+  canvas.height = 720;
+  const ctx = canvas.getContext('2d');
+  ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+  return canvas.toDataURL('image/jpeg', 0.75).split(',')[1];
 }
-function mkSit(txt,t,ai=false){
-  const c=mkDiv('card card-sit'); c.innerHTML=`<div class="card-label">${ai?'📡 LECTURA IA':'⚽ SITUACI&Oacute;N'} · ${t}</div><p>${txt||'—'}</p>`; return c;
+
+function animateProgressBar(ms) {
+  const fill = $('cdfill');
+  fill.style.transition = 'none';
+  fill.style.width = '100%';
+  setTimeout(() => {
+    fill.style.transition = `width ${ms / 1000}s linear`;
+    fill.style.width = '0%';
+  }, 50);
 }
-function mkAlerts(arr){
-  if(!arr.length)return null; const w=mkDiv(''); w.style.cssText='display:flex;flex-direction:column;gap:4px;';
-  arr.forEach(a=>{
-    const el=mkDiv(`alert-card ${a.tipo||'info'}`); el.innerHTML=`<span class="alert-zona">${a.zona||'?'}</span><span class="alert-msg">${a.mensaje||''}</span>`; w.appendChild(el);
+
+// --- COMPORTAMIENTO DE INTERFAZ Y MANIPULACIÓN DOM ---
+function setupUIEvents() {
+  // Manejo de pestañas principales (Coaches vs IA Táctica)
+  document.querySelectorAll('.mode-tabs .mtab').forEach(tab => {
+    tab.onclick = (e) => {
+      document.querySelectorAll('.mode-tabs .mtab').forEach(t => t.classList.remove('active'));
+      e.target.classList.add('active');
+      state.mode = e.target.getAttribute('data-mode');
+      
+      if(state.mode === 'ai') {
+        $('coach-pills').style.display = 'none';
+        $('phdr-txt').textContent = "MÓDULO DE INTELIGENCIA IA";
+        $('phdr-txt').classList.add('ai');
+        $('ai-badge').classList.add('on');
+      } else {
+        $('coach-pills').style.display = 'flex';
+        $('phdr-txt').textContent = "ANÁLISIS TÁCTICO";
+        $('phdr-txt').classList.remove('ai');
+        $('ai-badge').classList.remove('on');
+      }
+    };
   });
-  return w;
+
+  // Selección de Perfil de Coach Fijo
+  document.querySelectorAll('.c-pills .cpill').forEach(pill => {
+    pill.onclick = (e) => {
+      document.querySelectorAll('.c-pills .cpill').forEach(p => p.classList.remove('active'));
+      e.target.classList.add('active');
+      state.coach = e.target.getAttribute('data-c');
+    };
+  });
+
+  // Frecuencia de escaneo
+  document.querySelectorAll('.freq-pills .fpill').forEach(pill => {
+    pill.onclick = (e) => {
+      document.querySelectorAll('.freq-pills .fpill').forEach(p => p.classList.remove('active'));
+      e.target.classList.add('active');
+      state.intervalMs = parseInt(e.target.getAttribute('data-ms'));
+    };
+  });
+
+  // Subpaneles laterales (En vivo vs Configuración táctica)
+  document.querySelectorAll('.side-tabs .stab').forEach(tab => {
+    tab.onclick = (e) => {
+      document.querySelectorAll('.side-tabs .stab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+      
+      e.target.classList.add('active');
+      $(`t-${e.target.getAttribute('data-st')}`).classList.add('active');
+    };
+  });
+
+  // Gestión de Llaves API
+  $('add-key-btn').onclick = () => {
+    const input = $('key-in');
+    const prov = $('prov-sel').value;
+    if(input.value.trim()) {
+      addKey(input.value.trim(), prov);
+      input.value = '';
+    }
+  };
+
+  $('del-key-btn').onclick = () => {
+    const sel = $('keys-sel');
+    if(sel.value !== "") {
+      state.apiKeys.splice(parseInt(sel.value), 1);
+      state.activeKeyIdx = state.apiKeys.length > 0 ? 0 : -1;
+      saveLocalKeys();
+      renderKeys();
+    }
+  };
+
+  // Carga de iframe de stream de Twitch
+  $('load-btn').onclick = () => {
+    const channel = $('chan-in').value.trim();
+    if(channel) {
+      const loc = window.location.hostname || "localhost";
+      $('twitch-if').src = `https://player.twitch.tv/?channel=${channel}&parent=${loc}&autoplay=true&muted=true`;
+      $('twitch-if').style.display = 'block';
+      $('stream-ph').style.display = 'none';
+    }
+  };
+
+  // Botón Analizar Principal
+  $('analyze-btn').onclick = () => {
+    if(!state.running) startAnalysis();
+    else stopAnalysis();
+  };
+
+  // Input de configuración de plantilla de usuario
+  $('team-save').onclick = () => {
+    state.teamInfo = $('team-in').value.trim();
+    state.styleInfo = $('style-in').value.trim();
+    localStorage.setItem('fc24_team_info', state.teamInfo);
+    localStorage.setItem('fc24_style_info', state.styleInfo);
+    
+    const badge = $('team-badge');
+    if(state.teamInfo) {
+      badge.textContent = `📋 ${state.teamInfo.toUpperCase()}`;
+      badge.classList.add('on');
+    } else {
+      badge.classList.remove('on');
+    }
+  };
+
+  // Configuración de formulario reactivo de tácticas internas
+  document.querySelectorAll('.fgrid .fbtn').forEach(b => {
+    b.onclick = (e) => {
+      document.querySelectorAll('.fgrid .fbtn').forEach(x => x.classList.remove('active'));
+      e.target.classList.add('active');
+      state.myTactics.formacion = e.target.getAttribute('data-f');
+      $('pc-form').textContent = state.myTactics.formacion;
+    };
+  });
+
+  document.querySelectorAll('.sgrid .sbtn').forEach(b => {
+    b.onclick = (e) => {
+      document.querySelectorAll('.sgrid .sbtn').forEach(x => x.classList.remove('active'));
+      const target = e.target.closest('.sbtn');
+      target.classList.add('active');
+      state.myTactics.estilo = target.getAttribute('data-s');
+      $('pc-style').textContent = state.myTactics.estilo;
+    };
+  });
+
+  // Deslizadores Numéricos
+  $('sl-press').oninput = (e) => {
+    state.myTactics.presion = e.target.value;
+    $('v-press').textContent = e.target.value;
+    $('pc-press').textContent = `Media (${e.target.value})`;
+  };
+  $('sl-width').oninput = (e) => {
+    state.myTactics.anchura = e.target.value;
+    $('v-width').textContent = e.target.value;
+  };
+
+  // Etiquetas Multi-selección
+  document.querySelectorAll('.tagwrap .tag').forEach(t => {
+    t.onclick = (e) => {
+      const val = e.target.getAttribute('data-t');
+      if(state.myTactics.tags.includes(val)) {
+        state.myTactics.tags = state.myTactics.tags.filter(x => x !== val);
+        e.target.classList.remove('tg', 'tb');
+      } else {
+        state.myTactics.tags.push(val);
+        e.target.classList.add('tg');
+      }
+    };
+  });
+
+  // Guardar estructura de juego localmente
+  $('save-btn').onclick = () => {
+    localStorage.setItem('fc24_tactics', JSON.stringify(state.myTactics));
+    $('pc-status').textContent = "Guardado en disco";
+    $('pc-status').style.color = "var(--ok)";
+    
+    const indicator = $('save-ok');
+    indicator.style.display = 'block';
+    indicator.style.animation = 'fadeOut 3s forwards';
+    setTimeout(() => { indicator.style.display = 'none'; }, 3000);
+  };
+
+  // Gestión de Chat Interactiva
+  $('chat-toggle').onclick = () => {
+    const sec = $('chat-sec');
+    sec.classList.toggle('open');
+    $('chat-toggle').textContent = sec.classList.contains('open') ? "▼ CERRAR" : "▲ ABRIR";
+  };
+
+  $('chat-send').onclick = () => sendChatMessage();
+  $('chat-in').onkeydown = (e) => { if(e.key === 'Enter') sendChatMessage(); };
+
+  // Limpieza manual de historial de chat
+  $('chat-clear').onclick = () => {
+    $('chat-box').innerHTML = `<div class="cmrow coach"><span class="ca">SISTEMA</span><div class="cbubble" style="font-family:'DM Mono',monospace;font-size:11px;">Historial de chat restablecido. Pregúntame sobre la jugada...</div></div>`;
+  };
+
+  // Ejecución de simulación (Demo sin transmisiones activas)
+  $('demo-btn').onclick = () => runDemoSimulation();
 }
-function mkAdvice(label,txt,ai){
-  const c=mkDiv('card-advice'+(ai?' ai-card':'')); c.innerHTML=`<div class="card-label">${label}</div><p>"${txt}"</p>`; return c;
+
+function updateTacticsUI() {
+  $('pc-form').textContent = state.myTactics.formacion;
+  $('pc-style').textContent = state.myTactics.estilo;
+  $('pc-press').textContent = `Media (${state.myTactics.presion})`;
+  $('sl-press').value = state.myTactics.presion;
+  $('v-press').textContent = state.myTactics.presion;
+  $('sl-width').value = state.myTactics.anchura;
+  $('v-width').textContent = state.myTactics.anchura;
 }
-function mkTactic(label,txt){
-  const c=mkDiv('card card-tactic'); c.innerHTML=`<div class="card-label">${label}</div><p>${txt}</p>`; return c;
+
+// --- SISTEMA INTERACTIVO DE CONVERSACIÓN ---
+async function sendChatMessage() {
+  const input = $('chat-in');
+  const query = input.value.trim();
+  if(!query) return;
+
+  input.value = '';
+  const box = $('chat-box');
+  
+  // Agregar burbuja del usuario
+  box.innerHTML += `<div class="cmrow user"><span class="ca">Tú</span><div class="cbubble">${query}</div></div>`;
+  box.scrollTop = box.scrollHeight;
+
+  // Renderizar estado analizando en chat
+  const aiRow = document.createElement('div');
+  aiRow.className = `cmrow coach ${state.mode === 'ai' ? 'ai-style' : ''}`;
+  aiRow.innerHTML = `<span class="ca">${state.mode === 'ai' ? 'IA PROPIA' : state.coach.toUpperCase()}</span><div class="cbubble">Pensando ajuste estratégico...</div>`;
+  box.appendChild(aiRow);
+  box.scrollTop = box.scrollHeight;
+
+  // Capturar frame actual de fondo si está corriendo el stream para darle contexto
+  const frame = state.running ? captureFrame() : null;
+  const replyJson = await fetchAIAnalysis(frame, `El usuario pregunta de manera interactiva: "${query}". Responde al JSON habitual amoldando el consejo a su duda.`);
+  
+  if(replyJson) {
+    aiRow.querySelector('.cbubble').textContent = replyJson.consejo;
+    renderTacticalBlocks(replyJson); // Sincroniza el panel principal con la respuesta del chat
+  } else {
+    aiRow.querySelector('.cbubble').textContent = "No he podido procesar la orden táctica. Comprueba la conexión.";
+  }
+  box.scrollTop = box.scrollHeight;
 }
-function add(el){panelBody.prepend(el);}
-function clearCards(){
-  panelBody.querySelectorAll('.card,.card-formation,.card-metrics,.card-ai-tactic,.card-action,.card-advice,.alert-card,.error-card,.divider').forEach(el=>el.remove());
+
+// --- SIMULADOR DE ESCENARIOS (DEMO MODE) ---
+function runDemoSimulation() {
+  const mockSituations = [
+    {
+      situacion: "Rival presionando alto con estructura 4-2-4. Bloque defensivo propio hundido en campo propio bajo asedio lateral.",
+      consejo: "Abre líneas de pase saltando la presión del mediocampo mediante pases largos orientados a los extremos desmarcados. Mueve el bloque defensivo a media distancia.",
+      formacion_sugerida: "4-1-4-1", fase: "Defensa / Salida",
+      metricas: { ataque: 40, defensa: 85, posesion: 35, riesgo: 75 },
+      alertas: [{ tipo: "danger", zona: "LD", msg: "Extremo izquierdo rival tiene superioridad 2 vs 1." }]
+    },
+    {
+      situacion: "Contragolpe limpio iniciado por el pivote defensivo. Espacio libre masivo en carril central tras pérdida del rival.",
+      consejo: "Ordena proyección inmediata a los interiores. Realiza un pase filtrado al hueco antes de que la línea de 4 rival recupere la posición de repliegue.",
+      formacion_sugerida: "4-2-3-1", fase: "Contraataque",
+      metricas: { ataque: 90, defensa: 20, posesion: 45, riesgo: 15 },
+      alertas: [{ tipo: "info", zona: "DC", msg: "Línea defensiva rival adelantada. Oportunidad de desmarque de ruptura." }]
+    }
+  ];
+
+  const randomData = mockSituations[Math.floor(Math.random() * mockSituations.length)];
+  appendCard('personal', 'DEMO DE CONTROL', 'Simulando inyección de datos de juego...');
+  setTimeout(() => { renderTacticalBlocks(randomData); }, 600);
 }
-function showError(title,msg){
-  panelBody.querySelector('.error-card')?.remove();
-  const c=mkDiv('error-card'); c.innerHTML=`<div class="error-title">⚠ ${title}</div><div class="error-msg">${msg}</div><button class="error-retry" onclick="this.parentElement.remove()">✕ CERRAR</button>`;
-  panelBody.prepend(c);
-}
-function mkDiv(cls){const el=document.createElement('div');if(cls)el.className=cls;return el;}
-function ts(){return new Date().toLocaleTimeString('es',{hour:'2-digit',minute:'2-digit',second:'2-digit'});}
-function clamp(v,mn,mx){return Math.min(mx,Math.max(mn,parseInt(v)||0));}
 </script>
+
 </body>
 </html>
