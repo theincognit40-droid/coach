@@ -2,17 +2,28 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>FC24 Coach + Chat</title>
+<title>FC24 Coach + Chat Premium</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Lato:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,400;0,600;0,700;0,800;1,600&family=Share+Tech+Mono&display=swap');
 *{margin:0;padding:0;box-sizing:border-box;}
 :root{
   --accent:#00E5FF; --accent2:#0288D1;
   --danger:#FF3D3D; --warn:#FFA726; --ok:#69FF47; --gold:#FFD700;
   --bg:#07090f; --surface:#0d1018; --card:#111620;
-  --border:rgba(255,255,255,0.06);
+  --border:rgba(255,255,255,0.08);
 }
-body{background:var(--bg);color:#fff;font-family:'Barlow Condensed',sans-serif;height:100vh;overflow:hidden;display:flex;flex-direction:column;}
+body{
+  background:var(--bg);color:#fff;
+  font-family:'Lato',sans-serif;
+  height:100vh;overflow:hidden;display:flex;flex-direction:column;
+}
+
+h1, h2, h3, .panel-title, .logo, .card-label, .chat-author, .top-btn, .coach-pill, .mode-tab{
+  font-family:'Poppins',sans-serif;
+  font-weight:700;
+}
 
 /* ZONA DRAG OVERLAY */
 #drag-overlay{
@@ -34,15 +45,15 @@ body{background:var(--bg);color:#fff;font-family:'Barlow Condensed',sans-serif;h
 
 /* ═══ TOPBAR ═══════════════════════════════════════════════ */
 #topbar{
-  display:flex;align-items:center;gap:8px;padding:8px 14px;
-  background:rgba(7,9,15,0.95);
+  display:flex;align-items:center;gap:10px;padding:10px 16px;
+  background:rgba(7,9,15,0.98);
   border-bottom:1px solid var(--border);
   flex-shrink:0;flex-wrap:wrap;z-index:10;
-  backdrop-filter:blur(12px);
+  backdrop-filter:blur(15px);
   box-shadow:0 1px 20px rgba(0,0,0,0.4);
 }
 .logo{
-  font-size:16px;font-weight:800;letter-spacing:3px;
+  font-size:18px;font-weight:800;letter-spacing:2px;
   background:linear-gradient(90deg,var(--accent),var(--accent2));
   -webkit-background-clip:text;-webkit-text-fill-color:transparent;
   white-space:nowrap;flex-shrink:0;
@@ -50,69 +61,67 @@ body{background:var(--bg);color:#fff;font-family:'Barlow Condensed',sans-serif;h
 .logo em{font-style:normal;-webkit-text-fill-color:rgba(255,255,255,0.25);font-weight:400;}
 
 .top-input{
-  background:rgba(255,255,255,0.04);
-  border:1px solid rgba(255,255,255,0.08);
-  border-radius:8px;padding:6px 11px;color:#fff;
-  font-family:'Share Tech Mono',monospace;font-size:11px;outline:none;
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:8px;padding:7px 12px;color:#fff;
+  font-family:'Share Tech Mono',monospace;font-size:12px;outline:none;
   transition:border-color .15s,box-shadow .15s;
 }
 .top-input:focus{border-color:var(--accent);box-shadow:0 0 0 2px rgba(0,229,255,0.1);}
-.top-input::placeholder{color:rgba(255,255,255,0.18);}
-#apikey-input{width:190px;}#channel-input{width:135px;}
+.top-input::placeholder{color:rgba(255,255,255,0.25);}
+#apikey-input{width:160px;}#channel-input{width:120px;}
 
-/* CONTENEDOR MULTI-KEYS */
 .keys-container{display:flex;align-items:center;gap:4px;}
 .keys-select{
-  background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);
-  border-radius:8px;padding:6px 8px;color:#fff;font-family:'Share Tech Mono',monospace;
-  font-size:11px;outline:none;cursor:pointer;max-width:110px;
+  background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);
+  border-radius:8px;padding:7px 10px;color:#fff;font-family:'Share Tech Mono',monospace;
+  font-size:12px;outline:none;cursor:pointer;max-width:120px;
 }
 .keys-select option{background:var(--surface);color:#fff;}
 
 .top-btn{
-  border:none;border-radius:8px;padding:7px 13px;
-  font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;
-  letter-spacing:.8px;cursor:pointer;white-space:nowrap;transition:all .15s;
+  border:none;border-radius:8px;padding:8px 14px;
+  font-size:13px;font-weight:700;
+  letter-spacing:.5px;cursor:pointer;white-space:nowrap;transition:all .15s;
   position:relative;overflow:hidden;
 }
 .top-btn::after{content:'';position:absolute;inset:0;background:rgba(255,255,255,0);transition:.15s;}
 .top-btn:hover::after{background:rgba(255,255,255,0.06);}
 #load-btn{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#07090f;font-weight:800;}
-#analyze-btn{background:rgba(0,229,255,0.08);border:1px solid rgba(0,229,255,0.25);color:var(--accent);}
-#analyze-btn.stop{background:rgba(255,61,61,0.08);border-color:rgba(255,61,61,0.3);color:var(--danger);}
-#demo-btn{background:rgba(255,215,0,0.08);border:1px solid rgba(255,215,0,0.2);color:var(--gold);}
+#analyze-btn{background:rgba(0,229,255,0.08);border:1px solid rgba(0,229,255,0.3);color:var(--accent);}
+#analyze-btn.stop{background:rgba(255,61,61,0.08);border-color:rgba(255,61,61,0.4);color:var(--danger);}
+#demo-btn{background:rgba(255,215,0,0.08);border:1px solid rgba(255,215,0,0.3);color:var(--gold);}
 #demo-btn:disabled{opacity:.35;cursor:not-allowed;}
-#demo-btn:disabled::after{display:none;}
 
-#upload-btn{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.6);font-size:11px;padding:6px 10px;}
+#upload-btn{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);color:rgba(255,255,255,0.6);font-size:11px;padding:7px 10px;}
 #upload-btn:hover{border-color:rgba(255,255,255,0.2);color:#fff;}
 
 /* MODE TABS */
 .mode-tabs{display:flex;gap:2px;background:rgba(255,255,255,0.03);border:1px solid var(--border);border-radius:9px;padding:3px;}
 .mode-tab{
-  padding:5px 11px;border-radius:7px;font-size:11px;font-weight:700;
-  letter-spacing:.5px;cursor:pointer;color:rgba(255,255,255,0.25);
+  padding:5px 11px;border-radius:7px;font-size:12px;font-weight:700;
+  cursor:pointer;color:rgba(255,255,255,0.3);
   border:none;background:transparent;transition:all .2s;white-space:nowrap;
 }
 .mode-tab.active{background:rgba(0,229,255,0.12);color:var(--accent);box-shadow:inset 0 0 0 1px rgba(0,229,255,0.2);}
 .mode-tab.ai-tab.active{background:rgba(255,215,0,0.1);color:var(--gold);box-shadow:inset 0 0 0 1px rgba(255,215,0,0.2);}
 
 /* COACH PILLS */
-#coach-pills-wrap{display:flex;gap:3px;}
+#coach-pills-wrap{display:flex;gap:4px;}
 .coach-pill{
   background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);
-  border-radius:6px;padding:5px 9px;font-size:11px;font-weight:700;
-  color:rgba(255,255,255,0.25);cursor:pointer;letter-spacing:.5px;transition:all .15s;white-space:nowrap;
+  border-radius:6px;padding:5px 10px;font-size:12px;font-weight:700;
+  color:rgba(255,255,255,0.3);cursor:pointer;transition:all .15s;white-space:nowrap;
 }
-.coach-pill:hover{border-color:rgba(255,255,255,0.15);color:rgba(255,255,255,0.5);}
+.coach-pill:hover{border-color:rgba(255,255,255,0.15);color:rgba(255,255,255,0.6);}
 .coach-pill.active{border-color:var(--accent);color:var(--accent);background:rgba(0,229,255,0.07);}
 
 /* FREQ */
 .freq-pills{display:flex;gap:2px;background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:7px;padding:2px;}
-.freq-pill{background:transparent;border:none;border-radius:5px;padding:4px 8px;font-size:11px;font-weight:700;color:rgba(255,255,255,0.2);cursor:pointer;transition:all .15s;}
+.freq-pill{background:transparent;border:none;border-radius:5px;padding:4px 8px;font-size:11px;font-weight:700;color:rgba(255,255,255,0.3);cursor:pointer;transition:all .15s;}
 .freq-pill.active{background:rgba(0,229,255,0.1);color:var(--accent);}
 
-#live-dot{width:7px;height:7px;border-radius:50%;background:rgba(255,255,255,0.1);flex-shrink:0;transition:all .3s;}
+#live-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.1);flex-shrink:0;transition:all .3s;}
 #live-dot.active{background:var(--danger);box-shadow:0 0 8px var(--danger);animation:blink 1.2s ease infinite;}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
 
@@ -120,45 +129,36 @@ body{background:var(--bg);color:#fff;font-family:'Barlow Condensed',sans-serif;h
 #main{display:flex;flex:1;overflow:hidden;}
 #stream-wrap{flex:1;position:relative;background:#000;display:flex;align-items:center;justify-content:center;overflow:hidden;}
 
-/* animated grid bg for placeholder */
-#stream-placeholder{
-  text-align:center;color:rgba(255,255,255,0.1);
-  position:relative;z-index:1;
-  padding:40px;
-}
+#stream-placeholder{text-align:center;color:rgba(255,255,255,0.1);position:relative;z-index:1;padding:40px;}
 #stream-placeholder::before{
   content:'';position:absolute;inset:-100px;
-  background:
-    linear-gradient(rgba(0,229,255,0.03) 1px,transparent 1px),
-    linear-gradient(90deg,rgba(0,229,255,0.03) 1px,transparent 1px);
-  background-size:40px 40px;
-  animation:gridMove 8s linear infinite;
-  z-index:-1;
+  background:linear-gradient(rgba(0,229,255,0.02) 1px,transparent 1px),linear-gradient(90deg,rgba(0,229,255,0.02) 1px,transparent 1px);
+  background-size:40px 40px;animation:gridMove 8s linear infinite;z-index:-1;
 }
 @keyframes gridMove{from{transform:translateY(0)}to{transform:translateY(40px)}}
-#stream-placeholder .big{font-size:52px;margin-bottom:14px;filter:drop-shadow(0 0 20px rgba(0,229,255,0.3));}
-#stream-placeholder h2{font-size:18px;font-weight:800;letter-spacing:2px;color:rgba(255,255,255,0.2);margin-bottom:8px;}
-#stream-placeholder p{font-size:12px;font-family:'Share Tech Mono',monospace;letter-spacing:.5px;line-height:2;color:rgba(255,255,255,0.12);}
-#stream-placeholder .hint{margin-top:16px;font-size:10px;color:rgba(0,229,255,0.25);font-family:'Share Tech Mono',monospace;border:1px solid rgba(0,229,255,0.1);border-radius:6px;padding:6px 12px;display:inline-block;}
+#stream-placeholder .big{font-size:60px;margin-bottom:14px;filter:drop-shadow(0 0 20px rgba(0,229,255,0.2));}
+#stream-placeholder h2{font-size:22px;font-weight:800;letter-spacing:2px;color:rgba(255,255,255,0.3);margin-bottom:8px;}
+#stream-placeholder p{font-size:13px;font-family:'Share Tech Mono',monospace;line-height:2;color:rgba(255,255,255,0.2);}
+#stream-placeholder .hint{margin-top:16px;font-size:11px;color:rgba(0,229,255,0.4);border:1px solid rgba(0,229,255,0.15);border-radius:6px;padding:6px 12px;display:inline-block;}
 #twitch-frame{width:100%;height:100%;border:none;display:none;}
 
-/* ═══ PANEL ═════════════════════════════════════════════════ */
+/* ═══ PANEL DERECHO ═════════════════════════════════════════ */
 #coach-panel{
-  width:320px;flex-shrink:0;
+  width:360px;flex-shrink:0;
   background:var(--surface);
   border-left:1px solid var(--border);
   display:flex;flex-direction:column;overflow:hidden;
-  box-shadow:-4px 0 30px rgba(0,0,0,0.3);
+  box-shadow:-4px 0 30px rgba(0,0,0,0.4);
 }
 
 #panel-header{
-  padding:10px 13px;
+  padding:12px 16px;
   border-bottom:1px solid var(--border);
   display:flex;align-items:center;justify-content:space-between;flex-shrink:0;
   background:rgba(0,0,0,0.2);
 }
-.panel-title{font-size:9px;letter-spacing:2.5px;color:rgba(255,255,255,0.18);font-family:'Share Tech Mono',monospace;text-transform:uppercase;}
-.panel-title.ai-mode{color:rgba(255,215,0,0.5);}
+.panel-title{font-size:11px;letter-spacing:2px;color:rgba(255,255,255,0.35);text-transform:uppercase;}
+.panel-title.ai-mode{color:var(--gold);opacity:0.8;}
 
 #spin-wrap{display:flex;align-items:center;gap:6px;}
 .spinner{
@@ -169,279 +169,211 @@ body{background:var(--bg);color:#fff;font-family:'Barlow Condensed',sans-serif;h
 }
 @keyframes spin{to{transform:rotate(360deg)}}
 .spinner.show{display:block;}
-#analyzing-txt{font-size:9px;color:var(--accent);font-family:'Share Tech Mono',monospace;display:none;letter-spacing:1px;}
+#analyzing-txt{font-size:10px;color:var(--accent);font-family:'Share Tech Mono',monospace;display:none;letter-spacing:1px;}
 #analyzing-txt.show{display:block;}
 
 #ai-badge{
   display:none;
-  background:linear-gradient(135deg,rgba(255,215,0,0.1),rgba(255,167,38,0.08));
+  background:rgba(255,215,0,0.1);
   border:1px solid rgba(255,215,0,0.2);border-radius:5px;
-  padding:3px 8px;font-size:8px;font-weight:800;color:var(--gold);
-  font-family:'Share Tech Mono',monospace;letter-spacing:1.5px;
+  padding:3px 8px;font-size:9px;font-weight:800;color:var(--gold);
+  letter-spacing:1px;
 }
 #ai-badge.show{display:block;}
 
 #demo-banner{
-  display:none;padding:6px 12px;font-size:9px;color:var(--gold);
+  display:none;padding:6px 12px;font-size:10px;color:var(--gold);
   font-family:'Share Tech Mono',monospace;
-  background:linear-gradient(90deg,rgba(255,215,0,0.06),rgba(255,167,38,0.04));
+  background:rgba(255,215,0,0.04);
   border-bottom:1px solid rgba(255,215,0,0.1);text-align:center;flex-shrink:0;
-  letter-spacing:.5px;
 }
 
-#panel-body{flex:1;overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:7px;}
-::-webkit-scrollbar{width:3px;}
+#panel-body{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:10px;}
+::-webkit-scrollbar{width:4px;}
 ::-webkit-scrollbar-track{background:transparent;}
-::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.08);border-radius:2px;}
+::-webkit-scrollbar-thumb{background:rgba(255,255,255,0.1);border-radius:2px;}
 
-/* ═══ CARDS ═════════════════════════════════════════════════ */
+/* ═══ CARDS CON TEXTO GRANDE Y PREMIUM ═══════════════════════ */
 @keyframes fadeSlide{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-.card{border-radius:8px;padding:10px 11px;animation:fadeSlide .25s ease;}
+.card{border-radius:10px;padding:12px 14px;animation:fadeSlide .25s ease;}
 .card-label{
-  font-size:8px;letter-spacing:1.8px;font-family:'Share Tech Mono',monospace;
-  margin-bottom:6px;text-transform:uppercase;display:flex;align-items:center;gap:5px;
+  font-size:10px;letter-spacing:1.5px;color:var(--accent);
+  margin-bottom:6px;text-transform:uppercase;display:flex;align-items:center;gap:6px;
 }
-.card-label::after{content:'';flex:1;height:1px;background:currentColor;opacity:.12;}
+.card-label::after{content:'';flex:1;height:1px;background:currentColor;opacity:.15;}
 
-/* situación */
+/* Situación */
 .card-sit{
-  background:linear-gradient(135deg,rgba(0,229,255,0.06),rgba(2,136,209,0.04));
-  border:1px solid rgba(0,229,255,0.12);
-}
-.card-sit .card-label{color:var(--accent);}
-.card-sit p{font-size:12px;color:rgba(255,255,255,0.75);line-height:1.5;font-family:'Share Tech Mono',monospace;}
-
-/* alertas */
-.alert-card{
-  display:flex;gap:8px;align-items:flex-start;
-  padding:8px 10px;border-radius:7px;border-left:3px solid;
-  animation:fadeSlide .25s ease;
-}
-.alert-card.danger {background:rgba(255,61,61,0.07); border-color:var(--danger);}
-.alert-card.warning{background:rgba(255,167,38,0.07);border-color:var(--warn);}
-.alert-card.info   {background:rgba(0,229,255,0.05); border-color:var(--accent);}
-.alert-card.success{background:rgba(105,255,71,0.05);border-color:var(--ok);}
-.alert-zona{
-  font-size:7px;font-family:'Share Tech Mono',monospace;font-weight:800;
-  flex-shrink:0;margin-top:2px;letter-spacing:1px;
-  padding:2px 5px;border-radius:3px;
-}
-.alert-card.danger  .alert-zona{color:var(--danger);background:rgba(255,61,61,0.12);}
-.alert-card.warning .alert-zona{color:var(--warn);  background:rgba(255,167,38,0.12);}
-.alert-card.info    .alert-zona{color:var(--accent);background:rgba(0,229,255,0.1);}
-.alert-card.success .alert-zona{color:var(--ok);    background:rgba(105,255,71,0.1);}
-.alert-msg{font-size:11.5px;color:rgba(255,255,255,0.85);line-height:1.45;font-weight:600;}
-
-/* consejo */
-.card-advice{
   background:rgba(255,255,255,0.02);
-  border:1px solid rgba(255,255,255,0.07);
-  border-left:3px solid var(--accent);
-  border-radius:8px;
-  padding:10px 11px;
+  border:1px solid var(--border);
+}
+.card-sit p{font-size:15px;color:rgba(255,255,255,0.95);line-height:1.6;font-weight:400;}
+
+/* Alertas */
+.alert-card{
+  display:flex;gap:10px;align-items:flex-start;
+  padding:10px 12px;border-radius:8px;border-left:4px solid;
   animation:fadeSlide .25s ease;
 }
-.card-advice.ai-card{border-left-color:var(--gold);}
+.alert-card.danger {background:rgba(255,61,61,0.08); border-color:var(--danger);}
+.alert-card.warning{background:rgba(255,167,38,0.08);border-color:var(--warn);}
+.alert-card.info   {background:rgba(0,229,255,0.06); border-color:var(--accent);}
+.alert-card.success{background:rgba(105,255,71,0.06);border-color:var(--ok);}
+.alert-zona{
+  font-size:9px;font-family:'Share Tech Mono',monospace;font-weight:800;
+  flex-shrink:0;margin-top:1px;letter-spacing:0.5px;
+  padding:2px 6px;border-radius:4px;
+}
+.alert-card.danger  .alert-zona{color:var(--danger);background:rgba(255,61,61,0.15);}
+.alert-card.warning .alert-zona{color:var(--warn);  background:rgba(255,167,38,0.15);}
+.alert-card.info    .alert-zona{color:var(--accent);background:rgba(0,229,255,0.12);}
+.alert-card.success .alert-zona{color:var(--ok);    background:rgba(105,255,71,0.12);}
+.alert-msg{font-size:14px;color:#fff;line-height:1.45;font-weight:600;}
+
+/* Consejos Coach */
+.card-advice{
+  background:rgba(255,255,255,0.01);
+  border:1px solid rgba(255,255,255,0.08);
+  border-left:4px solid var(--accent);
+  border-radius:10px;padding:14px;
+  animation:fadeSlide .25s ease;
+}
+.card-advice.ai-card{border-left-color:var(--gold);background:rgba(255,215,0,0.02);}
 .card-advice .card-label{color:var(--accent);}
 .card-advice.ai-card .card-label{color:var(--gold);}
-.card-advice p{font-size:13px;color:#fff;font-weight:600;line-height:1.55;font-style:italic;}
+.card-advice p{font-size:16px;color:#fff;font-weight:700;line-height:1.55;font-style:italic;}
 
-/* ajuste */
+/* Ajustes */
 .card-tactic{
-  background:rgba(105,255,71,0.04);
-  border:1px solid rgba(105,255,71,0.12);
-  border-radius:8px;padding:10px 11px;
-  animation:fadeSlide .25s ease;
+  background:rgba(105,255,71,0.03);
+  border:1px solid rgba(105,255,71,0.1);
+  border-radius:10px;padding:12px 14px;
 }
 .card-tactic .card-label{color:var(--ok);}
-.card-tactic p{font-size:11.5px;color:rgba(255,255,255,0.75);line-height:1.5;font-family:'Share Tech Mono',monospace;}
+.card-tactic p{font-size:14px;color:rgba(255,255,255,0.85);line-height:1.5;font-weight:400;}
 
-/* IA: formación */
+/* Formación IA */
 .card-formation{
-  background:linear-gradient(135deg,rgba(255,215,0,0.06),rgba(255,167,38,0.03));
-  border:1px solid rgba(255,215,0,0.15);
-  border-radius:8px;padding:10px 11px;
-  animation:fadeSlide .25s ease;
-  display:flex;align-items:center;justify-content:space-between;
+  background:rgba(255,215,0,0.03);border:1px solid rgba(255,215,0,0.12);
+  border-radius:10px;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;
 }
 .card-formation .card-label{color:var(--gold);margin-bottom:4px;}
-.card-formation .form-name{font-size:28px;font-weight:800;color:var(--gold);letter-spacing:3px;line-height:1;}
-.card-formation .form-desc{font-size:9px;color:rgba(255,255,255,0.35);font-family:'Share Tech Mono',monospace;margin-top:4px;}
+.card-formation .form-name{font-size:30px;font-weight:800;color:var(--gold);letter-spacing:2px;line-height:1;}
+.card-formation .form-desc{font-size:11px;color:rgba(255,255,255,0.4);margin-top:4px;}
 .form-phase{text-align:right;flex-shrink:0;}
-.form-phase .phase-icon{font-size:22px;}
-.form-phase .phase-txt{font-size:8px;color:rgba(255,255,255,0.3);font-family:'Share Tech Mono',monospace;letter-spacing:1px;margin-top:2px;}
+.form-phase .phase-icon{font-size:24px;}
+.form-phase .phase-txt{font-size:9px;color:rgba(255,255,255,0.4);letter-spacing:1px;margin-top:2px;}
 
-/* IA: métricas */
-.card-metrics{
-  background:rgba(255,255,255,0.02);border:1px solid var(--border);
-  border-radius:8px;padding:10px 11px;animation:fadeSlide .25s ease;
-}
-.card-metrics .card-label{color:rgba(255,255,255,0.2);}
-.metric-row{display:flex;align-items:center;gap:8px;margin-bottom:5px;}
+/* Métricas IA */
+.card-metrics{background:rgba(255,255,255,0.02);border:1px solid var(--border);border-radius:10px;padding:12px 14px;}
+.card-metrics .card-label{color:rgba(255,255,255,0.3);}
+.metric-row{display:flex;align-items:center;gap:10px;margin-bottom:6px;}
 .metric-row:last-child{margin-bottom:0;}
-.metric-icon{font-size:11px;flex-shrink:0;width:16px;text-align:center;}
-.metric-lbl{font-size:9px;font-family:'Share Tech Mono',monospace;color:rgba(255,255,255,0.25);width:32px;flex-shrink:0;}
-.metric-bar{flex:1;height:5px;background:rgba(255,255,255,0.05);border-radius:3px;overflow:hidden;}
-.metric-fill{height:100%;border-radius:3px;transition:width .6s cubic-bezier(.4,0,.2,1);}
+.metric-icon{font-size:12px;width:16px;text-align:center;}
+.metric-lbl{font-size:10px;font-family:'Share Tech Mono',monospace;color:rgba(255,255,255,0.4);width:35px;}
+.metric-bar{flex:1;height:6px;background:rgba(255,255,255,0.06);border-radius:3px;overflow:hidden;}
+.metric-fill{height:100%;border-radius:3px;transition:width .5s ease-out;}
 .metric-fill.danger-fill{background:linear-gradient(90deg,var(--danger),#FF7043);}
 .metric-fill.warn-fill  {background:linear-gradient(90deg,var(--warn),#FFD54F);}
 .metric-fill.ok-fill    {background:linear-gradient(90deg,var(--ok),#00E676);}
-.metric-val{font-size:9px;font-family:'Share Tech Mono',monospace;color:rgba(255,255,255,0.25);width:28px;text-align:right;flex-shrink:0;}
+.metric-val{font-size:10px;font-family:'Share Tech Mono',monospace;color:rgba(255,255,255,0.4);width:30px;text-align:right;}
 
-/* IA: táctica propia */
+/* Táctica Propia */
 .card-ai-tactic{
-  background:linear-gradient(135deg,rgba(255,215,0,0.05),rgba(0,0,0,0));
-  border:1px solid rgba(255,215,0,0.12);
-  border-left:3px solid var(--gold);
-  border-radius:8px;padding:10px 11px;
-  animation:fadeSlide .25s ease;
+  background:rgba(255,215,0,0.02);border:1px solid rgba(255,215,0,0.1);
+  border-left:4px solid var(--gold);border-radius:10px;padding:12px 14px;
 }
 .card-ai-tactic .card-label{color:var(--gold);}
-.card-ai-tactic p{font-size:12.5px;color:#fff;font-weight:600;line-height:1.55;font-style:italic;}
-
-/* IA: acción inmediata */
-.card-action{
-  background:linear-gradient(135deg,rgba(105,255,71,0.06),rgba(0,0,0,0));
-  border:1px solid rgba(105,255,71,0.15);
-  border-radius:8px;padding:10px 11px;
-  position:relative;overflow:hidden;
-  animation:fadeSlide .25s ease;
-}
-.card-action::before{
-  content:'⚡';position:absolute;right:8px;bottom:6px;
-  font-size:28px;opacity:.07;
-}
-.card-action .card-label{color:var(--ok);}
-.card-action p{font-size:12px;color:rgba(255,255,255,0.8);font-weight:700;line-height:1.45;}
+.card-ai-tactic p{font-size:15px;color:#fff;font-weight:600;line-height:1.55;font-style:italic;}
 
 /* ERROR */
 .error-card{
-  background:rgba(255,61,61,0.07);
-  border:1px solid rgba(255,61,61,0.2);
-  border-left:3px solid var(--danger);
-  border-radius:8px;padding:9px 11px;
-  animation:fadeSlide .2s ease;
+  background:rgba(255,61,61,0.06);border:1px solid rgba(255,61,61,0.2);
+  border-left:4px solid var(--danger);border-radius:10px;padding:10px 14px;
 }
-.error-card .error-title{font-size:9px;color:var(--danger);font-family:'Share Tech Mono',monospace;letter-spacing:1px;margin-bottom:4px;}
-.error-card .error-msg{font-size:10.5px;color:rgba(255,255,255,0.6);font-family:'Share Tech Mono',monospace;line-height:1.5;}
-.error-card .error-retry{
-  margin-top:7px;font-size:10px;color:var(--danger);font-family:'Barlow Condensed',sans-serif;
-  font-weight:700;letter-spacing:1px;cursor:pointer;opacity:.6;
-  border:none;background:none;transition:opacity .15s;
-}
-.error-card .error-retry:hover{opacity:1;}
+.error-card .error-title{font-size:10px;color:var(--danger);letter-spacing:1px;margin-bottom:4px;}
+.error-card .error-msg{font-size:12px;color:rgba(255,255,255,0.7);line-height:1.5;}
+.error-card .error-retry{margin-top:6px;font-size:12px;color:var(--danger);font-weight:700;cursor:pointer;border:none;background:none;}
 
-/* DIVIDER */
-.divider{height:1px;background:var(--border);margin:1px 0;flex-shrink:0;}
-
-/* COUNTDOWN */
-#countdown-wrap{
-  padding:9px 12px;border-top:1px solid var(--border);
-  flex-shrink:0;background:rgba(0,0,0,0.15);
-}
-#countdown-top{display:flex;justify-content:space-between;margin-bottom:6px;font-size:9px;font-family:'Share Tech Mono',monospace;color:rgba(255,255,255,0.18);}
-#scan-label{color:var(--accent);}
-#countdown-bar{height:2px;background:rgba(255,255,255,0.05);border-radius:2px;overflow:hidden;}
-#countdown-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:2px;width:100%;transition:width 1s linear;}
-
-/* IDLE */
-#idle-msg{text-align:center;color:rgba(255,255,255,0.12);padding:32px 12px;}
-#idle-msg .ico{font-size:36px;margin-bottom:10px;filter:grayscale(1);opacity:.4;}
-#idle-msg h3{font-size:13px;font-weight:700;letter-spacing:1px;margin-bottom:6px;color:rgba(255,255,255,0.15);}
-#idle-msg p{font-size:10px;font-family:'Share Tech Mono',monospace;line-height:1.9;letter-spacing:.3px;}
-#twitch-note{
-  background:rgba(145,70,255,0.07);border:1px solid rgba(145,70,255,0.18);
-  border-radius:8px;padding:9px 11px;font-size:10px;
-  color:rgba(255,255,255,0.35);font-family:'Share Tech Mono',monospace;line-height:1.7;
-}
-canvas,video{display:none;}
-
-/* ── TEAM SETUP ─────────────────────────────────────────── */
+/* TEAM SETUP */
 #team-setup{
-  background:rgba(0,0,0,0.25);
-  border-bottom:1px solid var(--border);
-  padding:10px 12px;
-  flex-shrink:0;
-  display:flex;flex-direction:column;gap:7px;
+  background:rgba(0,0,0,0.2);border-bottom:1px solid var(--border);
+  padding:12px;display:flex;flex-direction:column;gap:8px;flex-shrink:0;
 }
-.setup-row{display:flex;align-items:center;gap:7px;}
-.setup-label{
-  font-size:8px;letter-spacing:1.5px;color:rgba(255,255,255,0.25);
-  font-family:'Share Tech Mono',monospace;width:52px;flex-shrink:0;
-  text-transform:uppercase;
-}
+.setup-row{display:flex;align-items:center;gap:8px;}
+.setup-label{font-size:10px;letter-spacing:1px;color:rgba(255,255,255,0.4);width:55px;flex-shrink:0;}
 .setup-input{
-  flex:1;background:rgba(255,255,255,0.04);
-  border:1px solid rgba(255,255,255,0.08);
-  border-radius:6px;padding:5px 8px;color:#fff;
-  font-family:'Share Tech Mono',monospace;font-size:11px;outline:none;
-  transition:border-color .15s;
+  flex:1;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);
+  border-radius:6px;padding:6px 10px;color:#fff;font-size:13px;outline:none;
 }
-.setup-input:focus{border-color:var(--accent);}
-.setup-input::placeholder{color:rgba(255,255,255,0.15);}
 .setup-save{
-  background:linear-gradient(135deg,var(--accent),var(--accent2));
-  border:none;border-radius:6px;padding:5px 11px;
-  font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:800;
-  color:#07090f;cursor:pointer;letter-spacing:.5px;white-space:nowrap;
-  transition:opacity .15s;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;border-radius:6px;
+  padding:6px 14px;font-size:13px;font-weight:800;color:#07090f;cursor:pointer;white-space:nowrap;
 }
-.setup-save:hover{opacity:.85;}
 #team-badge{
-  display:none;
-  background:rgba(0,229,255,0.06);border:1px solid rgba(0,229,255,0.15);
-  border-radius:5px;padding:4px 8px;
-  font-size:9px;font-family:'Share Tech Mono',monospace;
-  color:var(--accent);letter-spacing:.5px;
-  flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;
+  display:none;background:rgba(0,229,255,0.06);border:1px solid rgba(0,229,255,0.15);
+  border-radius:5px;padding:4px 8px;font-size:11px;color:var(--accent);
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;
 }
 #team-badge.show{display:block;}
 
-/* CARD de recomendación de equipo */
 .card-team{
-  background:linear-gradient(135deg,rgba(145,70,255,0.08),rgba(0,229,255,0.04));
-  border:1px solid rgba(145,70,255,0.2);
-  border-left:3px solid #9146FF;
-  border-radius:8px;padding:10px 11px;
-  animation:fadeSlide .25s ease;
+  background:rgba(145,70,255,0.04);border:1px solid rgba(145,70,255,0.15);
+  border-left:4px solid #9146FF;border-radius:10px;padding:12px 14px;
 }
 .card-team .card-label{color:#9146FF;}
-.card-team p{font-size:12px;color:rgba(255,255,255,0.8);line-height:1.55;font-weight:600;}
+.card-team p{font-size:14px;color:rgba(255,255,255,0.9);line-height:1.55;font-weight:600;}
 
-/* ═══ GESTOR DE CHAT EN VIVO ══════════════════════════════ */
+#twitch-note{background:rgba(145,70,255,0.04);border:1px solid rgba(145,70,255,0.15);border-radius:8px;padding:10px;font-size:12px;color:rgba(255,255,255,0.5);line-height:1.6;}
+#idle-msg{text-align:center;color:rgba(255,255,255,0.2);padding:40px 12px;}
+#idle-msg .ico{font-size:40px;margin-bottom:10px;opacity:.5;}
+#idle-msg h3{font-size:15px;color:rgba(255,255,255,0.4);margin-bottom:6px;}
+#idle-msg p{font-size:12px;line-height:1.8;}
+
+/* ═══ GESTOR DE CHAT EN VIVO PREMIUM ══════════════════════ */
 #chat-section{
   border-top:1px solid var(--border);
-  background:rgba(13,16,24,0.98);
+  background:rgba(13,16,24,0.99);
   display:flex;flex-direction:column;
-  flex-shrink:0;height:180px;transition:height 0.25s ease;
+  flex-shrink:0;height:240px;transition:height 0.25s ease;
 }
-#chat-section.collapsed{height:32px;}
+#chat-section.collapsed{height:36px;}
 #chat-header{
-  background:rgba(0,0,0,0.3);padding:8px 12px;
+  background:rgba(0,0,0,0.3);padding:8px 14px;
   display:flex;align-items:center;justify-content:space-between;cursor:pointer;
   border-bottom:1px solid var(--border);
 }
-#chat-toggle-btn{background:none;border:none;color:rgba(255,255,255,0.4);font-size:10px;cursor:pointer;font-family:'Share Tech Mono',monospace;}
-#chat-box{flex:1;overflow-y:auto;padding:8px 10px;display:flex;flex-direction:column;gap:6px;}
-.chat-msg-row{display:flex;flex-direction:column;font-size:11px;animation:fadeSlide 0.15s ease;line-height:1.4;}
+#chat-toggle-btn{background:none;border:none;color:rgba(255,255,255,0.5);font-size:11px;cursor:pointer;}
+#chat-box{flex:1;overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:8px;}
+
+.chat-msg-row{display:flex;flex-direction:column;font-size:13px;animation:fadeSlide 0.15s ease;line-height:1.45;}
 .chat-msg-row.user{align-items:flex-end;}
-.chat-msg-row.user .chat-bubble{background:rgba(0,229,255,0.08);border:1px solid rgba(0,229,255,0.15);color:#fff;border-bottom-right-radius:2px;}
-.chat-msg-row.coach .chat-bubble{background:rgba(255,255,255,0.02);border:1px solid var(--border);color:rgba(255,255,255,0.85);border-bottom-left-radius:2px;}
-.chat-msg-row.coach .chat-author{color:var(--accent);font-size:8px;font-family:'Share Tech Mono',monospace;margin-bottom:2px;letter-spacing:0.5px;}
+.chat-msg-row.user .chat-bubble{background:rgba(0,229,255,0.12);border:1px solid rgba(0,229,255,0.25);color:#fff;border-bottom-right-radius:2px;}
+.chat-msg-row.coach .chat-bubble{background:rgba(255,255,255,0.03);border:1px solid var(--border);color:rgba(255,255,255,0.9);border-bottom-left-radius:2px;}
+.chat-msg-row.coach .chat-author{color:var(--accent);font-size:10px;margin-bottom:3px;letter-spacing:0.5px;text-transform:uppercase;}
 .chat-msg-row.coach.ai-style .chat-author{color:var(--gold);}
-.chat-bubble{padding:6px 9px;border-radius:7px;max-width:90%;word-break:break-word;}
-#chat-input-row{display:flex;padding:5px;background:rgba(0,0,0,0.2);border-top:1px solid var(--border);gap:4px;}
+.chat-bubble{padding:8px 12px;border-radius:9px;max-width:85%;word-break:break-word;font-size:14px; /* Letra de chat grande */}
+
+#chat-input-row{display:flex;padding:6px;background:rgba(0,0,0,0.25);border-top:1px solid var(--border);gap:6px;}
 #chat-input{
-  flex:1;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);
-  border-radius:6px;padding:5px 9px;color:#fff;font-family:'Barlow Condensed',sans-serif;
-  font-size:12px;outline:none;
+  flex:1;background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);
+  border-radius:6px;padding:6px 12px;color:#fff;font-size:13px;outline:none;
 }
 #chat-input:focus{border-color:rgba(0,229,255,0.3);}
 #chat-send-btn{
   background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);
-  color:#fff;font-size:10px;font-weight:700;padding:0 10px;border-radius:6px;cursor:pointer;
+  color:#fff;font-size:12px;font-weight:700;padding:0 14px;border-radius:6px;cursor:pointer;
 }
 #chat-send-btn:hover{background:rgba(0,229,255,0.1);border-color:var(--accent);color:var(--accent);}
+
+/* COUNTDOWN */
+#countdown-wrap{padding:8px 12px;border-top:1px solid var(--border);flex-shrink:0;background:rgba(0,0,0,0.15);}
+#countdown-top{display:flex;justify-content:space-between;margin-bottom:4px;font-size:10px;font-family:'Share Tech Mono',monospace;color:rgba(255,255,255,0.3);}
+#scan-label{color:var(--accent);}
+#countdown-bar{height:3px;background:rgba(255,255,255,0.05);border-radius:2px;overflow:hidden;}
+#countdown-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));width:100%;transition:width 1s linear;}
+
+canvas,video{display:none;}
 </style>
 </head>
 <body>
@@ -460,8 +392,8 @@ canvas,video{display:none;}
   <div class="logo">FC24 <em>COACH</em></div>
   
   <div class="keys-container">
-    <input id="apikey-input" class="top-input" type="password" placeholder="🔑 Nueva Gemini API Key" />
-    <button id="add-key-btn" class="top-btn" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#fff;padding:6px 9px;font-size:11px;">+ AGREGAR</button>
+    <input id="apikey-input" class="top-input" type="password" placeholder="🔑 Gemini API Key" />
+    <button id="add-key-btn" class="top-btn" style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);color:#fff;padding:6px 10px;">+ AGREGAR</button>
     <select id="keys-select" class="keys-select">
       <option value="">— Sin llaves —</option>
     </select>
@@ -469,7 +401,6 @@ canvas,video{display:none;}
 
   <input id="channel-input" class="top-input" type="text" placeholder="canal_twitch" maxlength="30" />
   <button id="load-btn" class="top-btn">▶ CARGAR</button>
-  
   <button id="upload-btn" class="top-btn">📂 SUBIR CODE</button>
   <input type="file" id="hidden-file-input" accept=".html" style="display:none" />
 
@@ -524,7 +455,7 @@ canvas,video{display:none;}
         <span class="setup-label">🎮 ESTILO</span>
         <input id="style-input" class="setup-input" type="text" placeholder="Ej: presión alta, tiki-taka..." maxlength="80"/>
       </div>
-      <div class="setup-row" style="justify-content:space-between;">
+      <div class="setup-row" style="justify-content:space-between; margin-top:2px;">
         <div id="team-badge"></div>
         <button class="setup-save" id="team-save-btn">GUARDAR ✓</button>
       </div>
@@ -532,25 +463,24 @@ canvas,video{display:none;}
 
     <div id="panel-body">
       <div id="twitch-note">
-        ⚠ Twitch tiene ~5-15s de delay.<br>
-        Usa 10-15s de intervalo para mejor análisis.
+        ⚠ Twitch tiene ~5-15s de delay.<br>Usa 10-15s de intervalo para mejor análisis.
       </div>
       <div id="idle-msg">
         <div class="ico">🧠</div>
         <h3>LISTO PARA ANALIZAR</h3>
-        <p>Carga tu stream y activa<br>el análisis para recibir<br>consejos tácticos en vivo</p>
+        <p>Carga tu stream y activa el análisis para recibir consejos tácticos en vivo</p>
       </div>
     </div>
 
     <div id="chat-section" class="collapsed">
       <div id="chat-header">
-        <span class="panel-title" style="color:var(--accent); font-size:9px; letter-spacing:1.5px;">💬 INTERACTUAR CON COACH</span>
+        <span class="panel-title" style="color:var(--accent); font-size:11px;">💬 INTERACTUAR CON COACH</span>
         <button id="chat-toggle-btn">▲ ABRIR CHAT</button>
       </div>
       <div id="chat-box">
         <div class="chat-msg-row coach">
           <span class="chat-author">SISTEMA</span>
-          <div class="chat-bubble" style="font-family:'Share Tech Mono',monospace; font-size:10px;">Pregúntame lo que quieras sobre tu partido o tu estrategia...</div>
+          <div class="chat-bubble" style="font-family:'Share Tech Mono',monospace; font-size:12px;">Pregúntame lo que quieras sobre tu partido o tu estrategia...</div>
         </div>
       </div>
       <div id="chat-input-row">
@@ -570,7 +500,7 @@ canvas,video{display:none;}
 </div>
 
 <script>
-// ── COACHES ──────────────────────────────────────────────────
+// ── CONFIG COACHES Y PROMPTS COMPLETOS ────────────────────────
 const COACHES={
   guardiola:{full:"Pep Guardiola",prompt:"Eres Pep Guardiola. Analizas con foco en triángulos de pase, superioridad posicional, construcción desde portero, presión coordinada y falso 9."},
   klopp:    {full:"Jürgen Klopp", prompt:"Eres Jürgen Klopp. Analizas con foco en gegenpressing, transiciones explosivas en 5s, profundidad por bandas e intensidad máxima."},
@@ -593,14 +523,14 @@ FORMATO EXACTO (usa números reales del 0 al 100, no rangos):
 {"situacion":"lo que ves exactamente","formacion_detectada":"4-3-3","fase":"ataque","presion_rival":65,"control_medio":55,"riesgo_defensa":40,"alertas":[{"tipo":"danger","zona":"DEF","mensaje":"alerta"}],"consejo_principal":"análisis adaptado al equipo","tactica_propia":"táctica específica para ${userTeam||'tu equipo'}","ajuste_inmediato":"acción en próximos 30s","recomendacion_equipo":"tip exclusivo para aprovechar las ventajas de ${userTeam||'tu equipo'} aquí"}
 Tipos: warning danger info success. Zonas: DEF MID ATK TAC. Máximo 3 alertas.`;
 
-// ── ESTADO ───────────────────────────────────────────────────
+// ── VARIABLES DE ESTADO ──────────────────────────────────────
 let mode='coach',coach='guardiola',ms=10000;
 let running=false,scanCount=0,itvId=null,cdId=null,capStream=null;
 let userTeam='', userStyle='';
 let apiKeys=[]; 
 let chatHistory=[]; 
 
-// ── REFS ─────────────────────────────────────────────────────
+// ── SELECTORES ELEMENTOS UI ──────────────────────────────────
 const $=id=>document.getElementById(id);
 const apiKeyIn=$('apikey-input'),addKeyBtn=$('add-key-btn'),keysSelect=$('keys-select');
 const chIn=$('channel-input'),loadBtn=$('load-btn');
@@ -615,13 +545,11 @@ const coachWrap=$('coach-pills-wrap');
 const teamInput=$('team-input'),styleInput=$('style-input');
 const teamSaveBtn=$('team-save-btn'),teamBadge=$('team-badge');
 
-// REFS CHAT
 const chatSection=$('chat-section'),chatHeader=$('chat-header'),chatToggleBtn=$('chat-toggle-btn');
 const chatBox=$('chat-box'),chatInput=$('chat-input'),chatSendBtn=$('chat-send-btn');
 
-// ── GESTIÓN DE MÚLTIPLES LLAVES ──────────────────────────────
+// ── MULTI-KEYS LOCALSTORAGE ─────────────────────────────────
 loadKeys();
-
 addKeyBtn.addEventListener('click', addKey);
 apiKeyIn.addEventListener('keydown', e=>{if(e.key==='Enter') addKey();});
 
@@ -636,50 +564,38 @@ function addKey() {
   }
   apiKeyIn.value = '';
 }
-
-function saveKeys() {
-  localStorage.setItem('fc24_multi_keys', JSON.stringify(apiKeys));
-}
-
+function saveKeys() { localStorage.setItem('fc24_multi_keys', JSON.stringify(apiKeys)); }
 function loadKeys() {
   try {
     const stored = localStorage.getItem('fc24_multi_keys');
     if(stored) apiKeys = JSON.parse(stored);
-    
     const oldKey = localStorage.getItem('fc24_gemini_key');
     if(oldKey && !apiKeys.includes(oldKey)) {
-      apiKeys.push(oldKey);
-      saveKeys();
-      localStorage.removeItem('fc24_gemini_key');
+      apiKeys.push(oldKey); saveKeys(); localStorage.removeItem('fc24_gemini_key');
     }
   } catch(e) { apiKeys = []; }
   renderKeysSelect();
 }
-
 function renderKeysSelect() {
   keysSelect.innerHTML = '';
   if(apiKeys.length === 0) {
-    const opt = document.createElement('option');
-    opt.value = ''; opt.textContent = '— Sin llaves —';
-    keysSelect.appendChild(opt);
-    return;
+    const opt = document.createElement('option'); opt.value = ''; opt.textContent = '— Sin llaves —';
+    keysSelect.appendChild(opt); return;
   }
   apiKeys.forEach((k, idx) => {
-    const opt = document.createElement('option');
-    opt.value = k;
+    const opt = document.createElement('option'); opt.value = k;
     opt.textContent = `🔑 Llave ${idx + 1} (${k.slice(0,4)}...${k.slice(-4)})`;
     keysSelect.appendChild(opt);
   });
 }
-
 function getSelectedKey() { return keysSelect.value || ''; }
 
-// Cargar equipo
+// Cargar Datos del Equipo Guardados
 userTeam=localStorage.getItem('fc24_team')||'';
 userStyle=localStorage.getItem('fc24_style')||'';
 if(userTeam){teamInput.value=userTeam;styleInput.value=userStyle;updateTeamBadge();}
 
-// ── MODO ─────────────────────────────────────────────────────
+// ── MANEJO MODO TABS ─────────────────────────────────────────
 document.querySelectorAll('.mode-tab').forEach(btn=>{
   btn.addEventListener('click',()=>{
     document.querySelectorAll('.mode-tab').forEach(b=>b.classList.remove('active'));
@@ -692,7 +608,7 @@ document.querySelectorAll('.mode-tab').forEach(btn=>{
   });
 });
 
-// ── STREAM ───────────────────────────────────────────────────
+// ── MANEJO EMISIÓN TWITCH ────────────────────────────────────
 loadBtn.addEventListener('click',loadStream);
 chIn.addEventListener('keydown',e=>{if(e.key==='Enter')loadStream();});
 function loadStream(){
@@ -702,7 +618,7 @@ function loadStream(){
   tFrame.style.display='block'; placeholder.style.display='none';
 }
 
-// ── PILLS ─────────────────────────────────────────────────────
+// ── SELECCIÓN ENTRENADORES ───────────────────────────────────
 document.querySelectorAll('.coach-pill').forEach(b=>{
   b.addEventListener('click',()=>{
     document.querySelectorAll('.coach-pill').forEach(x=>x.classList.remove('active'));
@@ -710,11 +626,10 @@ document.querySelectorAll('.coach-pill').forEach(b=>{
   });
 });
 
-// ── EQUIPO ───────────────────────────────────────────────────
+// ── CONFIGURACIÓN DEL EQUIPO ─────────────────────────────────
 teamSaveBtn.addEventListener('click', addTeam);
 function addTeam() {
-  const teamVal = teamInput.value.trim();
-  const styleVal = styleInput.value.trim();
+  const teamVal = teamInput.value.trim(); const styleVal = styleInput.value.trim();
   if(!teamVal) { showError('Campo vacío', 'Ingresa un equipo.'); return; }
   userTeam = teamVal; userStyle = styleVal;
   localStorage.setItem('fc24_team', userTeam); localStorage.setItem('fc24_style', userStyle);
@@ -725,7 +640,6 @@ function addTeam() {
     teamSaveBtn.style.background = 'linear-gradient(135deg,var(--accent),var(--accent2))';
   },1500);
 }
-
 function updateTeamBadge(){
   if(userTeam){
     teamBadge.textContent=`🏟 ${userTeam}${userStyle?' · '+userStyle:''}`;
@@ -741,7 +655,7 @@ document.querySelectorAll('.freq-pill').forEach(b=>{
   });
 });
 
-// ── UPLOAD / DRAG & DROP ─────────────────────────────────────
+// ── UPLOAD Y ARRASTRE DE ARCHIVOS (.HTML) ────────────────────
 const fileIn = $('hidden-file-input'), uploadBtn = $('upload-btn'), dragOverlay = $('drag-overlay');
 uploadBtn.addEventListener('click', () => fileIn.click());
 fileIn.addEventListener('change', (e) => { if(e.target.files.length > 0) handleFile(e.target.files[0]); });
@@ -752,17 +666,14 @@ window.addEventListener('drop', (e) => {
   e.preventDefault(); dragOverlay.classList.remove('active');
   if(e.dataTransfer.files.length > 0) handleFile(e.dataTransfer.files[0]);
 });
-
 function handleFile(file) {
   if(!file.name.endsWith('.html')) { showError('Archivo inválido', 'Usa un archivo .html'); return; }
   const reader = new FileReader();
-  reader.onload = (e) => {
-    document.open(); document.write(e.target.result); document.close();
-  };
+  reader.onload = (e) => { document.open(); document.write(e.target.result); document.close(); };
   reader.readAsText(file);
 }
 
-// ── INTERFAZ DE CHAT EN VIVO ─────────────────────────────────
+// ── MOTOR DE CHAT INTERACTIVO CON EL COACH ──────────────────
 chatHeader.addEventListener('click', () => {
   const isCollapsed = chatSection.classList.toggle('collapsed');
   chatToggleBtn.textContent = isCollapsed ? '▲ ABRIR CHAT' : '▼ CERRAR CHAT';
@@ -773,94 +684,59 @@ chatSendBtn.addEventListener('click', sendChatMessage);
 chatInput.addEventListener('keydown', e => { if(e.key === 'Enter') sendChatMessage(); });
 
 async function sendChatMessage() {
-  const query = chatInput.value.trim();
-  if(!query) return;
-
+  const query = chatInput.value.trim(); if(!query) return;
   const key = getSelectedKey();
   if(!key) { showError('Falta Clave', 'Agrega tu Gemini API Key arriba para chatear con el coach.'); return; }
 
-  // Mostrar mensaje del usuario
-  appendChatBubble('TÚ', query, 'user');
-  chatInput.value = '';
+  appendChatBubble('TÚ', query, 'user'); chatInput.value = '';
 
-  // Creamos la estructura correcta del mensaje del usuario
   let userParts = [{ text: query }];
-
-  // Captura actual de pantalla en vivo como contexto visual
   const currentB64 = captureFrame();
-  if (currentB64) {
-    userParts.push({
-      inline_data: { mime_type: 'image/jpeg', data: currentB64 }
-    });
-  }
+  if (currentB64) { userParts.push({ inline_data: { mime_type: 'image/jpeg', data: currentB64 } }); }
 
-  // Guardar en el historial de sesión del chat
   chatHistory.push({ role: 'user', parts: userParts });
-
   const coachLabel = mode === 'ai' ? 'IA TÁCTICA' : COACHES[coach].full.toUpperCase();
   const baseStyle = mode === 'ai' ? SYS_AI() : COACHES[coach].prompt;
   
   const chatSystemInstruction = `Tienes el rol de asistente en vivo para EA Sports FC 24.
   PERSONALIDAD ACTUAL: ${baseStyle}
-  CONTEXTO EXTRA: El usuario juega actualmente con: "${userTeam || 'No especificado'}" y estilo: "${userStyle || 'No especificado'}".
-  REGLA DE RESPUESTA: Responde de forma directa, corta, en un tono natural de director técnico de fútbol/gaming. Máximo 2 o 3 líneas por respuesta para que quepa en la UI. No devuelvas JSON aquí, responde con texto plano directo.`;
+  CONTEXTO EXTRA: El usuario juega con: "${userTeam || 'No especificado'}" y estilo: "${userStyle || 'No especificado'}".
+  REGLA DE RESPUESTA: Responde de forma directa, corta, en tono de DT real. Máximo 2 o 3 líneas por respuesta. Texto plano directo, no JSON.`;
 
   try {
-    chatSendBtn.disabled = true;
-    chatSendBtn.textContent = '...';
-
-    // Ajustar historial para cumplir con las reglas estrictas de la API de chat de Gemini
+    chatSendBtn.disabled = true; chatSendBtn.textContent = '...';
     let formattedContents = chatHistory.map(msg => ({
-      role: msg.role,
-      parts: msg.parts.map(p => p.text ? { text: p.text } : p)
+      role: msg.role, parts: msg.parts.map(p => p.text ? { text: p.text } : p)
     }));
 
-    const res = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${key}`,
-      {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+    const res = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${key}`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           system_instruction: { parts: [{ text: chatSystemInstruction }] },
           contents: formattedContents,
           generationConfig: { temperature: 0.6, maxOutputTokens: 250 }
         })
-      }
-    );
-
-    const d = await res.json();
-    if(!res.ok) throw new Error(d.error?.message || 'Error de conexión');
-
+    });
+    const d = await res.json(); if(!res.ok) throw new Error(d.error?.message || 'Error de conexión');
     const replyText = d.candidates?.[0]?.content?.parts?.[0]?.text || 'No tengo comentarios en este momento.';
     
-    // Mostrar respuesta en el chat
     appendChatBubble(coachLabel, replyText, 'coach', mode === 'ai');
     chatHistory.push({ role: 'model', parts: [{ text: replyText }] });
-
-  } catch (err) {
-    appendChatBubble('SISTEMA (ERROR)', err.message, 'coach');
-  } finally {
-    chatSendBtn.disabled = false;
-    chatSendBtn.textContent = 'ENVIAR';
-  }
+  } catch (err) { appendChatBubble('SISTEMA (ERROR)', err.message, 'coach'); }
+  finally { chatSendBtn.disabled = false; chatSendBtn.textContent = 'ENVIAR'; }
 }
 
 function appendChatBubble(author, text, type, isAiStyle=false) {
   const row = mkDiv(`chat-msg-row ${type}${isAiStyle ? ' ai-style' : ''}`);
-  if(type === 'coach') {
-    row.innerHTML = `<span class="chat-author">${esc(author)}</span>`;
-  }
-  const bubble = mkDiv('chat-bubble');
-  bubble.textContent = text;
-  row.appendChild(bubble);
-  chatBox.appendChild(row);
+  if(type === 'coach') { row.innerHTML = `<span class="chat-author">${esc(author)}</span>`; }
+  const bubble = mkDiv('chat-bubble'); bubble.textContent = text;
+  row.appendChild(bubble); chatBox.appendChild(row);
   chatBox.scrollTop = chatBox.scrollHeight;
 }
 
-// ── ANÁLISIS AUTOMÁTICO ──────────────────────────────────────
+// ── BUCLE DE ANÁLISIS AUTOMÁTICO DE PANTALLA ─────────────────
 analyzeBtn.addEventListener('click',async()=>{
-  if(running){stopAnalysis();return;}
-  await startAnalysis();
+  if(running){stopAnalysis();return;} await startAnalysis();
 });
 
 async function startAnalysis(){
@@ -873,8 +749,7 @@ async function startAnalysis(){
     running=true;
     analyzeBtn.textContent='⏹ DETENER';analyzeBtn.classList.add('stop');
     liveDot.classList.add('active');cdWrap.style.display='block';
-    $('idle-msg')?.remove();$('twitch-note')?.remove();
-    demoBanner.style.display='none';
+    $('idle-msg')?.remove();$('twitch-note')?.remove(); demoBanner.style.display='none';
     setTimeout(runAnalysis,600); resetInterval();
   }catch(e){ if(e.name!=='NotAllowedError') showError('Error en captura.',e.message); }
 }
@@ -905,14 +780,12 @@ function captureFrame(){
   if(!vid.videoWidth)return null;
   const mw=1280,sc=vid.videoWidth>mw?mw/vid.videoWidth:1;
   cvs.width=Math.round(vid.videoWidth*sc); cvs.height=Math.round(vid.videoHeight*sc);
-  const ctx=cvs.getContext('2d');
-  ctx.drawImage(vid,0,0,cvs.width,cvs.height);
+  const ctx=cvs.getContext('2d'); ctx.drawImage(vid,0,0,cvs.width,cvs.height);
   return cvs.toDataURL('image/jpeg',0.92).split(',')[1];
 }
 
 async function callAI(b64,sys,usr){
-  const key = getSelectedKey();
-  if(!key) throw new Error('Sin API Key válida.');
+  const key = getSelectedKey(); if(!key) throw new Error('Sin API Key válida.');
   const MODELS=['gemini-2.5-flash','gemini-2.5-flash-lite'];
   let lastErr='Sin respuesta';
   for(const model of MODELS){
@@ -925,8 +798,7 @@ async function callAI(b64,sys,usr){
           generationConfig:{temperature:0.4,maxOutputTokens:800}
         })
       });
-      const d=await r.json();
-      if(!r.ok){lastErr=d.error?.message||`HTTP ${r.status}`;continue;}
+      const d=await r.json(); if(!r.ok){lastErr=d.error?.message||`HTTP ${r.status}`;continue;}
       return d.candidates?.[0]?.content?.parts?.[0]?.text||'';
     }catch(e){lastErr=e.message;}
   }
@@ -950,8 +822,7 @@ async function runAnalysis(){
   try{
     const sys=mode==='ai'?SYS_AI():SYS_COACH(COACHES[coach].prompt);
     const raw=await callAI(b64,sys,'Analiza esta captura de FC 24. Responde SOLO con el JSON, nada más.');
-    const d=tryJSON(raw);
-    if(!d)throw new Error('JSON inválido');
+    const d=tryJSON(raw); if(!d)throw new Error('JSON inválido');
     scanCount++;scanLabel.textContent=`${scanCount} análisis`;
     mode==='ai'?renderAI(d):renderCoach(d);
     startCountdown();
@@ -959,7 +830,7 @@ async function runAnalysis(){
   finally{spinner.classList.remove('show');analyzingTxt.classList.remove('show');}
 }
 
-// ── DEMO ─────────────────────────────────────────────────────
+// ── ASISTENTE MODO DEMO ───────────────────────────────────────
 const DEMO_IMGS=[
   'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1d/FC_Barcelona_vs_Recreativo_de_Huelva%2C_2006_%2802%29.jpg/1280px-FC_Barcelona_vs_Recreativo_de_Huelva%2C_2006_%2802%29.jpg',
   'https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/2010_FIFA_World_Cup_Final_1.jpg/1280px-2010_FIFA_World_Cup_Final_1.jpg'
@@ -980,14 +851,13 @@ demoBtn.addEventListener('click',async()=>{
     demoIdx++;
     const sys=mode==='ai'?SYS_AI():SYS_COACH(COACHES[coach].prompt);
     const raw=await callAI(b64,sys,'Gameplay. Responde SOLO con el JSON.');
-    const d=tryJSON(raw);
-    scanCount++; scanLabel.textContent=`${scanCount} análisis`;
+    const d=tryJSON(raw); scanCount++; scanLabel.textContent=`${scanCount} análisis`;
     if(mode==='ai'&&d)renderAI(d);else if(d)renderCoach(d);
   }catch(e){showError('Error Demo',e.message);}
   finally{spinner.classList.remove('show');analyzingTxt.classList.remove('show');demoBtn.disabled=false;demoBtn.textContent='🎮 DEMO';}
 });
 
-// ── RENDERS ──────────────────────────────────────────────────
+// ── PINTORES DINÁMICOS DE CARDS (RENDERS) ─────────────────────
 function renderCoach(d){
   clearCards(); const t=ts(); add(mkSit(d.situacion,t));
   const alerts=mkAlerts(d.alertas||[]); if(alerts)add(alerts);
