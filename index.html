@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<title>FC24 Coach + Chat Premium (HD Vision)</title>
+<title>FC24 Coach + Chat Premium (HD Vision Fixed)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&family=Lato:wght@400;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
@@ -516,7 +516,7 @@ FORMATO EXACTO:
 Tipos v&aacute;lidos: warning danger info success. Zonas: DEF MID ATK TAC. M&aacute;ximo 2 alertas.`;
 
 const SYS_AI=()=>`Eres una IA t&aacute;ctica aut&oacute;noma de EA Sports FC 24. Generas t&aacute;cticas originales.
-${userTeam?`CONTEXTO DEL JUGADOR: Usa ${userTeam}${userStyle?', estilo declarado: '+userStyle:''}. Genera recomendaciones 100% espec&iacute;ficas para las fortalezas y debilidades conocidas de este equipo en FC 24.`:''}
+${userTeam?`CONTEXTO DEL JUGADOR: Usa ${userTeam}${userStyle?', estilo declarado: '+userStyle:''}. Genera recommendations 100% espec&iacute;ficas para las fortalezas y debilidades conocidas de este equipo en FC 24.`:''}
 REGLA ABSOLUTA: responde &Uacute;NICAMENTE con el objeto JSON. Sin texto antes, sin texto despues, sin backticks, sin markdown, sin explicaciones.
 FORMATO EXACTO (usa n&uacute;meros reales del 0 al 100, no rangos):
 {"situacion":"lo que ves exactamente","formacion_detectada":"4-3-3","fase":"ataque","presion_rival":65,"control_medio":55,"riesgo_defensa":40,"alertas":[{"tipo":"danger","zona":"DEF","mensaje":"alerta"}],"consejo_principal":"an&aacute;lisis adaptado al equipo","tactica_propia":"t&aacute;ctica espec&iacute;fica para ${userTeam||'tu equipo'}","ajuste_inmediato":"acci&oacute;n en pr&oacute;ximos 30s","recomendacion_equipo":"tip exclusivo para aprovechar las ventajas de ${userTeam||'tu equipo'} aqu&iacute;"}
@@ -720,7 +720,6 @@ analyzeBtn.addEventListener('click',async()=>{
   if(running){stopAnalysis();return;} await startAnalysis();
 });
 
-// ═══ MEJORA DE CALIDAD DE VISIÓN (RESTRICCIONES ULTRA HD) ═══
 async function startAnalysis(){
   try{
     capStream=await navigator.mediaDevices.getDisplayMedia({
@@ -764,7 +763,6 @@ function startCountdown(){
   },1000);
 }
 
-// ═══ MOTOR DE CAPTURA CRISTALINA (1080p SIN COMPRESIÓN) ═══
 function captureFrame(){
   if(!vid.videoWidth)return null;
   const targetWidth = 1920; 
@@ -789,7 +787,7 @@ async function callAI(b64,sys,usr){
         body:JSON.stringify({
           system_instruction:{parts:[{text:sys}]},
           contents:[{parts:[{text:usr},{inline_data:{mime_type:'image/jpeg',data:b64}}]}],
-          generationConfig:{temperature:0.3,maxOutputTokens:800} 
+          generationConfig:{temperature:0.2,maxOutputTokens:800} 
         })
       });
       const d=await r.json(); if(!r.ok){lastErr=d.error?.message||`HTTP ${r.status}`;continue;}
@@ -799,14 +797,27 @@ async function callAI(b64,sys,usr){
   throw new Error(lastErr);
 }
 
+// ═══ EXTRACTOR SÚPER SEGURO DE BLUQUES JSON ═══
 function tryJSON(raw){
-  if(!raw)return null;
-  let s=raw.replace(/```json|```/g,'').trim();
-  try{return JSON.parse(s);}catch{}
-  try{
-    const start=s.indexOf('{'), end=s.lastIndexOf('}');
-    if(start!==-1&&end>start) return JSON.parse(s.slice(start,end+1));
-  }catch{}
+  if(!raw) return null;
+  let s = raw.trim();
+  
+  // Intento de parseo directo
+  try { return JSON.parse(s); } catch(e) {}
+  
+  // Limpieza manual si viene envuelto en markdown de código
+  s = s.replace(/```json/gi, '').replace(/```/g, '').trim();
+  try { return JSON.parse(s); } catch(e) {}
+  
+  // Extracción profunda buscando el primer '{' y el último '}'
+  try {
+    const start = s.indexOf('{');
+    const end = s.lastIndexOf('}');
+    if(start !== -1 && end > start) {
+      return JSON.parse(s.slice(start, end + 1));
+    }
+  } catch(e) {}
+  
   return null;
 }
 
